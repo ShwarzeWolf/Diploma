@@ -29,3 +29,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     testCompile("junit:junit")
 }
+
+// for 'gradle run' command
+apply plugin: 'application'
+mainClassName = 'service.Application'
