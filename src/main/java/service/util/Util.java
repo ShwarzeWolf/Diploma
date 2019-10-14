@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 public class Util {
     public static String calcSHA256(String string) {
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA256");
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(string.getBytes());
             byte[] bytes = md.digest();
             StringBuilder sb = new StringBuilder();

@@ -15,13 +15,13 @@ public class UserSearchRequest implements SearchRequest<UserEntity>{
 	}
 	public UserSearchRequest setName(String userName) throws IllegalArgumentException {
 		if (userName.contains("'"))
-			throw new IllegalArgumentException("ProductName cannot contain \"'\"");
+			throw new IllegalArgumentException("Name cannot contain \"'\"");
 		name = userName;
 		return this;
 	}
 	public UserSearchRequest setemail(String email) throws IllegalArgumentException {
 		if (email.contains("'"))
-			throw new IllegalArgumentException("ProductName cannot contain \"'\"");
+			throw new IllegalArgumentException("Email cannot contain \"'\"");
 		this.email = email;
 		return this;
 	}
@@ -40,7 +40,7 @@ public class UserSearchRequest implements SearchRequest<UserEntity>{
 			first = true;
 		}
 		if (email != null)
-			ans += (first ? " and" : "") + " Email = \'" + email + "\'";
+			ans += (first ? " and" : "") + " Email=\'" + email + "\'";
 		return ans;
 	}
 	@Override

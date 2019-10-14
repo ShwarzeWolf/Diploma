@@ -3,6 +3,7 @@ package service.dal.dao;
 import java.sql.SQLException;
 
 import service.dal.entity.Entity;
+import service.dal.searchrequest.SearchRequest;
 
 // import service.dal.dao.SearchRequest.SearchRequest;
 // import service.dal.entity.Entity;

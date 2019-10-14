@@ -31,8 +31,8 @@ public class UserEntity implements Entity {
             rs.getString("UserID");
             rs.getString("Name");
             rs.getString("Email");
-            rs.getString("Hash1");
-            rs.getString("Hash2");
+            rs.getString("PasswdHash1");
+            rs.getString("PasswdHash2");
         } catch (SQLException ex) {
             if (ex.getMessage().equals("ResultSet closed"))
                 throw ex;
