@@ -27,6 +27,7 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile group:'org.xerial', name:'sqlite-jdbc', version:'3.8.11.2' // SQLite DB for testing now
     testCompile("junit:junit")
 }
 
