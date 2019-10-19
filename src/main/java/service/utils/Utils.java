@@ -1,9 +1,9 @@
-package service.util;
+package service.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Util {
+public class Utils {
     public static String calcSHA256(String string) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
