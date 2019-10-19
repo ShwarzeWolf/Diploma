@@ -1,0 +1,11 @@
+CREATE ROLE java WITH LOGIN PASSWORD '123654';
+
+CREATE TABLE Users (
+    UserID      SERIAL PRIMARY KEY NOT NULL,
+    Name        VARCHAR (40)  NOT NULL,
+    Email       VARCHAR (20)  UNIQUE NOT NULL,
+    PasswdHash1 VARCHAR (128) NOT NULL,
+    PasswdHash2 VARCHAR (128) NOT NULL
+);
+
+ALTER TABLE public.Users OWNER TO java;
