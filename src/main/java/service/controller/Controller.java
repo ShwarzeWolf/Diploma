@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import service.businesslogic.UserTypeManager;
 import service.businesslogic.UsersManager;
-import service.dal.models.UserEntity;
+import service.dal.models.User;
 
 @RestController
 public class Controller {
@@ -27,8 +28,8 @@ public class Controller {
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public @ResponseBody String addNewUser(@RequestParam String email, @RequestParam String name,
-            @RequestParam String password) {
-        users.addUser(name, email, password);
+            @RequestParam String login, @RequestParam String password, @RequestParam String userType) {
+        users.addUser(email, login, name, password, UserTypeManager.USER_TYPE.valueOf(userType));
         return "User <b>" + name + "</b> with password <i>" + password + "</i> was successfully saved";
     }
 
@@ -45,8 +46,8 @@ public class Controller {
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public @ResponseBody String loginIntoSystem(@RequestParam String email, @RequestParam String password) {
         if (users.passwordOkay(email, password)) {
-            UserEntity logged = users.getUserByEmail(email);
-            return "authorisation was successful\nLogged in as <b>" + logged.getName() + "</b>";
+            User logged = users.getUserByEmail(email);
+            return "authorisation was successful\nLogged in as <b>" + logged.getName() + "</b><br>FullInfo: " + logged;
         } else
             return "authorisation failed";
     }

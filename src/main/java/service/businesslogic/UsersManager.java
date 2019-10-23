@@ -1,40 +1,49 @@
 package service.businesslogic;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import java.sql.Date;
+import java.time.LocalDate;
 
-import service.dal.models.UserEntity;
-import service.utils.Utils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import service.dal.dao.DAOFabric;
 import service.dal.dao.UsersDAO;
+import service.dal.models.User;
+import service.dal.models.UserType;
+import service.utils.Utils;
 
 public class UsersManager {
+
 	private final UsersDAO usersDAO;
 	private final static Logger LOG = LogManager.getLogger(UsersManager.class.getName());
 
 	public UsersManager() {
-		usersDAO = new UsersDAO();
+		usersDAO = DAOFabric.getUserDAO();
 	}
 
-	public UserEntity getUserByID(int id) {
+	public User getUserByID(int id) {
 		return usersDAO.getUserByID(id);
 	}
 
-	public UserEntity getUserByEmail(String email) {
+	public User getUserByEmail(String email) {
 		return usersDAO.getUserByEmail(email);
 	}
 
-	UserEntity[] getUsers() {
-		return usersDAO.findAll().toArray(new UserEntity[0]);
+	User[] getUsers() {
+		return usersDAO.findAll().toArray(new User[0]);
 	}
 
-	public void addUser(String userName, String email, String password) {
-		usersDAO.save(new UserEntity(userName, email, password));
+	public void addUser(String email, String login, String userName, String password,
+			UserTypeManager.USER_TYPE typeEnum) {
+		Date registerDate = Date.valueOf(LocalDate.now());
+		UserType userType = new UserTypeManager().getTypeByEnum(typeEnum);
+		usersDAO.save(new User(email, login, userName, registerDate, password, userType));
 	}
 
 	public boolean passwordOkay(String email, String password) {
 		LOG.info("Trying to get user: email=\"" + email + "\"");
-		UserEntity logging = usersDAO.getUserByEmail(email);
-		if (logging == null){ 
+		User logging = usersDAO.getUserByEmail(email);
+		if (logging == null) {
 			LOG.warn(String.format("User is not found: (email = %s)", email));
 			return false;
 		}
