@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import service.businesslogic.UserTypeManager;
-import service.businesslogic.UsersManager;
+import service.businesslogic.UserManager;
 import service.dal.models.User;
 
 @RestController
 public class Controller {
-    private final static Logger LOG = LogManager.getLogger(UsersManager.class.getName());
-    private UsersManager users;
+    private final static Logger LOG = LogManager.getLogger(UserManager.class.getName());
+    private UserManager users;
 
     public Controller() {
         super();
-        users = new UsersManager();
+        users = new UserManager();
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
