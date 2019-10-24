@@ -1,5 +1,7 @@
 package service.utils;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -33,5 +35,12 @@ public class Utils {
             e.printStackTrace();
         }
         return null;
+    }
+    public static String getStaticFileContents(String dirPath, String fileName, String alternativeText) {
+        try {
+            return new String(Files.readAllBytes(FileSystems.getDefault().getPath(dirPath, fileName)));
+        } catch (Exception ex) {
+            return alternativeText;
+        }
     }
 }

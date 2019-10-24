@@ -18,12 +18,12 @@ import service.businesslogic.EventManager;
 import service.dal.models.Event;
 
 @RestController
-public class TestingController {
-    private static final Logger LOG = LogManager.getLogger(TestingController.class.getName());
+public class EventController {
+    private static final Logger LOG = LogManager.getLogger(EventController.class.getName());
 
     private EventManager events;
 
-    public TestingController() {
+    public EventController() {
         super();
         events = new EventManager();
     }
