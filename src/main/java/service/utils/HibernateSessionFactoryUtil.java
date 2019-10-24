@@ -6,13 +6,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-import service.businesslogic.UsersManager;
 import service.dal.models.User;
 import service.dal.models.UserType;
 
 public class HibernateSessionFactoryUtil {
     private static SessionFactory sessionFactory;
-    private final static Logger LOG = LogManager.getLogger(UsersManager.class.getName());
+    private final static Logger LOG = LogManager.getLogger(HibernateSessionFactoryUtil.class.getName());
 
     private HibernateSessionFactoryUtil() {}
 
