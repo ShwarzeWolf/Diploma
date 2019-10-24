@@ -1,7 +1,7 @@
 package service.businesslogic;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +35,7 @@ public class UserManager {
 
 	public void addUser(String email, String login, String userName, String password,
 			UserTypeManager.USER_TYPE typeEnum) {
-		Date registerDate = Date.valueOf(LocalDate.now());
+		Timestamp registerDate = Timestamp.valueOf(LocalDateTime.now());
 		UserType userType = new UserTypeManager().getTypeByEnum(typeEnum);
 		userDAO.save(new User(email, login, userName, registerDate, password, userType));
 	}

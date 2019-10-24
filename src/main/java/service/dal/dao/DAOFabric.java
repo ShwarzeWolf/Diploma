@@ -12,6 +12,7 @@ public class DAOFabric {
     public static UserDAO getUserDAO() {
         return getUserDAO(defaultType);
     }
+
     public static UserTypeDAO getUserTypeDAO(String type) {
         if (type.equals("Hibernate"))
             return new UserTypeDAOHibernate();
@@ -20,5 +21,25 @@ public class DAOFabric {
     }
     public static UserTypeDAO getUserTypeDAO() {
         return getUserTypeDAO(defaultType);
+    }
+
+    public static EventDAO getEventDAO(String type) {
+        if (type.equals("Hibernate"))
+            return new EventDAOHibernate();
+        else
+            throw new IllegalArgumentException(String.format("%s is not a valid type of DAO Fabric", type));
+    }
+    public static EventDAO getEventDAO() {
+        return getEventDAO(defaultType);
+    }
+
+    public static EventStatusDAO getEventStatusDAO(String type) {
+        if (type.equals("Hibernate"))
+            return new EventStatusDAOHibernate();
+        else
+            throw new IllegalArgumentException(String.format("%s is not a valid type of DAO Fabric", type));
+    }
+    public static EventStatusDAO getEventStatusDAO() {
+        return getEventStatusDAO(defaultType);
     }
 }

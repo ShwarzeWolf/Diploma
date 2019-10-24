@@ -1,8 +1,9 @@
 package service.controller;
 
-
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import service.businesslogic.UserTypeManager;
 import service.businesslogic.UserManager;
+import service.businesslogic.UserTypeManager;
 import service.dal.models.User;
 
 @RestController
@@ -26,6 +27,16 @@ public class Controller {
         users = new UserManager();
     }
 
+    private static String getStaticFileContents(String dirPath, String fileName, String alternativeText) {
+        try {
+            return new String(Files.readAllBytes(
+                    FileSystems.getDefault().getPath(dirPath, fileName)));
+        } catch (Exception ex) {
+            LOG.error(ex);
+            return alternativeText;
+        }
+    }
+
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public @ResponseBody String addNewUser(@RequestParam String email, @RequestParam String name,
             @RequestParam String login, @RequestParam String password, @RequestParam String userType) {
@@ -35,12 +46,7 @@ public class Controller {
 
     @RequestMapping(path = "/register", method = RequestMethod.GET)
     public @ResponseBody String registerPage() {
-        try {
-                return new String(Files.readAllBytes(FileSystems.getDefault().getPath("src/main/resources/templates", "simpleRegisterForm.html")));
-        } catch (Exception ex) {
-            LOG.error(ex);
-            return "simpleRegisterForm: use post-request";
-        }
+        return getStaticFileContents("src/main/resources/templates", "simpleRegisterForm.html", "simpleRegisterForm: use post-request");
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
@@ -54,16 +60,17 @@ public class Controller {
 
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public @ResponseBody String loginPage() {
-        try {
-                return new String(Files.readAllBytes(FileSystems.getDefault().getPath("src/main/resources/templates", "simpleLoginForm.html")));
-        } catch (Exception ex) {
-            LOG.error(ex);
-            return "simpleLoginForm: use post-request";
-        }
+        return getStaticFileContents("src/main/resources/templates", "simpleLoginForm.html", "simpleLoginForm: use post-request");
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public @ResponseBody String loginIntoSystem() {
-        return "<a href=\"/register\">Register</a><br><a href=\"/login\">Login</a>";
+    public @ResponseBody String mainPage() {
+        return getStaticFileContents("src/main/resources/templates", "simpleMainPage.html", "%Main page get error%");
+    }
+
+    @RequestMapping(path = "/", method = RequestMethod.POST)
+    public void mainPagePOST(@RequestParam String eventID, HttpServletResponse httpServletResponse) {
+        httpServletResponse.setHeader("Location", "/event/" + eventID);
+        httpServletResponse.setStatus(302);
     }
 }

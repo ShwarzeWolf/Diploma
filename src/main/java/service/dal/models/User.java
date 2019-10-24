@@ -1,6 +1,6 @@
 package service.dal.models;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,7 @@ public class User {
     private String email;
 
     @Column(name = "RegisterDate")
-    private Date registerDate;
+    private Timestamp registerDate;
 
     @Column(name = "PasswdHash1")
     private String hash1;
@@ -49,8 +49,6 @@ public class User {
     @Column(name = "PasswdHash2")
     private String hash2;
 
-    // @Column(name = "TypeID")
-    // private int typeID;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TypeID")
     UserType userType;
@@ -71,7 +69,7 @@ public class User {
         this.userType = other.userType;
     }
 
-    public User(@NotEmpty String email, @NotEmpty String login, @NotEmpty String userName, @NotNull Date registerDate,
+    public User(@NotEmpty String email, @NotEmpty String login, @NotEmpty String userName, @NotNull Timestamp registerDate,
             @NotEmpty String password, UserType userType) {
         this.email = email;
         this.login = login;
@@ -104,6 +102,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("(User) %d: %s; %s; %s; %s + %s; %s", userID, email, login, name, hash1, hash2, userType);
+        return String.format("(User) %d: %s; %s; %s; %s + %s; %s %s", userID, email, login, name, hash1, hash2, registerDate, userType);
     }
 }

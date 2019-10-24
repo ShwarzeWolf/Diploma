@@ -10,16 +10,19 @@ import service.utils.HibernateSessionFactoryUtil;
 
 public class UserDAOHibernate implements UserDAO {
 
+	@Override
 	public User getUserByID(int id) {
 		return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(User.class, id);
 	}
 
+	@Override
 	public User getUserByEmail(String email) {
 		return (User) HibernateSessionFactoryUtil.getSessionFactory().openSession()
 				.createQuery("select new User(user) from User as user where user.email = :email")
 				.setParameter("email", email).uniqueResult();
 	}
 
+	@Override
 	public void save(User user) {
 		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
@@ -28,26 +31,28 @@ public class UserDAOHibernate implements UserDAO {
 		session.close();
 	}
 
+	@Override
 	public void update(User user) {
 		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-		Transaction tx1 = session.beginTransaction();
+		Transaction tx = session.beginTransaction();
 		session.update(user);
-		tx1.commit();
+		tx.commit();
 		session.close();
 	}
 
+	@Override
 	public void delete(User user) {
 		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-		Transaction tx1 = session.beginTransaction();
+		Transaction tx = session.beginTransaction();
 		session.delete(user);
-		tx1.commit();
+		tx.commit();
 		session.close();
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<User> findAll() {
-		List<User> users = (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
-				.createQuery("From Users").list();
-		return users;
+		return (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From User")
+				.list();
 	}
 }
