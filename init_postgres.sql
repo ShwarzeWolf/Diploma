@@ -59,9 +59,17 @@ CREATE TABLE VolunteersService.UsersRoles (
     StatusID SERIAL NOT NULL REFERENCES VolunteersService.RoleStatus(StatusID)
 );
 
+ALTER TABLE VolunteersService.EventStatus OWNER TO java;
+ALTER TABLE VolunteersService.UserType    OWNER TO java;
+ALTER TABLE VolunteersService.RoleStatus  OWNER TO java;
+ALTER TABLE VolunteersService.Users       OWNER TO java;
+ALTER TABLE VolunteersService.Events      OWNER TO java;
+ALTER TABLE VolunteersService.Roles       OWNER TO java;
+ALTER TABLE VolunteersService.UsersRoles  OWNER TO java;
+
 \! echo Inserting data
 
-INSERT INTO VolunteersService.UserType   (Name) values ('Organiser'), ('Manager'), ('Coordinator'), ('Volunteer');
+INSERT INTO VolunteersService.UserType    (Name) values ('Organiser'), ('Manager'), ('Coordinator'), ('Volunteer');
 INSERT INTO VolunteersService.EventStatus (Name) values ('unchecked'), ('approved'), ('coordinated'), ('published'), ('expired');
 INSERT INTO VolunteersService.RoleStatus  (Name) values ('unchecked'), ('denied'), ('approved'), ('participated'), ('partly'), ('absent');
 
