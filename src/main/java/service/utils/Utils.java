@@ -1,9 +1,11 @@
-package service.util;
+package service.utils;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Util {
+public class Utils {
     public static String calcSHA256(String string) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -33,5 +35,12 @@ public class Util {
             e.printStackTrace();
         }
         return null;
+    }
+    public static String getStaticFileContents(String dirPath, String fileName, String alternativeText) {
+        try {
+            return new String(Files.readAllBytes(FileSystems.getDefault().getPath(dirPath, fileName)));
+        } catch (Exception ex) {
+            return alternativeText;
+        }
     }
 }
