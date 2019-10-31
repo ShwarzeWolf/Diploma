@@ -1,4 +1,4 @@
-package service.controller;
+package volunteersservice.controllers;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import service.utils.Utils;
+import volunteersservice.utils.Utils;
 
 @RestController
 public class MainController {
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public @ResponseBody String mainPage() {
-        return Utils.getStaticFileContents("src/main/resources/templates", "simpleMainPage.html", "%Main page get error%");
+        return Utils.getStaticFileContents("src/main/resources/templates", "simpleMainPage.html",
+                "%Main page get error%");
     }
 
     @RequestMapping(path = "/", method = RequestMethod.POST)

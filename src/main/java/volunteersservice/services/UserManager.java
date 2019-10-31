@@ -1,17 +1,19 @@
-package service.businesslogic;
+package volunteersservice.services;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 
-import service.dal.dao.DAOFabric;
-import service.dal.dao.UserDAO;
-import service.dal.models.User;
-import service.dal.models.UserType;
-import service.utils.Utils;
+import volunteersservice.dal.DAOFabric;
+import volunteersservice.dal.repositories.UserDAO;
+import volunteersservice.models.User;
+import volunteersservice.models.UserType;
+import volunteersservice.utils.Utils;
 
+@Service
 public class UserManager {
 
 	private final UserDAO userDAO;

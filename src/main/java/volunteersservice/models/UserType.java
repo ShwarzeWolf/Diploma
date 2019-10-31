@@ -1,4 +1,4 @@
-package service.dal.models;
+package volunteersservice.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "VolunteersService.UserType")
 public class UserType {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TypeID")

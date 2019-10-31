@@ -1,4 +1,4 @@
-package service.controller;
+package volunteersservice.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import service.businesslogic.UserManager;
-import service.businesslogic.UserTypeManager;
-import service.dal.models.User;
-import service.utils.Utils;
+import volunteersservice.services.UserManager;
+import volunteersservice.services.UserTypeManager;
+import volunteersservice.models.User;
+import volunteersservice.utils.Utils;
 
 @RestController
 public class UserController {

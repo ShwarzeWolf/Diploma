@@ -1,8 +1,13 @@
-package service.dal.dao;
+package volunteersservice.dal.repositorieshibernate;
 
-import service.dal.models.UserType;
-import service.utils.HibernateSessionFactoryUtil;
+import volunteersservice.models.UserType;
+import volunteersservice.utils.HibernateSessionFactoryUtil;
 
+import org.springframework.stereotype.Repository;
+
+import volunteersservice.dal.repositories.UserTypeDAO;
+
+@Repository
 public class UserTypeDAOHibernate implements UserTypeDAO {
 
     @Override

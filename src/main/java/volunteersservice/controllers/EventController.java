@@ -1,4 +1,4 @@
-package service.controller;
+package volunteersservice.controllers;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import service.businesslogic.EventManager;
-import service.dal.models.Event;
+import volunteersservice.services.EventManager;
+import volunteersservice.models.Event;
 
 @RestController
 public class EventController {

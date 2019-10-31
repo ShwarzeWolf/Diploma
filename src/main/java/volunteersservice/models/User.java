@@ -1,4 +1,4 @@
-package service.dal.models;
+package volunteersservice.models;
 
 import java.sql.Timestamp;
 
@@ -11,10 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import service.utils.Utils;
+import volunteersservice.utils.Utils;
 
 @Entity
 @Table(name = "VolunteersService.Users")
@@ -38,6 +39,7 @@ public class User {
     @Column(name = "Email")
     @NotNull
     @NotEmpty
+    @Email
     private String email;
 
     @Column(name = "RegisterDate")
@@ -69,8 +71,8 @@ public class User {
         this.userType = other.userType;
     }
 
-    public User(@NotEmpty String email, @NotEmpty String login, @NotEmpty String userName, @NotNull Timestamp registerDate,
-            @NotEmpty String password, UserType userType) {
+    public User(String email, String login, String userName,
+            Timestamp registerDate, String password, UserType userType) {
         this.email = email;
         this.login = login;
         this.name = userName;
@@ -102,6 +104,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("(User) %d: %s; %s; %s; %s + %s; %s %s", userID, email, login, name, hash1, hash2, registerDate, userType);
+        return String.format("(User) %d: %s; %s; %s; %s + %s; %s %s", userID, email, login, name, hash1, hash2,
+                registerDate, userType);
     }
 }

@@ -1,13 +1,16 @@
-package service.dal.dao;
+package volunteersservice.dal.repositorieshibernate;
 
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
-import service.dal.models.User;
-import service.utils.HibernateSessionFactoryUtil;
+import volunteersservice.models.User;
+import volunteersservice.utils.HibernateSessionFactoryUtil;
+import volunteersservice.dal.repositories.UserDAO;
 
+@Repository
 public class UserDAOHibernate implements UserDAO {
 
 	@Override

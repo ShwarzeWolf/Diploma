@@ -1,4 +1,7 @@
-package service.dal.dao;
+package volunteersservice.dal;
+
+import volunteersservice.dal.repositories.*;
+import volunteersservice.dal.repositorieshibernate.*;
 
 public class DAOFabric {
     private static String defaultType = "Hibernate";
@@ -9,6 +12,7 @@ public class DAOFabric {
         else
             throw new IllegalArgumentException(String.format("%s is not a valid type of DAO Fabric", type));
     }
+
     public static UserDAO getUserDAO() {
         return getUserDAO(defaultType);
     }
@@ -19,6 +23,7 @@ public class DAOFabric {
         else
             throw new IllegalArgumentException(String.format("%s is not a valid type of DAO Fabric", type));
     }
+
     public static UserTypeDAO getUserTypeDAO() {
         return getUserTypeDAO(defaultType);
     }
@@ -29,6 +34,7 @@ public class DAOFabric {
         else
             throw new IllegalArgumentException(String.format("%s is not a valid type of DAO Fabric", type));
     }
+
     public static EventDAO getEventDAO() {
         return getEventDAO(defaultType);
     }
@@ -39,6 +45,7 @@ public class DAOFabric {
         else
             throw new IllegalArgumentException(String.format("%s is not a valid type of DAO Fabric", type));
     }
+
     public static EventStatusDAO getEventStatusDAO() {
         return getEventStatusDAO(defaultType);
     }

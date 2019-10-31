@@ -1,9 +1,12 @@
-package service.dal.dao;
+package volunteersservice.dal.repositories;
 
 import java.util.List;
 
-import service.dal.models.User;
+import org.springframework.stereotype.Repository;
 
+import volunteersservice.models.User;
+
+@Repository
 public interface UserDAO {
     public User getUserByID(int id);
     public User getUserByEmail(String email);

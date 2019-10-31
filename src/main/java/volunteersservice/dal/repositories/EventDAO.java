@@ -1,9 +1,12 @@
-package service.dal.dao;
+package volunteersservice.dal.repositories;
 
 import java.util.List;
 
-import service.dal.models.Event;
+import org.springframework.stereotype.Repository;
 
+import volunteersservice.models.Event;
+
+@Repository
 public interface EventDAO {
     public Event getEventByID(int eventID);
     public void save(Event event);

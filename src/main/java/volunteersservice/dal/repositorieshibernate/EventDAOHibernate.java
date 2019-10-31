@@ -1,4 +1,4 @@
-package service.dal.dao;
+package volunteersservice.dal.repositorieshibernate;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -6,10 +6,13 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
-import service.dal.models.Event;
-import service.utils.HibernateSessionFactoryUtil;
+import volunteersservice.models.Event;
+import volunteersservice.utils.HibernateSessionFactoryUtil;
+import volunteersservice.dal.repositories.EventDAO;
 
+@Repository
 public class EventDAOHibernate implements EventDAO {
 
     @Override
@@ -38,8 +41,8 @@ public class EventDAOHibernate implements EventDAO {
     @SuppressWarnings("unchecked")
     @Override
     public List<Event> getAllEvents() {
-        return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Event as event order by event.dateStart")
-                .list();
+        return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
+                .createQuery("From Event as event order by event.dateStart").list();
     }
 
     @SuppressWarnings("unchecked")

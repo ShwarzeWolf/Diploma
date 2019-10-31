@@ -1,4 +1,4 @@
-package service.dal.models;
+package volunteersservice.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

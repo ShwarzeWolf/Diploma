@@ -1,4 +1,4 @@
-package service.dal.models;
+package volunteersservice.models;
 
 import java.sql.Timestamp;
 
@@ -14,9 +14,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import service.businesslogic.EventStatusManager;
-import service.dal.dao.DAOFabric;
-import service.dal.dao.EventStatusDAO;
+import volunteersservice.services.EventStatusManager;
+import volunteersservice.dal.DAOFabric;
+import volunteersservice.dal.repositories.EventStatusDAO;
 
 @Entity
 @Table(name = "VolunteersService.Events")
