@@ -1,9 +1,7 @@
 package service.repos;
 
 import org.springframework.data.repository.CrudRepository;
-import service.domain.Messages;
-
-import java.util.List;
+import service.model.Messages;
 
 public interface MessageRepo extends CrudRepository<Messages, Long> {
 

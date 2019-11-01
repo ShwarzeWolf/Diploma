@@ -4,17 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import service.domain.Messages;
-import service.domain.User;
+import service.model.Messages;
 import service.repos.MessageRepo;
 //import service.repos.UserRepository;
 
-import java.util.Map;
 
 @Controller
 public class MainController {
     @Autowired
-//    private UserRepository userRepository;
     private MessageRepo messageRepo;
 
     @GetMapping("/")

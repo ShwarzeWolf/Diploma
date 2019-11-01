@@ -1,7 +1,8 @@
 package service.repos;
 
-import org.springframework.data.repository.CrudRepository;
-import service.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import service.model.User;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
 }

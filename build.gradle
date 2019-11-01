@@ -29,10 +29,7 @@ targetCompatibility = 1.8
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-
-    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
-    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.27'
-
+    compile group: 'log4j', name: 'log4j', version: '1.2.16'
 
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.2.0.RELEASE'
     compile("org.springframework.boot:spring-boot-starter-web")
