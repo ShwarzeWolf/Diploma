@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import volunteersservice.models.Event;
+import volunteersservice.services.EventStatusManager.EVENT_STATUS;
 import volunteersservice.utils.HibernateSessionFactoryUtil;
 import volunteersservice.dal.repositories.EventDAO;
 
@@ -21,21 +22,48 @@ public class EventDAOHibernate implements EventDAO {
     }
 
     @Override
-    public void save(Event event) {
+    public boolean save(Event event) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        session.save(event);
-        tx.commit();
-        session.close();
+        try {
+            session.save(event);
+            tx.commit();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
-    public void delete(Event event) {
+    public boolean delete(Event event) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        session.delete(event);
-        tx.commit();
-        session.close();
+        try {
+            session.delete(event);
+            tx.commit();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public boolean update(Event event) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            session.update(event);
+            tx.commit();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        } finally {
+            session.close();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -51,5 +79,13 @@ public class EventDAOHibernate implements EventDAO {
         return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
                 .createQuery("From Event as event where event.dateStart > :date order by event.dateStart")
                 .setParameter("date", Timestamp.valueOf(LocalDateTime.now().plusHours(6))).list();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Event> getEventsByStatus(EVENT_STATUS status) {
+        return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
+                .createQuery("From Event as event where event.status.name = :statusName")
+                .setParameter("statusName", status.name().toLowerCase()).list();
     }
 }

@@ -16,6 +16,6 @@ This is a web-application which improves the work of volunteers managers, it pro
 
 1. Download and install programs listed above
 2. Clone this project to your computer
-3. Launch ```psql -U postgres -f init_postgres.sql``` (maybe ```sudo -u postgres -f ./init_postgres.sql``` at linux) and from project root, then enter your password and check that transaction has passed
+3. Launch ```psql -U postgres -f init_postgres.sql``` (maybe ```sudo -u postgres psql -f ./init_postgres.sql``` at linux) and from project root, then enter your password and check that transaction has passed
 4. Launch ```gradle build``` to build or ```gradle run``` to build and run
 5. Main page will be located at localhost:8080/

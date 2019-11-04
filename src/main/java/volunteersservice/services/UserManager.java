@@ -2,6 +2,7 @@ package volunteersservice.services;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,8 +32,12 @@ public class UserManager {
 		return userDAO.getUserByEmail(email);
 	}
 
-	User[] getUsers() {
-		return userDAO.findAll().toArray(new User[0]);
+	public User getUserByLogin(String login) {
+		return userDAO.getUserByLogin(login);
+	}
+
+	List<User> getUsers() {
+		return userDAO.findAll();
 	}
 
 	public void addUser(String email, String login, String userName, String password,
@@ -42,14 +47,25 @@ public class UserManager {
 		userDAO.save(new User(email, login, userName, registerDate, password, userType));
 	}
 
-	public boolean passwordOkay(String email, String password) {
-		LOG.info("Trying to get user: email=\"" + email + "\"");
+	public boolean emailPasswordOkay(String email, String password) {
+		// LOG.info("Trying to get user: email=\"" + email + "\"");
 		User logging = userDAO.getUserByEmail(email);
 		if (logging == null) {
 			LOG.warn(String.format("User is not found: (email = %s)", email));
 			return false;
 		}
-		LOG.info("User is got from DB: " + logging);
+		// LOG.info("User is got from DB: " + logging);
+		if (Utils.calcSHA256(password).equals(logging.getHash1()) && Utils.calcMD5(password).equals(logging.getHash2()))
+			return true;
+		return false;
+	}
+
+	public boolean loginPasswordOkay(String login, String password) {
+		User logging = userDAO.getUserByLogin(login);
+		if (logging == null) {
+			LOG.warn(String.format("User is not found: (login = %s)", login));
+			return false;
+		}
 		if (Utils.calcSHA256(password).equals(logging.getHash1()) && Utils.calcMD5(password).equals(logging.getHash2()))
 			return true;
 		return false;

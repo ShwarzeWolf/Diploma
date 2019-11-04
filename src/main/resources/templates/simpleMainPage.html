@@ -7,17 +7,42 @@
     <br> <br>
     <a href="/addEvent">Add new event</a>
     <br>
-    <a href="/events">List of all events</a>
+    <a href="/addEventRoles">Add new event with role</a>
     <br>
-    <a href="/events?showType=active">List of active events</a>
-    <br>
+    <form name="Show events" method="get" action="/events">
+        <table>
+            <tr>
+                <p><input type="radio" name="showType" value="all" checked>All</p>
+            </tr>
+            <tr>
+                <p><input type="radio" name="showType" value="active">Active (by time)</p>
+            </tr>
+            <tr>
+                <p><input type="radio" name="showType" value="unchecked">Unchecked</p>
+            </tr>
+            <tr>
+                <p><input type="radio" name="showType" value="approved">Approved</p>
+            </tr>
+            <tr>
+                <p><input type="radio" name="showType" value="coordinated">Coordinated</p>
+            </tr>
+            <tr>
+                <p><input type="radio" name="showType" value="published">Published</p>
+            </tr>
+            <tr>
+                <p><input type="radio" name="showType" value="expired">Expired</p>
+            </tr>
+            <tr>
+                <button type="submit" name="action">Show events</button>
+            </tr>
+        </table>
+    </form>
     <form name="EventID form" method="post" action="/">
         <table>
             <tr>
-                <td>
-                    <input type="number" , name="eventID" , value="">
-                    <input type="submit" , name="jump" , value="Jump to event">
-                </td>
+                <td><input type="number" name="eventID" value=""></td>
+                <td><input type="submit" name="action" value="Jump to event"></td>
+                <td><input type="submit" name="action" value="Add role to event"></td>
             </tr>
         </table>
     </form>

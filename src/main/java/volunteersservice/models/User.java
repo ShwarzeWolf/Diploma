@@ -15,6 +15,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import volunteersservice.utils.Utils;
 
 @Entity
@@ -26,33 +28,39 @@ public class User {
     @Column(name = "UserID")
     private int userID;
 
-    @Column(name = "Login")
+    @Column(name = "Login", nullable = false)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Login cannot be empty")
+    @UniqueElements
     private String login;
 
-    @Column(name = "Name")
+    @Column(name = "Name", nullable = false)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @Column(name = "Email")
+    @Column(name = "Email", nullable = false)
     @NotNull
-    @NotEmpty
-    @Email
+    @NotEmpty(message = "Email cannot be empty")
+    @UniqueElements
+    @Email(message = "Email must be valid")
     private String email;
 
-    @Column(name = "RegisterDate")
+    @Column(name = "RegisterDate", nullable = false)
+    @NotNull
     private Timestamp registerDate;
 
-    @Column(name = "PasswdHash1")
+    @Column(name = "PasswdHash1", nullable = false)
+    @NotNull
     private String hash1;
 
-    @Column(name = "PasswdHash2")
+    @Column(name = "PasswdHash2", nullable = false)
+    @NotNull
     private String hash2;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TypeID")
+    @JoinColumn(name = "TypeID", nullable = false)
+    @NotNull
     UserType userType;
 
     public User() {

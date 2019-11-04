@@ -29,6 +29,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.hibernate:hibernate-core:5.4.6.Final")
     compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     testCompile("junit:junit")
 }
 

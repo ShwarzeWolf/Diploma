@@ -15,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import volunteersservice.services.EventStatusManager;
+import volunteersservice.services.EventStatusManager.EVENT_STATUS;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.EventStatusDAO;
 
@@ -27,21 +28,21 @@ public class Event {
     @Column(name = "EventID")
     int eventID;
 
-    @Column(name = "Name")
+    @Column(name = "Name", nullable = false)
     @NotNull
     @NotEmpty
     String name;
 
-    @Column(name = "Description")
+    @Column(name = "Description", nullable = false)
     @NotNull
     @NotEmpty
     String description;
 
-    @Column(name = "DateStart")
+    @Column(name = "DateStart", nullable = false)
     @NotNull
     Timestamp dateStart;
 
-    @Column(name = "DateFinish")
+    @Column(name = "DateFinish", nullable = false)
     @NotNull
     Timestamp dateFinish;
 
@@ -49,7 +50,7 @@ public class Event {
     }
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "StatusID")
+    @JoinColumn(name = "StatusID", nullable = false)
     EventStatus status;
 
     public Event(Event other) {
@@ -70,6 +71,31 @@ public class Event {
         this.dateFinish = dateFinish;
         EventStatusDAO eventStatusDAO = DAOFabric.getEventStatusDAO();
         this.status = eventStatusDAO.getStatusByName(EventStatusManager.EVENT_STATUS.UNCHECKED.name().toLowerCase());
+    }
+
+    public int getEventID() {
+        return this.eventID;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Timestamp getDateStart() {
+        return dateStart;
+    }
+
+    public Timestamp getDateFinish() {
+        return dateFinish;
+    }
+
+    public void setStatus(EVENT_STATUS statusEnum) {
+        EventStatusDAO eventStatusDAO = DAOFabric.getEventStatusDAO();
+        this.status = eventStatusDAO.getStatusByName(statusEnum.name().toLowerCase());
     }
 
     @Override

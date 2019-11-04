@@ -49,4 +49,26 @@ public class DAOFabric {
     public static EventStatusDAO getEventStatusDAO() {
         return getEventStatusDAO(defaultType);
     }
+
+    public static RoleStatusDAO getRoleStatusDAO(String type) {
+        if (type.equals("Hibernate"))
+            return new RoleStatusDAOHibernate();
+        else
+            throw new IllegalArgumentException(String.format("%s is not a valid type of DAO Fabric", type));
+    }
+
+    public static RoleStatusDAO getRoleStatusDAO() {
+        return getRoleStatusDAO(defaultType);
+    }
+
+    public static RoleDAO getRoleDAO(String type) {
+        if (type.equals("Hibernate"))
+            return new RoleDAOHibernate();
+        else
+            throw new IllegalArgumentException(String.format("%s is not a valid type of DAO Fabric", type));
+    }
+
+    public static RoleDAO getRoleDAO() {
+        return getRoleDAO(defaultType);
+    }
 }

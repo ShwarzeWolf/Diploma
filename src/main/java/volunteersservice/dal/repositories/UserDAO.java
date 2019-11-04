@@ -10,8 +10,9 @@ import volunteersservice.models.User;
 public interface UserDAO {
     public User getUserByID(int id);
     public User getUserByEmail(String email);
-    public void save(User user);
-    public void update(User user);
-    public void delete(User user);
+    public User getUserByLogin(String login);
+    public boolean save(User user);
+    public boolean update(User user);
+    public boolean delete(User user);
     public List<User> findAll();
 }

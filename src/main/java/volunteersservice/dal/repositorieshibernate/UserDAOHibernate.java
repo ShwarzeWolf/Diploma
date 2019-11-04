@@ -20,42 +20,64 @@ public class UserDAOHibernate implements UserDAO {
 
 	@Override
 	public User getUserByEmail(String email) {
-		return (User) HibernateSessionFactoryUtil.getSessionFactory().openSession()
-				.createQuery("select new User(user) from User as user where user.email = :email")
-				.setParameter("email", email).uniqueResult();
+		return (User) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("select new User(user) from User as user where user.email = :email")
+					.setParameter("email", email).uniqueResult();
 	}
 
 	@Override
-	public void save(User user) {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-		session.save(user);
-		tx.commit();
-		session.close();
+	public User getUserByLogin(String login) {
+		return (User) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("select new User(user) from User as user where user.login = :login")
+					.setParameter("login", login).uniqueResult();
 	}
 
 	@Override
-	public void update(User user) {
+	public boolean save(User user) {
 		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
-		session.update(user);
-		tx.commit();
-		session.close();
+		try {
+			session.save(user);
+			tx.commit();
+			return true;
+		} catch(Exception ex) {
+			return false;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
-	public void delete(User user) {
+	public boolean update(User user) {
 		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
-		session.delete(user);
-		tx.commit();
-		session.close();
+		try {
+			session.update(user);
+			tx.commit();
+			return true;
+		} catch(Exception ex) {
+			return false;
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public boolean delete(User user) {
+		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			session.delete(user);
+			tx.commit();
+			return true;
+		} catch(Exception ex) {
+			return false;
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<User> findAll() {
-		return (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From User")
-				.list();
+		return (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From User").list();
 	}
 }

@@ -8,21 +8,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "VolunteersService.EventStatus")
-public class EventStatus {
+@Table(name = "VolunteersService.RoleStatus")
+public class RoleStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "StatusID")
-    private int statusID;
+    int statusID;
 
     @Column(name = "Name", nullable = false)
-    private String name;
+    String name;
 
-    public EventStatus() {
+    public RoleStatus() {
     }
 
-    public EventStatus(EventStatus other) {
+    public RoleStatus(RoleStatus other) {
         if (this == other)
             return;
         this.statusID = other.statusID;
@@ -39,6 +39,6 @@ public class EventStatus {
 
     @Override
     public String toString() {
-        return String.format("(EventStatus) %d: %s", statusID, name);
+        return String.format("(RoleStatus) %d: %s", statusID, name);
     }
 }
