@@ -1,22 +1,16 @@
 package service.controller;
 
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import service.model.Role;
 import service.model.User;
 import service.repos.UserRepository;
-
 import java.util.Collections;
-import java.util.Map;
-import org.apache.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 @Controller
 public class RegistrationController {
@@ -29,54 +23,24 @@ public class RegistrationController {
         return "registration";
     }
 
-//    @PostMapping("/registration")
-//    public String addUser(User user, Model model) {
-//        User userFromDb = userRepository.findByUsername(user.getName());
-//
-//        if (userFromDb != null) {
-//            model.addAttribute("message", "User exists!");
-//            return "registration";
-//        }
-//        log.info("registration, parametrs: " +  user);
-//
-//        user.setEmail("google");
-//        user.setName("John");
-//        user.setActive(true);
-//        user.setRoles(Collections.singleton(Role.USER));
-//        userRepository.save(user);
-//
-//        return "redirect:/login";
-//    }
-
     @PostMapping("/registration")
     public String addUser(User user, Model model) {
-        User userFromDb = userRepository.findByUsername(user.getUsername());
+        User userFromDb = userRepository.findByLogin(user.getLogin());
 
         if (userFromDb != null) {
-            model.addAttribute("message", "User exists!");
+//            model.addAttribute("message", "User exists!");
+            log.info("Пользователь уже существует: " + userFromDb);
             return "registration";
         }
 
-        user.setLogin("ok");
+        user.setUsername("ok");
         user.setEmail("ok@");
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
+        log.info("Зарегистрировали нового пользователя: " + user.getLogin() + " " + user.getPassword());
+
         userRepository.save(user);
 
         return "redirect:/login";
     }
-
-//    @PostMapping("/registration")
-//    public String addUser(@RequestParam String login, @RequestParam String password, Model model) {
-//        User user = new User(login, password);
-//        log.info("registration, parametrs: " +  login + " " + password);
-//
-//        user.setEmail("google");
-//        user.setName("John");
-//        user.setActive(true);
-//        user.setRoles(Collections.singleton(Role.USER));
-//        userRepository.save(user);
-//
-//        return "redirect:/login";
-//    }
 }
