@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import volunteersservice.models.Event;
-import volunteersservice.services.EventManager;
-import volunteersservice.services.RoleManager;
+import volunteersservice.businesslogic.ManagerFabric;
+import volunteersservice.businesslogic.services.EventManager;
+import volunteersservice.businesslogic.services.RoleManager;
 
 @Controller
 public class RolesController {
@@ -20,7 +21,7 @@ public class RolesController {
     RoleManager roles;
 
     public RolesController() {
-        roles = new RoleManager();
+        roles = ManagerFabric.getRoleManager();
     }
 
     @GetMapping(path = "/event/{eventID}/addRole")
@@ -32,7 +33,7 @@ public class RolesController {
     public @ResponseBody String addRole(@PathVariable(value = "eventID") int eventID, @RequestParam String name,
             @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
             @RequestParam String timeFinish, @RequestParam int numberNeeded) {
-        EventManager events = new EventManager();
+        EventManager events = ManagerFabric.getEventManager();
         Event event = events.getEventByID(eventID);
         if (event == null) {
             return "No Such event";

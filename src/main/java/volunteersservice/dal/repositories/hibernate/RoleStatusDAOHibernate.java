@@ -1,4 +1,4 @@
-package volunteersservice.dal.repositorieshibernate;
+package volunteersservice.dal.repositories.hibernate;
 
 import volunteersservice.models.RoleStatus;
 import volunteersservice.utils.HibernateSessionFactoryUtil;

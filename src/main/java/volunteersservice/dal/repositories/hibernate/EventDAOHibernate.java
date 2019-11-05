@@ -1,4 +1,4 @@
-package volunteersservice.dal.repositorieshibernate;
+package volunteersservice.dal.repositories.hibernate;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import volunteersservice.models.Event;
-import volunteersservice.services.EventStatusManager.EVENT_STATUS;
+import volunteersservice.businesslogic.services.EventStatusManager.EVENT_STATUS;
 import volunteersservice.utils.HibernateSessionFactoryUtil;
 import volunteersservice.dal.repositories.EventDAO;
 

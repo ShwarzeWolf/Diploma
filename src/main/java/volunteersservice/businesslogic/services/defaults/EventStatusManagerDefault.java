@@ -1,23 +1,21 @@
-package volunteersservice.services;
+package volunteersservice.businesslogic.services.defaults;
 
 import org.springframework.stereotype.Service;
 
+import volunteersservice.businesslogic.services.EventStatusManager;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.EventStatusDAO;
 import volunteersservice.models.EventStatus;
 
 @Service
-public class EventStatusManager {
+public class EventStatusManagerDefault implements EventStatusManager {
     private final EventStatusDAO eventStatusDAO;
 
-    public EventStatusManager() {
+    public EventStatusManagerDefault() {
         this.eventStatusDAO = DAOFabric.getEventStatusDAO();
     }
 
-    public static enum EVENT_STATUS {
-        UNCHECKED, APPROVED, COORDINATED, PUBLISHED, EXPIRED
-    }
-
+    @Override
     public EventStatus getTypeByEnum(EVENT_STATUS typeEnum) {
         return eventStatusDAO.getStatusByName(typeEnum.name().toLowerCase());
     }

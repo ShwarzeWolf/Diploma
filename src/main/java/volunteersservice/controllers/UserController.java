@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import volunteersservice.services.UserManager;
-import volunteersservice.services.UserTypeManager;
+import volunteersservice.businesslogic.ManagerFabric;
+import volunteersservice.businesslogic.services.UserManager;
+import volunteersservice.businesslogic.services.UserTypeManager;
 import volunteersservice.models.User;
 
 @Controller
@@ -16,7 +17,7 @@ public class UserController {
 
     public UserController() {
         super();
-        users = new UserManager();
+        users = ManagerFabric.getUserManager();
     }
 
     @PostMapping(path = "/register")

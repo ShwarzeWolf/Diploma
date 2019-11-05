@@ -1,7 +1,7 @@
 package volunteersservice.dal;
 
 import volunteersservice.dal.repositories.*;
-import volunteersservice.dal.repositorieshibernate.*;
+import volunteersservice.dal.repositories.hibernate.*;
 
 public class DAOFabric {
     private static String defaultType = "Hibernate";

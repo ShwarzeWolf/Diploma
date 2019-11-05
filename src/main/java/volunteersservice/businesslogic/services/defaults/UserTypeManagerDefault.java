@@ -1,23 +1,21 @@
-package volunteersservice.services;
+package volunteersservice.businesslogic.services.defaults;
 
 import org.springframework.stereotype.Service;
 
+import volunteersservice.businesslogic.services.UserTypeManager;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.UserTypeDAO;
 import volunteersservice.models.UserType;
 
 @Service
-public class UserTypeManager {
+public class UserTypeManagerDefault implements UserTypeManager {
     private final UserTypeDAO userTypeDAO;
 
-    public UserTypeManager() {
+    public UserTypeManagerDefault() {
         this.userTypeDAO = DAOFabric.getUserTypeDAO();
     }
 
-    public static enum USER_TYPE {
-        ORGANISER, MANAGER, COORDINATOR, VOLUNTEER
-    }
-
+    @Override
     public UserType getTypeByEnum(USER_TYPE typeEnum) {
         return userTypeDAO.getTypeByName(typeEnum.name().toLowerCase());
     }

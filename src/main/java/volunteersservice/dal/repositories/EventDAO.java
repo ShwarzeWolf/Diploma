@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import volunteersservice.models.Event;
-import volunteersservice.services.EventStatusManager.EVENT_STATUS;
+import volunteersservice.businesslogic.services.EventStatusManager.EVENT_STATUS;
 
 @Repository
 public interface EventDAO {

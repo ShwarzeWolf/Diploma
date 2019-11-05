@@ -1,4 +1,4 @@
-package volunteersservice.dal.repositorieshibernate;
+package volunteersservice.dal.repositories.hibernate;
 
 import volunteersservice.models.EventStatus;
 import volunteersservice.utils.HibernateSessionFactoryUtil;

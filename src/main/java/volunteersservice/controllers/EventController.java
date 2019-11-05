@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import volunteersservice.services.EventManager;
-import volunteersservice.services.RoleManager;
-import volunteersservice.services.EventStatusManager.EVENT_STATUS;
+import volunteersservice.businesslogic.ManagerFabric;
+import volunteersservice.businesslogic.services.EventManager;
+import volunteersservice.businesslogic.services.RoleManager;
+import volunteersservice.businesslogic.services.EventStatusManager.EVENT_STATUS;
 import volunteersservice.utils.Utils;
 import volunteersservice.models.Event;
 import volunteersservice.models.Role;
@@ -30,7 +31,7 @@ public class EventController {
 
     public EventController() {
         super();
-        events = new EventManager();
+        events = ManagerFabric.getEventManager();
     }
 
     @GetMapping("/addEvent")
@@ -85,7 +86,7 @@ public class EventController {
         }
         StringBuilder sb = new StringBuilder(event.toString());
         sb.append("<br>");
-        RoleManager roleManager = new RoleManager();
+        RoleManager roleManager = ManagerFabric.getRoleManager();
         List<Role> roles = roleManager.getRoles(event);
         for (Role r : roles) {
             sb.append(r.toString());

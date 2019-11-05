@@ -1,23 +1,21 @@
-package volunteersservice.services;
+package volunteersservice.businesslogic.services.defaults;
 
 import org.springframework.stereotype.Service;
 
+import volunteersservice.businesslogic.services.RoleStatusManager;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.RoleStatusDAO;
 import volunteersservice.models.RoleStatus;
 
 @Service
-public class RoleStatusManager {
+public class RoleStatusManagerDefault implements RoleStatusManager{
     private final RoleStatusDAO RoleStatusDAO;
 
-    public RoleStatusManager() {
+    public RoleStatusManagerDefault() {
         this.RoleStatusDAO = DAOFabric.getRoleStatusDAO();
     }
 
-    public static enum ROLE_STATUS {
-        UNCHECKED, DENIED, APPROVED, PARTICIPATED, PARTLY, ABSENT
-    }
-
+    @Override
     public RoleStatus getTypeByEnum(ROLE_STATUS typeEnum) {
         return RoleStatusDAO.getStatusByName(typeEnum.name().toLowerCase());
     }

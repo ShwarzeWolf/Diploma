@@ -1,4 +1,4 @@
-package volunteersservice.dal.repositorieshibernate;
+package volunteersservice.dal.repositories.hibernate;
 
 import volunteersservice.models.UserType;
 import volunteersservice.utils.HibernateSessionFactoryUtil;

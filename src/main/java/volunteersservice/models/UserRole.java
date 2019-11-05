@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.RoleStatusDAO;
-import volunteersservice.services.RoleStatusManager;
+import volunteersservice.businesslogic.services.RoleStatusManager;
 
 @Entity
 @Table(name = "VolunteersService.UsersRoles")

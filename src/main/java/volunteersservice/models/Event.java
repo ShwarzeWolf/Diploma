@@ -14,8 +14,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import volunteersservice.services.EventStatusManager;
-import volunteersservice.services.EventStatusManager.EVENT_STATUS;
+import volunteersservice.businesslogic.services.EventStatusManager;
+import volunteersservice.businesslogic.services.EventStatusManager.EVENT_STATUS;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.EventStatusDAO;
 
