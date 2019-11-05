@@ -135,7 +135,7 @@ public class Role {
 
     @Override
     public String toString() {
-        return String.format("(Role) %d: [%s]; %s; %s; %s; %s - %s", roleID, event.getEventID(), name, description,
-                requirements, timeStart, timeFinish);
+        return String.format("(Role) %d: [%s]; %s; %s; %s; %s - %s; %d needed", roleID, event.getEventID(), name, description,
+                requirements, timeStart, timeFinish, numberNeeded);
     }
 }

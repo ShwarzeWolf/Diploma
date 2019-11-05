@@ -8,10 +8,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import volunteersservice.models.Event;
-import volunteersservice.businesslogic.services.EventStatusManager.EVENT_STATUS;
-import volunteersservice.utils.HibernateSessionFactoryUtil;
 import volunteersservice.dal.repositories.EventDAO;
+import volunteersservice.enums.EventStatusEnum;
+import volunteersservice.models.Event;
+import volunteersservice.utils.HibernateSessionFactoryUtil;
 
 @Repository
 public class EventDAOHibernate implements EventDAO {
@@ -83,7 +83,7 @@ public class EventDAOHibernate implements EventDAO {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Event> getEventsByStatus(EVENT_STATUS status) {
+    public List<Event> getEventsByStatus(EventStatusEnum status) {
         return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
                 .createQuery("From Event as event where event.status.name = :statusName order by event.dateStart")
                 .setParameter("statusName", status.name().toLowerCase()).list();
@@ -91,7 +91,7 @@ public class EventDAOHibernate implements EventDAO {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Event> getActiveEventsByStatus(EVENT_STATUS status) {
+    public List<Event> getActiveEventsByStatus(EventStatusEnum status) {
         return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
                 .createQuery("From Event as event where event.status.name = :statusName and event.dateStart > :date order by event.dateStart")
                 .setParameter("statusName", status.name().toLowerCase()).setParameter("date", Timestamp.valueOf(LocalDateTime.now().plusHours(6))).list();

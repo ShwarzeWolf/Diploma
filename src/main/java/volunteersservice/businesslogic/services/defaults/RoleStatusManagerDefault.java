@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import volunteersservice.businesslogic.services.RoleStatusManager;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.RoleStatusDAO;
+import volunteersservice.enums.RoleStatusEnum;
 import volunteersservice.models.RoleStatus;
 
 @Service
@@ -16,7 +17,7 @@ public class RoleStatusManagerDefault implements RoleStatusManager{
     }
 
     @Override
-    public RoleStatus getTypeByEnum(ROLE_STATUS typeEnum) {
+    public RoleStatus getTypeByEnum(RoleStatusEnum typeEnum) {
         return RoleStatusDAO.getStatusByName(typeEnum.name().toLowerCase());
     }
 }

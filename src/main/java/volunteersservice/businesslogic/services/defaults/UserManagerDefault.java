@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import volunteersservice.businesslogic.ManagerFabric;
 import volunteersservice.businesslogic.services.UserManager;
-import volunteersservice.businesslogic.services.UserTypeManager;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.UserDAO;
+import volunteersservice.enums.UserTypeEnum;
 import volunteersservice.models.User;
 import volunteersservice.models.UserType;
 import volunteersservice.utils.Utils;
@@ -49,7 +49,7 @@ public class UserManagerDefault implements UserManager {
 
 	@Override
 	public boolean addUser(String email, String login, String userName, String password,
-			UserTypeManager.USER_TYPE typeEnum) {
+			UserTypeEnum typeEnum) {
 		Timestamp registerDate = Timestamp.valueOf(LocalDateTime.now());
 		UserType userType = ManagerFabric.getUserTypeManager().getTypeByEnum(typeEnum);
 		return userDAO.save(new User(email, login, userName, registerDate, password, userType));

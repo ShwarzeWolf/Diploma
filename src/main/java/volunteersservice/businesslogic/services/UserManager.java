@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import volunteersservice.enums.UserTypeEnum;
 import volunteersservice.models.User;
 
 @Service
@@ -18,7 +19,7 @@ public interface UserManager {
 	List<User> getUsers();
 
 	public boolean addUser(String email, String login, String userName, String password,
-			UserTypeManager.USER_TYPE typeEnum);
+			UserTypeEnum typeEnum);
 
 	public boolean emailPasswordOkay(String email, String password);
 

@@ -13,9 +13,9 @@ import volunteersservice.businesslogic.services.EventManager;
 import volunteersservice.businesslogic.services.RoleManager;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.EventDAO;
+import volunteersservice.enums.EventStatusEnum;
 import volunteersservice.models.Event;
 import volunteersservice.models.Role;
-import volunteersservice.businesslogic.services.EventStatusManager.EVENT_STATUS;
 
 @Service
 public class EventManagerDefault implements EventManager {
@@ -42,12 +42,12 @@ public class EventManagerDefault implements EventManager {
     }
 
     @Override
-    public List<Event> getEventsByStatus(EVENT_STATUS status) {
+    public List<Event> getEventsByStatus(EventStatusEnum status) {
         return eventDAO.getEventsByStatus(status);
     }
 
     @Override
-    public List<Event> getActiveEventsByStatus(EVENT_STATUS status) {
+    public List<Event> getActiveEventsByStatus(EventStatusEnum status) {
         return eventDAO.getActiveEventsByStatus(status);
     }
 
@@ -70,7 +70,7 @@ public class EventManagerDefault implements EventManager {
     }
 
     @Override
-    public void setStatus(Event event, EVENT_STATUS status) {
+    public void setStatus(Event event, EventStatusEnum status) {
         event.setStatus(status);
         eventDAO.update(event);
     }

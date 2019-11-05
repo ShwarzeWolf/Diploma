@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import volunteersservice.businesslogic.ManagerFabric;
 import volunteersservice.businesslogic.services.EventManager;
 import volunteersservice.businesslogic.services.RoleManager;
-import volunteersservice.businesslogic.services.EventStatusManager.EVENT_STATUS;
-import volunteersservice.utils.Utils;
+import volunteersservice.enums.EventStatusEnum;
 import volunteersservice.models.Event;
 import volunteersservice.models.Role;
+import volunteersservice.utils.Utils;
 
 @Controller
 public class EventController {
@@ -60,7 +60,7 @@ public class EventController {
                 eventsList = events.getActiveEvents();
         else {
             try {
-                EVENT_STATUS status = EVENT_STATUS.valueOf(showType.toUpperCase());
+                EventStatusEnum status = EventStatusEnum.valueOf(showType.toUpperCase());
                 if (!activeOnly)
                     eventsList = events.getEventsByStatus(status);
                 else
@@ -104,7 +104,7 @@ public class EventController {
             return String.format("No such event: eventID=%s", eventID);
         }
         try {
-            EVENT_STATUS status = EVENT_STATUS.valueOf(statusName.toUpperCase());
+            EventStatusEnum status = EventStatusEnum.valueOf(statusName.toUpperCase());
             events.setStatus(event, status);
         } catch (Exception ex) {
             return "No such status: " + statusName;

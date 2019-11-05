@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import volunteersservice.businesslogic.ManagerFabric;
 import volunteersservice.businesslogic.services.UserManager;
-import volunteersservice.businesslogic.services.UserTypeManager;
+import volunteersservice.enums.UserTypeEnum;
 import volunteersservice.models.User;
 
 @Controller
@@ -23,7 +23,7 @@ public class UserController {
     @PostMapping(path = "/register")
     public @ResponseBody String addNewUser(@RequestParam String email, @RequestParam String name,
             @RequestParam String login, @RequestParam String password, @RequestParam String userType) {
-        if (users.addUser(email, login, name, password, UserTypeManager.USER_TYPE.valueOf(userType)))
+        if (users.addUser(email, login, name, password, UserTypeEnum.valueOf(userType)))
             return "User <b>" + name + "</b> with password <i>" + password + "</i> was successfully saved";
         else
             return "Error happened";

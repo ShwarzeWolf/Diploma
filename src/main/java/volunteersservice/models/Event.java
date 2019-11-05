@@ -14,10 +14,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import volunteersservice.businesslogic.services.EventStatusManager;
-import volunteersservice.businesslogic.services.EventStatusManager.EVENT_STATUS;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.EventStatusDAO;
+import volunteersservice.enums.EventStatusEnum;
 
 @Entity
 @Table(name = "VolunteersService.Events")
@@ -70,7 +69,7 @@ public class Event {
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         EventStatusDAO eventStatusDAO = DAOFabric.getEventStatusDAO();
-        this.status = eventStatusDAO.getStatusByName(EventStatusManager.EVENT_STATUS.UNCHECKED.name().toLowerCase());
+        this.status = eventStatusDAO.getStatusByName(EventStatusEnum.UNCHECKED.name().toLowerCase());
     }
 
     public int getEventID() {
@@ -93,7 +92,7 @@ public class Event {
         return dateFinish;
     }
 
-    public void setStatus(EVENT_STATUS statusEnum) {
+    public void setStatus(EventStatusEnum statusEnum) {
         EventStatusDAO eventStatusDAO = DAOFabric.getEventStatusDAO();
         this.status = eventStatusDAO.getStatusByName(statusEnum.name().toLowerCase());
     }

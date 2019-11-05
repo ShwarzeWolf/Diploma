@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.RoleStatusDAO;
-import volunteersservice.businesslogic.services.RoleStatusManager;
+import volunteersservice.enums.RoleStatusEnum;
 
 @Entity
 @Table(name = "VolunteersService.UsersRoles")
@@ -25,7 +25,7 @@ public class UserRole {
         this.user = user;
         this.role = role;
         RoleStatusDAO roleStatusDAO = DAOFabric.getRoleStatusDAO();
-        this.status = roleStatusDAO.getStatusByName(RoleStatusManager.ROLE_STATUS.UNCHECKED.name().toLowerCase());
+        this.status = roleStatusDAO.getStatusByName(RoleStatusEnum.UNCHECKED.name().toLowerCase());
     }
 
     @Id

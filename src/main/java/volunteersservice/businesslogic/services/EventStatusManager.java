@@ -3,13 +3,9 @@ package volunteersservice.businesslogic.services;
 import org.springframework.stereotype.Service;
 
 import volunteersservice.models.EventStatus;
+import volunteersservice.enums.EventStatusEnum;
 
 @Service
 public interface EventStatusManager {
-	
-	public static enum EVENT_STATUS {
-		UNCHECKED, APPROVED, COORDINATED, PUBLISHED, EXPIRED
-	}
-
-	public EventStatus getTypeByEnum(EVENT_STATUS typeEnum);
+	public EventStatus getTypeByEnum(EventStatusEnum typeEnum);
 }

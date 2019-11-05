@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import volunteersservice.businesslogic.services.UserTypeManager;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.UserTypeDAO;
+import volunteersservice.enums.UserTypeEnum;
 import volunteersservice.models.UserType;
 
 @Service
@@ -16,7 +17,7 @@ public class UserTypeManagerDefault implements UserTypeManager {
     }
 
     @Override
-    public UserType getTypeByEnum(USER_TYPE typeEnum) {
+    public UserType getTypeByEnum(UserTypeEnum typeEnum) {
         return userTypeDAO.getTypeByName(typeEnum.name().toLowerCase());
     }
 }

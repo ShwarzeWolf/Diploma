@@ -6,6 +6,7 @@ import volunteersservice.businesslogic.services.EventStatusManager;
 import volunteersservice.dal.DAOFabric;
 import volunteersservice.dal.repositories.EventStatusDAO;
 import volunteersservice.models.EventStatus;
+import volunteersservice.enums.EventStatusEnum;;
 
 @Service
 public class EventStatusManagerDefault implements EventStatusManager {
@@ -16,7 +17,7 @@ public class EventStatusManagerDefault implements EventStatusManager {
     }
 
     @Override
-    public EventStatus getTypeByEnum(EVENT_STATUS typeEnum) {
+    public EventStatus getTypeByEnum(EventStatusEnum typeEnum) {
         return eventStatusDAO.getStatusByName(typeEnum.name().toLowerCase());
     }
 }
