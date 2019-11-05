@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import volunteersservice.businesslogic.ManagerFabric;
 import volunteersservice.businesslogic.services.UserManager;
 import volunteersservice.enums.UserTypeEnum;
-import volunteersservice.models.User;
 
 @Controller
 public class UserController {
@@ -34,17 +33,17 @@ public class UserController {
         return "simpleRegisterForm";
     }
 
-    @PostMapping(path = "/login")
-    public @ResponseBody String loginIntoSystem(@RequestParam String email, @RequestParam String password) {
-        if (users.emailPasswordOkay(email, password)) {
-            User logged = users.getUserByEmail(email);
-            return "authorisation by email was successful\nLogged in as <b>" + logged.getName() + "</b><br>FullInfo: " + logged;
-        } else if (users.loginPasswordOkay(email, password)) {
-            User logged = users.getUserByLogin(email);
-            return "authorisation by login was successful\nLogged in as <b>" + logged.getName() + "</b><br>FullInfo: " + logged;
-        } else
-            return "authorisation failed";
-    }
+    // @PostMapping(path = "/login")
+    // public @ResponseBody String loginIntoSystem(@RequestParam String email, @RequestParam String password) {
+    //     if (users.emailPasswordOkay(email, password)) {
+    //         User logged = users.getUserByEmail(email);
+    //         return "authorisation by email was successful\nLogged in as <b>" + logged.getName() + "</b><br>FullInfo: " + logged;
+    //     } else if (users.loginPasswordOkay(email, password)) {
+    //         User logged = users.getUserByLogin(email);
+    //         return "authorisation by login was successful\nLogged in as <b>" + logged.getName() + "</b><br>FullInfo: " + logged;
+    //     } else
+    //         return "authorisation failed";
+    // }
 
     @GetMapping(path = "/login")
     public String loginPage() {

@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import volunteersservice.enums.UserTypeEnum;
+
 @Entity
 @Table(name = "VolunteersService.UserType")
 public class UserType {
@@ -36,6 +38,10 @@ public class UserType {
 
     public String getName() {
         return this.name;
+    }
+
+    public UserTypeEnum getEnum() {
+        return UserTypeEnum.valueOf(this.name.toUpperCase());
     }
 
     @Override

@@ -90,6 +90,10 @@ public class User {
         return userID;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
     public String getName() {
         return name;
     }
@@ -98,12 +102,20 @@ public class User {
         return email;
     }
 
+    public Timestamp getRegisterDate() {
+        return registerDate;
+    }
+
     public String getHash1() {
         return hash1;
     }
 
     public String getHash2() {
         return hash2;
+    }
+
+    public UserType getUserType() {
+        return userType;
     }
 
     @Override
