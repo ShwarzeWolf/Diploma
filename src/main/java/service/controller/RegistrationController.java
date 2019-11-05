@@ -31,7 +31,7 @@ public class RegistrationController {
 
 //    @PostMapping("/registration")
 //    public String addUser(User user, Model model) {
-//        User userFromDb = userRepository.findByUsername(user.getUsername());
+//        User userFromDb = userRepository.findByUsername(user.getName());
 //
 //        if (userFromDb != null) {
 //            model.addAttribute("message", "User exists!");
@@ -39,6 +39,8 @@ public class RegistrationController {
 //        }
 //        log.info("registration, parametrs: " +  user);
 //
+//        user.setEmail("google");
+//        user.setName("John");
 //        user.setActive(true);
 //        user.setRoles(Collections.singleton(Role.USER));
 //        userRepository.save(user);
@@ -47,14 +49,34 @@ public class RegistrationController {
 //    }
 
     @PostMapping("/registration")
-    public String addUser(@RequestParam String username, @RequestParam String password, Model model) {
-        User user = new User(username, password);
-        log.info("registration, parametrs: " +  username + " " + password);
+    public String addUser(User user, Model model) {
+        User userFromDb = userRepository.findByUsername(user.getUsername());
 
+        if (userFromDb != null) {
+            model.addAttribute("message", "User exists!");
+            return "registration";
+        }
+
+        user.setLogin("ok");
+        user.setEmail("ok@");
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
 
         return "redirect:/login";
     }
+
+//    @PostMapping("/registration")
+//    public String addUser(@RequestParam String login, @RequestParam String password, Model model) {
+//        User user = new User(login, password);
+//        log.info("registration, parametrs: " +  login + " " + password);
+//
+//        user.setEmail("google");
+//        user.setName("John");
+//        user.setActive(true);
+//        user.setRoles(Collections.singleton(Role.USER));
+//        userRepository.save(user);
+//
+//        return "redirect:/login";
+//    }
 }
