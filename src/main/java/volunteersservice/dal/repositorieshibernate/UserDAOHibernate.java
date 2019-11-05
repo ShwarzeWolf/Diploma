@@ -13,6 +13,8 @@ import volunteersservice.dal.repositories.UserDAO;
 @Repository
 public class UserDAOHibernate implements UserDAO {
 
+	// private final static Logger LOG = LogManager.getLogger(UserDAOHibernate.class.getName());
+
 	@Override
 	public User getUserByID(int id) {
 		return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(User.class, id);
@@ -39,6 +41,7 @@ public class UserDAOHibernate implements UserDAO {
 			tx.commit();
 			return true;
 		} catch(Exception ex) {
+			// LOG.error(ex);
 			return false;
 		} finally {
 			session.close();

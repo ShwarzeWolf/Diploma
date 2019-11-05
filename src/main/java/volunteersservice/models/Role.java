@@ -73,9 +73,9 @@ public class Role {
 
     public Role(Event event, String name, String description, String requirements, Timestamp timeStart,
             Timestamp timeFinish, int numberNeeded) {
-        if (event.getDateStart().toLocalDateTime().isAfter(timeStart.toLocalDateTime())
+        if (event != null && (event.getDateStart().toLocalDateTime().isAfter(timeStart.toLocalDateTime())
                 || event.getDateFinish().toLocalDateTime().isBefore(timeFinish.toLocalDateTime())
-                || timeStart.toLocalDateTime().isAfter(timeFinish.toLocalDateTime()))
+                || timeStart.toLocalDateTime().isAfter(timeFinish.toLocalDateTime())))
             throw new IllegalArgumentException("Exception at role creation: role (start-finish) is wrong");
         this.event = event;
         this.name = name;

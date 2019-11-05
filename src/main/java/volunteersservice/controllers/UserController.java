@@ -22,8 +22,10 @@ public class UserController {
     @PostMapping(path = "/register")
     public @ResponseBody String addNewUser(@RequestParam String email, @RequestParam String name,
             @RequestParam String login, @RequestParam String password, @RequestParam String userType) {
-        users.addUser(email, login, name, password, UserTypeManager.USER_TYPE.valueOf(userType));
-        return "User <b>" + name + "</b> with password <i>" + password + "</i> was successfully saved";
+        if (users.addUser(email, login, name, password, UserTypeManager.USER_TYPE.valueOf(userType)))
+            return "User <b>" + name + "</b> with password <i>" + password + "</i> was successfully saved";
+        else
+            return "Error happened";
     }
 
     @GetMapping(path = "/register")

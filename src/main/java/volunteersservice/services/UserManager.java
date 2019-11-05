@@ -40,11 +40,11 @@ public class UserManager {
 		return userDAO.findAll();
 	}
 
-	public void addUser(String email, String login, String userName, String password,
+	public boolean addUser(String email, String login, String userName, String password,
 			UserTypeManager.USER_TYPE typeEnum) {
 		Timestamp registerDate = Timestamp.valueOf(LocalDateTime.now());
 		UserType userType = new UserTypeManager().getTypeByEnum(typeEnum);
-		userDAO.save(new User(email, login, userName, registerDate, password, userType));
+		return userDAO.save(new User(email, login, userName, registerDate, password, userType));
 	}
 
 	public boolean emailPasswordOkay(String email, String password) {

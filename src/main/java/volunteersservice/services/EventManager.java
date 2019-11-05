@@ -39,6 +39,10 @@ public class EventManager {
         return eventDAO.getEventsByStatus(status);
     }
 
+    public List<Event> getActiveEventsByStatus(EVENT_STATUS status) {
+        return eventDAO.getActiveEventsByStatus(status);
+    }
+
     public void addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish) {
         eventDAO.save(new Event(name, description, Timestamp.valueOf(dateStart), Timestamp.valueOf(dateFinish)));
     }

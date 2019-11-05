@@ -48,17 +48,22 @@ public class EventController {
     }
 
     @GetMapping("/events")
-    public @ResponseBody String eventsList(@RequestParam(required = false, defaultValue = "all") String showType) {
+    public @ResponseBody String eventsList(@RequestParam(required = false, defaultValue = "all") String showType,
+            @RequestParam(required = false, defaultValue = "off") boolean activeOnly) {
         List<Event> eventsList;
         StringBuilder sb = new StringBuilder();
         if (showType.equals("all"))
-            eventsList = events.getAllEvents();
-        else if (showType.equals("active"))
-            eventsList = events.getActiveEvents();
+            if (!activeOnly)
+                eventsList = events.getAllEvents();
+            else
+                eventsList = events.getActiveEvents();
         else {
             try {
                 EVENT_STATUS status = EVENT_STATUS.valueOf(showType.toUpperCase());
-                eventsList = events.getEventsByStatus(status);
+                if (!activeOnly)
+                    eventsList = events.getEventsByStatus(status);
+                else
+                    eventsList = events.getActiveEventsByStatus(status);
             } catch (Exception ex) {
                 return String.format("Wrong parameter value: need one of radiobuttons on main page, got %s", showType);
             }

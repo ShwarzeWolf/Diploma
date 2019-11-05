@@ -58,8 +58,7 @@ CREATE TABLE VolunteersService.UsersRoles (
     UserRoleID   SERIAL    PRIMARY KEY  NOT NULL,
     UserID       INTEGER NOT NULL REFERENCES VolunteersService.Users(UserID)        ON DELETE SET DEFAULT,
     RoleID       INTEGER NOT NULL REFERENCES VolunteersService.Roles(RoleID)        ON DELETE CASCADE,
-    StatusID     INTEGER NOT NULL REFERENCES VolunteersService.RoleStatus(StatusID),
-    PRIMARY KEY(UserID, RoleID)
+    StatusID     INTEGER NOT NULL REFERENCES VolunteersService.RoleStatus(StatusID)
 );
 
 ALTER TABLE VolunteersService.EventStatus OWNER TO java;

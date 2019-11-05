@@ -15,8 +15,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.UniqueElements;
-
 import volunteersservice.utils.Utils;
 
 @Entity
@@ -28,10 +26,9 @@ public class User {
     @Column(name = "UserID")
     private int userID;
 
-    @Column(name = "Login", nullable = false)
+    @Column(name = "Login", nullable = false, unique = true)
     @NotNull
     @NotEmpty(message = "Login cannot be empty")
-    @UniqueElements
     private String login;
 
     @Column(name = "Name", nullable = false)
@@ -39,10 +36,9 @@ public class User {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
-    @Column(name = "Email", nullable = false)
+    @Column(name = "Email", nullable = false, unique = true)
     @NotNull
     @NotEmpty(message = "Email cannot be empty")
-    @UniqueElements
     @Email(message = "Email must be valid")
     private String email;
 

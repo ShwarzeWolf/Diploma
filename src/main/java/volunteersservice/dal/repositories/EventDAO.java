@@ -16,4 +16,5 @@ public interface EventDAO {
     public List<Event> getAllEvents();
     public List<Event> getActiveEvents();
     public List<Event> getEventsByStatus(EVENT_STATUS status);
+    public List<Event> getActiveEventsByStatus(EVENT_STATUS status);
 }

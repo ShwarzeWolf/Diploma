@@ -85,7 +85,15 @@ public class EventDAOHibernate implements EventDAO {
     @Override
     public List<Event> getEventsByStatus(EVENT_STATUS status) {
         return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
-                .createQuery("From Event as event where event.status.name = :statusName")
+                .createQuery("From Event as event where event.status.name = :statusName order by event.dateStart")
                 .setParameter("statusName", status.name().toLowerCase()).list();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Event> getActiveEventsByStatus(EVENT_STATUS status) {
+        return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
+                .createQuery("From Event as event where event.status.name = :statusName and event.dateStart > :date order by event.dateStart")
+                .setParameter("statusName", status.name().toLowerCase()).setParameter("date", Timestamp.valueOf(LocalDateTime.now().plusHours(6))).list();
     }
 }

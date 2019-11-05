@@ -15,9 +15,6 @@
                 <p><input type="radio" name="showType" value="all" checked>All</p>
             </tr>
             <tr>
-                <p><input type="radio" name="showType" value="active">Active (by time)</p>
-            </tr>
-            <tr>
                 <p><input type="radio" name="showType" value="unchecked">Unchecked</p>
             </tr>
             <tr>
@@ -33,7 +30,10 @@
                 <p><input type="radio" name="showType" value="expired">Expired</p>
             </tr>
             <tr>
-                <button type="submit" name="action">Show events</button>
+                <td><button type="submit">Show events</button></td>
+                <td>
+                    <p><input type="checkbox" name="activeOnly" checked>Active Only</p>
+                </td>
             </tr>
         </table>
     </form>
