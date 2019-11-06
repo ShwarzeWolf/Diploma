@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+
+    <form action="#" th:action="@{/testing}" method="post">
+        <div><label> Text : <input type="text" name="text"/> </label></div>
+        <div><label> Tag: <input type="text" name="tag"/> </label></div>
+        <div><input type="submit" value="Sign In"/></div>
+    </form>
+
+
+    <ul th:each="textform: ${textforms}">
+        <li th:text="${textform.text}"></li>
+        <li th:text="${textform.tag}"></li>
+    </ul>
+
+</body>
+</html>
