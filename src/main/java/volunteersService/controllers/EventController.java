@@ -28,17 +28,12 @@ public class EventController {
         events = new EventManager();
     }
 
-    @RequestMapping(path = "/addEvent", method = RequestMethod.GET)
-    public @ResponseBody String addEventPage() {
-        try {
-            return new String(Files.readAllBytes(
-                    FileSystems.getDefault().getPath("src/main/resources/templates", "testAddEventForm.html")));
-        } catch (Exception ex) {
-            return "testAddEvent: use post-request";
-        }
+    @GetMapping("/addEvent")
+    public String addEventPage() {
+        return  "testAddEventForm.html";
     }
 
-    @RequestMapping(path = "/addEvent", method = RequestMethod.POST)
+    @PostMapping("/addEvent")
     public @ResponseBody String addEvent(@RequestParam String name, @RequestParam String description,
             @RequestParam String dateStart, @RequestParam String dateFinish) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -52,11 +47,10 @@ public class EventController {
                                            Model model) {
         List<Event> eventsList = events.getAllEvents();
         model.addAttribute("events", eventsList);
-        model.addAttribute("name", "Christina");
         return "eventsPage";
     }
 
-    @RequestMapping(path = "/events/{eventID}", method = RequestMethod.GET)
+    @GetMapping(path = "/events/{eventID}")
     public String getEventByID(@PathVariable(value = "eventID") String eventID,
                                Model model) {
         try {
@@ -69,7 +63,7 @@ public class EventController {
         } catch (NumberFormatException ex) {
             return String.format("%s is not a valid eventID", eventID);
         } catch (Exception ex) {
-            return String.format("Exception occured: %s", ex);
+            return String.format("Exception occurred: %s", ex);
         }
     }
 }

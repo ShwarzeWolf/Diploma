@@ -84,12 +84,12 @@ public class Event {
         return description;
     }
 
-    public Timestamp getDateStart() {
-        return dateStart;
+    public String getDateStart() {
+        return dateStart.toString();
     }
 
-    public Timestamp getDateFinish() {
-        return dateFinish;
+    public String getDateFinish() {
+        return dateFinish.toString();
     }
 
     public EventStatus getStatus() {
