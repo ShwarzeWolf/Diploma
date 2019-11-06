@@ -10,12 +10,12 @@ import javax.persistence.Table;
 import volunteersservice.models.enums.UserRoleEnum;
 
 @Entity
-@Table(name = "VolunteersService.UserType")
+@Table(name = "VolunteersService.UserRole")
 public class UserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TypeID")
+    @Column(name = "RoleID")
     private int roleID;
 
     @Column(name = "Name")

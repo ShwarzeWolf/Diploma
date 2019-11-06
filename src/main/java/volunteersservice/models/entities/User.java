@@ -55,7 +55,7 @@ public class User {
     private String hash2;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TypeID", nullable = false)
+    @JoinColumn(name = "RoleID", nullable = false)
     @NotNull
     UserRole userRole;
 

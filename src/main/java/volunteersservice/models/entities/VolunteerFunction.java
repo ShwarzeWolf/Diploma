@@ -16,12 +16,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "VolunteersService.Roles")
+@Table(name = "VolunteersService.VolunteerFunctions")
 public class VolunteerFunction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RoleID")
+    @Column(name = "VolunteerFunctionID")
     private int volunteerFunctionID;
 
     @ManyToOne(fetch = FetchType.LAZY)

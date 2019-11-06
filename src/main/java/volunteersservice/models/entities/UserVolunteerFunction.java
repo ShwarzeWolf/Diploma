@@ -15,7 +15,7 @@ import volunteersservice.repositories.VolunteerFunctionStatusRepository;
 import volunteersservice.utils.RepositoryFactory;
 
 @Entity
-@Table(name = "VolunteersService.UsersRoles")
+@Table(name = "VolunteersService.UsersVolunteerFunctions")
 public class UserVolunteerFunction {
 
     public UserVolunteerFunction() {
@@ -30,7 +30,7 @@ public class UserVolunteerFunction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UserRoleID")
+    @Column(name = "UserVolunteerFunctionID")
     int UserVolunteerRoFunction;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,7 +38,7 @@ public class UserVolunteerFunction {
     User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RoleID", nullable = false)
+    @JoinColumn(name = "VolunteerFunctionID", nullable = false)
     VolunteerFunction volunteerFunction;
 
     @ManyToOne(fetch = FetchType.LAZY)
