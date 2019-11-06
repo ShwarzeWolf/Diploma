@@ -1,7 +1,7 @@
-package service.repos;
+package volunteersservice.repositories.test;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import service.model.User;
+import volunteersservice.models.User;
 
 
 public interface UserRepository extends JpaRepository<User, Long> {

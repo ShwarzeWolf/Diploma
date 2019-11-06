@@ -1,7 +1,7 @@
-package service.repos;
+package volunteersservice.repositories.test;
 
 import org.springframework.data.repository.CrudRepository;
-import service.model.Messages;
+import volunteersservice.models.Messages;
 
 public interface MessageRepo extends CrudRepository<Messages, Long> {
 

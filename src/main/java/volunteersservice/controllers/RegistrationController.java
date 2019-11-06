@@ -1,4 +1,4 @@
-package service.controller;
+package volunteersservice.controllers;
 
 
 import org.apache.log4j.Logger;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import service.model.Role;
-import service.model.User;
-import service.repos.UserRepository;
+import volunteersservice.models.Role;
+import volunteersservice.models.User;
+import volunteersservice.repositories.test.UserRepository;
 import java.util.Collections;
 
 @Controller

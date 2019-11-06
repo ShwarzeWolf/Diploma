@@ -1,4 +1,4 @@
-package service.model;
+package volunteersservice.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
