@@ -17,51 +17,51 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "VolunteersService.Roles")
-public class Role {
+public class VolunteerFunction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RoleID")
-    int roleID;
+    private int volunteerFunctionID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EventID", nullable = false)
-    Event event;
+    private Event event;
 
     @Column(name = "Name", nullable = false)
     @NotNull
-    @NotEmpty(message = "Role name cannot be empty")
-    String name;
+    @NotEmpty(message = "VolunteerFunction name cannot be empty")
+    private String name;
 
     @Column(name = "Description", nullable = false)
     @NotNull
-    @NotEmpty(message = "Role description cannot be empty")
-    String description;
+    @NotEmpty(message = "VolunteerFunction description cannot be empty")
+    private String description;
 
     @Column(name = "Requirements", nullable = false)
     @NotNull
-    @NotEmpty(message = "Role requirements cannot be empty")
-    String requirements;
+    @NotEmpty(message = "VolunteerFunction requirements cannot be empty")
+    private String requirements;
 
     @Column(name = "TimeStart", nullable = false)
     @NotNull
-    Timestamp timeStart;
+    private Timestamp timeStart;
 
     @Column(name = "TimeFinish", nullable = false)
     @NotNull
-    Timestamp timeFinish;
+    private Timestamp timeFinish;
 
     @Column(name = "NumberNeeded", nullable = false)
     @NotNull
-    int numberNeeded;
+    private int numberNeeded;
 
-    public Role() {
+    public VolunteerFunction() {
     }
 
-    public Role(Role other) {
+    public VolunteerFunction(VolunteerFunction other) {
         if (this == other)
             return;
-        this.roleID = other.roleID;
+        this.volunteerFunctionID = other.volunteerFunctionID;
         this.event = other.event;
         this.name = other.name;
         this.description = other.description;
@@ -71,12 +71,12 @@ public class Role {
         this.numberNeeded = other.numberNeeded;
     }
 
-    public Role(Event event, String name, String description, String requirements, Timestamp timeStart,
+    public VolunteerFunction(Event event, String name, String description, String requirements, Timestamp timeStart,
             Timestamp timeFinish, int numberNeeded) {
         if (event != null && (event.getDateStart().toLocalDateTime().isAfter(timeStart.toLocalDateTime())
                 || event.getDateFinish().toLocalDateTime().isBefore(timeFinish.toLocalDateTime())
                 || timeStart.toLocalDateTime().isAfter(timeFinish.toLocalDateTime())))
-            throw new IllegalArgumentException("Exception at role creation: role (start-finish) is wrong");
+            throw new IllegalArgumentException("Exception at VolunteerFunction creation: VolunteerFunction (start-finish) is wrong");
         this.event = event;
         this.name = name;
         this.description = description;
@@ -86,19 +86,19 @@ public class Role {
         this.numberNeeded = numberNeeded;
     }
 
-    public Role(String name, String description, String requirements, Timestamp timeStart, Timestamp timeFinish,
+    public VolunteerFunction(String name, String description, String requirements, Timestamp timeStart, Timestamp timeFinish,
             int numberNeeded) {
         this(null, name, description, requirements, timeStart, timeFinish, numberNeeded);
     }
 
-    public Role(String name, String description, String requirements, LocalDateTime timeStart, LocalDateTime timeFinish,
+    public VolunteerFunction(String name, String description, String requirements, LocalDateTime timeStart, LocalDateTime timeFinish,
             int numberNeeded) {
         this(null, name, description, requirements, Timestamp.valueOf(timeStart), Timestamp.valueOf(timeFinish),
                 numberNeeded);
     }
 
-    public int getRoleID() {
-        return roleID;
+    public int getVolunteerFunctionID() {
+        return volunteerFunctionID;
     }
 
     public Event getEvent() {
@@ -135,7 +135,7 @@ public class Role {
 
     @Override
     public String toString() {
-        return String.format("(Role) %d: [%s]; %s; %s; %s; %s - %s; %d needed", roleID, event.getEventID(), name, description,
+        return String.format("(VolunteerFunction) %d: [%s]; %s; %s; %s; %s - %s; %d needed", volunteerFunctionID, event.getEventID(), name, description,
                 requirements, timeStart, timeFinish, numberNeeded);
     }
 }

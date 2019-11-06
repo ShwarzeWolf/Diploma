@@ -26,7 +26,7 @@ public class MainController {
             httpServletResponse.setHeader("Location", "/testapi/event/" + eventID);
             httpServletResponse.setStatus(302);
         } else {
-            httpServletResponse.setHeader("Location", "/testapi/event/" + eventID + "/addRole");
+            httpServletResponse.setHeader("Location", "/testapi/event/" + eventID + "/addVolunteerFunction");
             httpServletResponse.setStatus(302);
         }
     }

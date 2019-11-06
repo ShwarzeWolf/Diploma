@@ -15,8 +15,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.repositories.EventStatusDAO;
-import volunteersservice.utils.DAOFabric;
+import volunteersservice.repositories.EventStatusRepository;
+import volunteersservice.utils.RepositoryFactory;
 
 @Entity
 @Table(name = "VolunteersService.Events")
@@ -25,32 +25,32 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EventID")
-    int eventID;
+    private int eventID;
 
     @Column(name = "Name", nullable = false)
     @NotNull
     @NotEmpty
-    String name;
+    private String name;
 
     @Column(name = "Description", nullable = false)
     @NotNull
     @NotEmpty
-    String description;
+    private String description;
 
     @Column(name = "DateStart", nullable = false)
     @NotNull
-    Timestamp dateStart;
+    private Timestamp dateStart;
 
     @Column(name = "DateFinish", nullable = false)
     @NotNull
-    Timestamp dateFinish;
+    private Timestamp dateFinish;
 
     public Event() {
     }
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StatusID", nullable = false)
-    EventStatus status;
+    private EventStatus status;
 
     public Event(Event other) {
         if (this == other)
@@ -68,8 +68,8 @@ public class Event {
         this.description = description;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
-        EventStatusDAO eventStatusDAO = DAOFabric.getEventStatusDAO();
-        this.status = eventStatusDAO.getStatusByName(EventStatusEnum.UNCHECKED.name().toLowerCase());
+        EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
+        this.status = eventStatusRepository.getStatusByName(EventStatusEnum.UNCHECKED.name().toLowerCase());
     }
 
     public int getEventID() {
@@ -93,8 +93,8 @@ public class Event {
     }
 
     public void setStatus(EventStatusEnum statusEnum) {
-        EventStatusDAO eventStatusDAO = DAOFabric.getEventStatusDAO();
-        this.status = eventStatusDAO.getStatusByName(statusEnum.name().toLowerCase());
+        EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
+        this.status = eventStatusRepository.getStatusByName(statusEnum.name().toLowerCase());
     }
 
     @Override

@@ -9,20 +9,20 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "VolunteersService.RoleStatus")
-public class RoleStatus {
+public class VolunteerFunctionStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "StatusID")
-    int statusID;
+    private int statusID;
 
     @Column(name = "Name", nullable = false)
-    String name;
+    private String name;
 
-    public RoleStatus() {
+    public VolunteerFunctionStatus() {
     }
 
-    public RoleStatus(RoleStatus other) {
+    public VolunteerFunctionStatus(VolunteerFunctionStatus other) {
         if (this == other)
             return;
         this.statusID = other.statusID;
@@ -39,6 +39,6 @@ public class RoleStatus {
 
     @Override
     public String toString() {
-        return String.format("(RoleStatus) %d: %s", statusID, name);
+        return String.format("(VolunteerFunctionStatus) %d: %s", statusID, name);
     }
 }

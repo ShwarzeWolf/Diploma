@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import volunteersservice.models.entities.Event;
-import volunteersservice.services.EventManager;
-import volunteersservice.services.RoleManager;
-import volunteersservice.utils.ManagerFactory;
+import volunteersservice.services.EventService;
+import volunteersservice.services.VolunteerFunctionService;
+import volunteersservice.utils.ServiceFactory;
 
 @Controller
 @RequestMapping("/testapi")
 public class RolesController {
 
-    RoleManager roles;
+    VolunteerFunctionService roles;
 
     public RolesController() {
-        roles = ManagerFactory.getRoleManager();
+        roles = ServiceFactory.getVolunteerFunctionService();
     }
 
     @GetMapping(path = "/event/{eventID}/addRole")
@@ -35,13 +35,13 @@ public class RolesController {
     public @ResponseBody String addRole(@PathVariable(value = "eventID") int eventID, @RequestParam String name,
             @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
             @RequestParam String timeFinish, @RequestParam int numberNeeded) {
-        EventManager events = ManagerFactory.getEventManager();
+        EventService events = ServiceFactory.getEventService();
         Event event = events.getEventByID(eventID);
         if (event == null) {
             return "No Such event";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        if (roles.addRole(event, name, description, requirements, LocalDateTime.parse(timeStart, formatter),
+        if (roles.addVolunteerFunction(event, name, description, requirements, LocalDateTime.parse(timeStart, formatter),
                 LocalDateTime.parse(timeFinish, formatter), numberNeeded))
             return "Role added";
         else

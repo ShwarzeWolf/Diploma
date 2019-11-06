@@ -6,6 +6,6 @@ import volunteersservice.models.entities.EventStatus;
 import volunteersservice.models.enums.EventStatusEnum;
 
 @Service
-public interface EventStatusManager {
-	public EventStatus getTypeByEnum(EventStatusEnum typeEnum);
+public interface EventStatusService {
+	public EventStatus getStatusByEnum(EventStatusEnum statusEnum);
 }

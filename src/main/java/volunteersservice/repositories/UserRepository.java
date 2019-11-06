@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import volunteersservice.models.entities.User;
 
 @Repository
-public interface UserDAO {
+public interface UserRepository {
     public User getUserByID(int id);
     public User getUserByEmail(String email);
     public User getUserByLogin(String login);

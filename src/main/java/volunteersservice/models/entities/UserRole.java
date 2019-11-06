@@ -2,58 +2,50 @@ package volunteersservice.models.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import volunteersservice.models.enums.RoleStatusEnum;
-import volunteersservice.repositories.RoleStatusDAO;
-import volunteersservice.utils.DAOFabric;
+import volunteersservice.models.enums.UserRoleEnum;
 
 @Entity
-@Table(name = "VolunteersService.UsersRoles")
+@Table(name = "VolunteersService.UserType")
 public class UserRole {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TypeID")
+    private int roleID;
+
+    @Column(name = "Name")
+    private String name;
 
     public UserRole() {
     }
 
-    public UserRole(User user, Role role) {
-        this.user = user;
-        this.role = role;
-        RoleStatusDAO roleStatusDAO = DAOFabric.getRoleStatusDAO();
-        this.status = roleStatusDAO.getStatusByName(RoleStatusEnum.UNCHECKED.name().toLowerCase());
+    public UserRole(UserRole other) {
+        if (this == other) {
+            return;
+        }
+        this.roleID = other.roleID;
+        this.name = other.name;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "UserRoleID")
-    int userRoleID;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UserID", nullable = false)
-    User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RoleID", nullable = false)
-    Role role;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "StatusID", nullable = false)
-    RoleStatus status;
-
-    public User getUser() {
-        return user;
+    public int getID() {
+        return this.roleID;
     }
 
-    public Role getRole() {
-        return role;
+    public String getName() {
+        return this.name;
     }
 
-    public RoleStatus getStatus() {
-        return status;
+    public UserRoleEnum getEnum() {
+        return UserRoleEnum.valueOf(this.name.toUpperCase());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(UserRole) %d: %s", roleID, name);
     }
 }

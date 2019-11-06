@@ -8,13 +8,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import volunteersservice.repositories.EventDAO;
+import volunteersservice.repositories.EventRepository;
 import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.models.entities.Event;
 import volunteersservice.utils.HibernateSessionFactoryUtil;
 
 @Repository
-public class EventDAOHibernate implements EventDAO {
+public class EventRepositoryHibernate implements EventRepository {
 
     @Override
     public Event getEventByID(int eventID) {

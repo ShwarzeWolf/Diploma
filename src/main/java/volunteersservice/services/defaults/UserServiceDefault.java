@@ -9,56 +9,56 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import volunteersservice.models.entities.User;
-import volunteersservice.models.entities.UserType;
-import volunteersservice.models.enums.UserTypeEnum;
-import volunteersservice.repositories.UserDAO;
-import volunteersservice.services.UserManager;
-import volunteersservice.utils.DAOFabric;
-import volunteersservice.utils.ManagerFactory;
+import volunteersservice.models.entities.UserRole;
+import volunteersservice.models.enums.UserRoleEnum;
+import volunteersservice.repositories.UserRepository;
+import volunteersservice.services.UserService;
+import volunteersservice.utils.RepositoryFactory;
+import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
 
 @Service
-public class UserManagerDefault implements UserManager {
+public class UserServiceDefault implements UserService {
 
-	private final UserDAO userDAO;
-	private final static Logger LOG = LogManager.getLogger(UserManagerDefault.class.getName());
+	private final UserRepository userRepository;
+	private final static Logger LOG = LogManager.getLogger(UserServiceDefault.class.getName());
 
-	public UserManagerDefault() {
-		userDAO = DAOFabric.getUserDAO();
+	public UserServiceDefault() {
+		userRepository = RepositoryFactory.getUserRepository();
 	}
 
 	@Override
 	public User getUserByID(int id) {
-		return userDAO.getUserByID(id);
+		return userRepository.getUserByID(id);
 	}
 
 	@Override
 	public User getUserByEmail(String email) {
-		return userDAO.getUserByEmail(email);
+		return userRepository.getUserByEmail(email);
 	}
 
 	@Override
 	public User getUserByLogin(String login) {
-		return userDAO.getUserByLogin(login);
+		return userRepository.getUserByLogin(login);
 	}
 
 	@Override
 	public List<User> getUsers() {
-		return userDAO.findAll();
+		return userRepository.findAll();
 	}
 
 	@Override
 	public boolean addUser(String email, String login, String userName, String password,
-			UserTypeEnum typeEnum) {
+			UserRoleEnum roleEnum) {
 		Timestamp registerDate = Timestamp.valueOf(LocalDateTime.now());
-		UserType userType = ManagerFactory.getUserTypeManager().getTypeByEnum(typeEnum);
-		return userDAO.save(new User(email, login, userName, registerDate, password, userType));
+		UserRole userRole = ServiceFactory.getUserRoleService().getRoleByEnum(roleEnum);
+		return userRepository.save(new User(email, login, userName, registerDate, password, userRole));
 	}
 
 	@Override
 	public boolean emailPasswordOkay(String email, String password) {
 		// LOG.info("Trying to get user: email=\"" + email + "\"");
-		User logging = userDAO.getUserByEmail(email);
+		User logging = userRepository.getUserByEmail(email);
 		if (logging == null) {
 			LOG.warn(String.format("User is not found: (email = %s)", email));
 			return false;
@@ -71,7 +71,7 @@ public class UserManagerDefault implements UserManager {
 
 	@Override
 	public boolean loginPasswordOkay(String login, String password) {
-		User logging = userDAO.getUserByLogin(login);
+		User logging = userRepository.getUserByLogin(login);
 		if (logging == null) {
 			LOG.warn(String.format("User is not found: (login = %s)", login));
 			return false;

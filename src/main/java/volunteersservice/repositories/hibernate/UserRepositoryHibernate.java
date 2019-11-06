@@ -7,13 +7,13 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import volunteersservice.models.entities.User;
-import volunteersservice.repositories.UserDAO;
+import volunteersservice.repositories.UserRepository;
 import volunteersservice.utils.HibernateSessionFactoryUtil;
 
 @Repository
-public class UserDAOHibernate implements UserDAO {
+public class UserRepositoryHibernate implements UserRepository {
 
-	// private final static Logger LOG = LogManager.getLogger(UserDAOHibernate.class.getName());
+	// private final static Logger LOG = LogManager.getLogger(UserRepositoryHibernate.class.getName());
 
 	@Override
 	public User getUserByID(int id) {

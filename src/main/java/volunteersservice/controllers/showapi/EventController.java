@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import volunteersservice.models.entities.Event;
-import volunteersservice.models.entities.Role;
+import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.services.EventManager;
-import volunteersservice.services.RoleManager;
-import volunteersservice.utils.ManagerFactory;
+import volunteersservice.services.EventService;
+import volunteersservice.services.VolunteerFunctionService;
+import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
 
 @Controller
@@ -29,11 +29,10 @@ public class EventController {
     // private static final Logger LOG =
     // LogManager.getLogger(EventController.class.getName());
 
-    private EventManager events;
+    private EventService events;
 
     public EventController() {
-        super();
-        events = ManagerFactory.getEventManager();
+        events = ServiceFactory.getEventService();
     }
 
     @GetMapping("/addEvent")
@@ -88,14 +87,14 @@ public class EventController {
         }
         StringBuilder sb = new StringBuilder(event.toString());
         sb.append("<br>");
-        RoleManager roleManager = ManagerFactory.getRoleManager();
-        List<Role> roles = roleManager.getRoles(event);
-        for (Role r : roles) {
+        VolunteerFunctionService volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
+        List<VolunteerFunction> volunteerFunctions = volunteerFunctionService.getVolunteerFunctions(event);
+        for (VolunteerFunction r : volunteerFunctions) {
             sb.append(r.toString());
             sb.append("<br>");
         }
-        return sb.toString() + Utils.getStaticFileContents("src/main/resources/templates/", "testapi/setEventStatus.html",
-                "[no status html found]");
+        return sb.toString() + Utils.getStaticFileContents("src/main/resources/templates/",
+                "testapi/setEventStatus.html", "[no status html found]");
     }
 
     @PostMapping("/event/{eventID}")
@@ -114,23 +113,25 @@ public class EventController {
         return "ok<br><a href=\"/event/" + eventID + "\">Refresh</a>";
     }
 
-    @GetMapping("/addEventRoles")
-    public String addEventRolesPage() {
-        return "testapi/testAddEventRolesForm";
+    @GetMapping("/addEventVolunteerFunctions")
+    public String addEventvolunteerFunctionsPage() {
+        return "testapi/testAddEventVolunteerFunctionsForm";
     }
 
-    @PostMapping("/addEventRoles")
-    public @ResponseBody String addEventRoles(@RequestParam String eventName, @RequestParam String eventDescription,
-            @RequestParam String eventDateStart, @RequestParam String eventDateFinish, @RequestParam String roleName,
-            @RequestParam String roleDescription, @RequestParam String roleRequirements,
-            @RequestParam String roleTimeStart, @RequestParam String roleTimeFinish,
-            @RequestParam int roleNumberNeeded) {
+    @PostMapping("/addEventVolunteerFunctions")
+    public @ResponseBody String addEventVolunteerFunctions(@RequestParam String eventName,
+            @RequestParam String eventDescription, @RequestParam String eventDateStart,
+            @RequestParam String eventDateFinish, @RequestParam String volunteerFunctionName,
+            @RequestParam String volunteerFunctionDescription, @RequestParam String volunteerFunctionRequirements,
+            @RequestParam String volunteerFunctionTimeStart, @RequestParam String volunteerFunctionTimeFinish,
+            @RequestParam int volunteerFunctionNumberNeeded) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role(roleName, roleDescription, roleRequirements, LocalDateTime.parse(roleTimeStart, formatter),
-                LocalDateTime.parse(roleTimeFinish, formatter), roleNumberNeeded));
+        List<VolunteerFunction> volunteerFunctions = new ArrayList<>();
+        volunteerFunctions.add(new VolunteerFunction(volunteerFunctionName, volunteerFunctionDescription,
+                volunteerFunctionRequirements, LocalDateTime.parse(volunteerFunctionTimeStart, formatter),
+                LocalDateTime.parse(volunteerFunctionTimeFinish, formatter), volunteerFunctionNumberNeeded));
         events.addEvent(eventName, eventDescription, LocalDateTime.parse(eventDateStart, formatter),
-                LocalDateTime.parse(eventDateFinish, formatter), roles);
+                LocalDateTime.parse(eventDateFinish, formatter), volunteerFunctions);
         return "ok";
     }
 }

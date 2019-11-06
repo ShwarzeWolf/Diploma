@@ -5,10 +5,10 @@ import volunteersservice.utils.HibernateSessionFactoryUtil;
 
 import org.springframework.stereotype.Repository;
 
-import volunteersservice.repositories.EventStatusDAO;
+import volunteersservice.repositories.EventStatusRepository;
 
 @Repository
-public class EventStatusDAOHibernate implements EventStatusDAO {
+public class EventStatusRepositoryHibernate implements EventStatusRepository {
 
     @Override
     public EventStatus getStatusByName(String statusName) {

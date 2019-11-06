@@ -57,7 +57,7 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TypeID", nullable = false)
     @NotNull
-    UserType userType;
+    UserRole userRole;
 
     public User() {
     }
@@ -72,18 +72,18 @@ public class User {
         this.registerDate = other.registerDate;
         this.hash1 = other.hash1;
         this.hash2 = other.hash2;
-        this.userType = other.userType;
+        this.userRole = other.userRole;
     }
 
     public User(String email, String login, String userName,
-            Timestamp registerDate, String password, UserType userType) {
+            Timestamp registerDate, String password, UserRole userRole) {
         this.email = email;
         this.login = login;
         this.name = userName;
         this.registerDate = registerDate;
         this.hash1 = Utils.calcSHA256(password);
         this.hash2 = Utils.calcMD5(password);
-        this.userType = userType;
+        this.userRole = userRole;
     }
 
     public int getID() {
@@ -114,13 +114,13 @@ public class User {
         return hash2;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public UserRole getUserRole() {
+        return userRole;
     }
 
     @Override
     public String toString() {
         return String.format("(User) %d: %s; %s; %s; %s + %s; %s %s", userID, email, login, name, hash1, hash2,
-                registerDate, userType);
+                registerDate, userRole);
     }
 }

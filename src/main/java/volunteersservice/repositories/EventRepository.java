@@ -8,7 +8,7 @@ import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.models.entities.Event;
 
 @Repository
-public interface EventDAO {
+public interface EventRepository {
     public Event getEventByID(int eventID);
     public boolean save(Event event);
     public boolean delete(Event event);

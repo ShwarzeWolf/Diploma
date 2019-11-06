@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.models.entities.Event;
-import volunteersservice.models.entities.Role;
+import volunteersservice.models.entities.VolunteerFunction;
+import volunteersservice.models.enums.EventStatusEnum;
 
 @Service
-public interface EventManager {
+public interface EventService {
 
 	public Event getEventByID(int eventID);
 
@@ -25,7 +25,7 @@ public interface EventManager {
 	public void addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish);
 
 	public void addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish,
-			List<Role> roles);
+			List<VolunteerFunction> volunteerFunctions);
 
 	public void setStatus(Event event, EventStatusEnum status);
 }

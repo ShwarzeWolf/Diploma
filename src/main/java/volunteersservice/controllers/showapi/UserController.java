@@ -7,24 +7,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import volunteersservice.models.enums.UserTypeEnum;
-import volunteersservice.services.UserManager;
-import volunteersservice.utils.ManagerFactory;
+import volunteersservice.models.enums.UserRoleEnum;
+import volunteersservice.services.UserService;
+import volunteersservice.utils.ServiceFactory;
 
 @Controller
 @RequestMapping("/testapi")
 public class UserController {
-    private UserManager users;
+    private UserService users;
 
     public UserController() {
         super();
-        users = ManagerFactory.getUserManager();
+        users = ServiceFactory.getUserService();
     }
 
     @PostMapping(path = "/register")
     public @ResponseBody String addNewUser(@RequestParam String email, @RequestParam String name,
-            @RequestParam String login, @RequestParam String password, @RequestParam String userType) {
-        if (users.addUser(email, login, name, password, UserTypeEnum.valueOf(userType)))
+            @RequestParam String login, @RequestParam String password, @RequestParam String userRole) {
+        if (users.addUser(email, login, name, password, UserRoleEnum.valueOf(userRole)))
             return "User <b>" + name + "</b> with password <i>" + password + "</i> was successfully saved";
         else
             return "Error happened";

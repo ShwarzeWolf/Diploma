@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import volunteersservice.models.enums.UserTypeEnum;
+import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.models.entities.User;
 
 @Service
-public interface UserManager {
+public interface UserService {
 
 	public User getUserByID(int id);
 
@@ -19,7 +19,7 @@ public interface UserManager {
 	List<User> getUsers();
 
 	public boolean addUser(String email, String login, String userName, String password,
-			UserTypeEnum typeEnum);
+			UserRoleEnum roleEnum);
 
 	public boolean emailPasswordOkay(String email, String password);
 
