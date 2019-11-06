@@ -1,21 +1,14 @@
 package volunteersService.controllers;
 
-import jdk.internal.util.xml.PropertiesDefaultHandler;
-import org.apache.logging.log4j.LogManager;
-import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import volunteersService.services.EventManager;
 import volunteersService.models.Event;
-import volunteersService.utils.Utils;
 
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,8 +27,10 @@ public class EventController {
     }
 
     @PostMapping("/addEvent")
-    public @ResponseBody String addEvent(@RequestParam String name, @RequestParam String description,
-            @RequestParam String dateStart, @RequestParam String dateFinish) {
+    public @ResponseBody String addEvent(@RequestParam String name,
+                                         @RequestParam String description,
+                                         @RequestParam String dateStart,
+                                         @RequestParam String dateFinish) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         events.addEvent(name, description, LocalDateTime.parse(dateStart, formatter),
                 LocalDateTime.parse(dateFinish, formatter));
@@ -47,7 +42,7 @@ public class EventController {
                                            Model model) {
         List<Event> eventsList = events.getAllEvents();
         model.addAttribute("events", eventsList);
-        return "eventsPage";
+        return "main";
     }
 
     @GetMapping(path = "/events/{eventID}")
@@ -57,7 +52,7 @@ public class EventController {
             Event currentEvent = events.getEventByID(Integer.valueOf(eventID));
             model.addAttribute("event", currentEvent);
 
-            return "currentEventPage";
+            return "currentEvent";
         } catch (NullPointerException ex) {
             return String.format("No such event: eventID=%s", eventID);
         } catch (NumberFormatException ex) {

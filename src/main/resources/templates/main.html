@@ -23,7 +23,7 @@
             <td><span th:text="${event.getName()}"> Name </span></td>
             <td><span th:text="${event.getDateStart()}"> Date Start </span></td>
             <td><span th:text="${event.getDateFinish()}"> Date Finish</span></td>
-            <td><a th:href="${(event.getEventID())}">view event</a></td>
+            <td><a th:href="@{'/events/' + ${(event.getEventID())}}">view event</a></td>
         </tr>
         </tbody>
     </table>
