@@ -4,15 +4,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import volunteersservice.businesslogic.ManagerFabric;
-import volunteersservice.businesslogic.services.UserManager;
-import volunteersservice.models.User;
+import volunteersservice.services.UserManager;
+import volunteersservice.models.entities.User;
+import volunteersservice.utils.ManagerFactory;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserManager users = ManagerFabric.getUserManager();
+		UserManager users = ManagerFactory.getUserManager();
 		User user = users.getUserByLogin(username);
 		if (user == null)
 			throw new UsernameNotFoundException(username);

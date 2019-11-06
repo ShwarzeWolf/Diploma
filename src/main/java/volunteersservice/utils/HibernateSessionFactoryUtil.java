@@ -8,12 +8,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-import volunteersservice.models.Event;
-import volunteersservice.models.EventStatus;
-import volunteersservice.models.Role;
-import volunteersservice.models.User;
-// import volunteersservice.models.UserRole;
-import volunteersservice.models.UserType;
+import volunteersservice.models.entities.Event;
+import volunteersservice.models.entities.EventStatus;
+import volunteersservice.models.entities.Role;
+import volunteersservice.models.entities.User;
+import volunteersservice.models.entities.UserType;
 
 public class HibernateSessionFactoryUtil {
     private static SessionFactory sessionFactory;

@@ -28,13 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 // указываем страницу с формой логина
-                .loginPage("/login")
+                .loginPage("/testapi/login") // FIXME remove /testapi when ready
                 // указываем action с формы логина
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/testapi/login") // FIXME remove /testapi when ready
                 // Перенаправляем в /home после логина (?)
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/testapi/home") // FIXME remove /testapi when ready
                 // указываем URL при неудачном логине
-                .failureUrl("/login?error")
+                .failureUrl("/testapi/login?error") // FIXME remove /testapi when ready
                 // Указываем параметры логина и пароля с формы логина
                 .usernameParameter("email").passwordParameter("password")
                 // даем доступ к форме логина всем
@@ -44,9 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // разрешаем делать логаут всем
                 .permitAll()
                 // указываем URL логаута
-                .logoutUrl("/logout")
+                .logoutUrl("/testapi/logout") // FIXME remove /testapi when ready
                 // указываем URL при удачном логауте
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/testapi/login?logout") // FIXME remove /testapi when ready
                 // делаем не валидной текущую сессию
                 .invalidateHttpSession(true);
 
