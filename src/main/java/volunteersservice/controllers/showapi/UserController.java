@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import volunteersservice.models.entities.User;
 import volunteersservice.models.enums.UserTypeEnum;
 import volunteersservice.services.UserManager;
 import volunteersservice.utils.ManagerFactory;
@@ -24,9 +25,10 @@ public class UserController {
     @PostMapping(path = "/register")
     public @ResponseBody String addNewUser(@RequestParam String email, @RequestParam String name,
             @RequestParam String login, @RequestParam String password, @RequestParam String userType) {
-        if (users.addUser(email, login, name, password, UserTypeEnum.valueOf(userType)))
+        if (users.addUser(email, login, name, password, UserTypeEnum.valueOf(userType))){
+            User user = users.getUserByLogin(login);
             return "User <b>" + name + "</b> with password <i>" + password + "</i> was successfully saved";
-        else
+        } else
             return "Error happened";
     }
 
