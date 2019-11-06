@@ -28,11 +28,16 @@ targetCompatibility = 1.8
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-starter-security")
+
     compile("org.hibernate:hibernate-core:5.4.6.Final")
     compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+
+    testCompile("org.springframework.security:spring-security-test")
     testCompile("junit:junit")
 }
 
 // for 'gradle run' command
 apply plugin: 'application'
-mainClassName = 'volunteersService.Application'
+mainClassName = 'volunteersservice.Application'
