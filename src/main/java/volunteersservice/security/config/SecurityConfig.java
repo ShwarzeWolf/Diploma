@@ -23,32 +23,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/resources/**", "/**").permitAll().anyRequest()
-                .permitAll().and();
-
-        http.formLogin()
-                // указываем страницу с формой логина
-                .loginPage("/testapi/login") // FIXME remove /testapi when ready
-                // указываем action с формы логина
-                .loginProcessingUrl("/testapi/login") // FIXME remove /testapi when ready
-                // Перенаправляем в /home после логина (?)
-                .defaultSuccessUrl("/testapi/home") // FIXME remove /testapi when ready
-                // указываем URL при неудачном логине
-                .failureUrl("/testapi/login?error") // FIXME remove /testapi when ready
-                // Указываем параметры логина и пароля с формы логина
-                .usernameParameter("email").passwordParameter("password")
-                // даем доступ к форме логина всем
-                .permitAll();
-
-        http.logout()
-                // разрешаем делать логаут всем
+        http.authorizeRequests()
+                .antMatchers("/", "/registration").permitAll()
+                .antMatchers( "/css/**").permitAll()
+                .anyRequest().authenticated()
+            .and()
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("login")
+                .passwordParameter("password")
                 .permitAll()
+            .and()
+                .logout()
+                .permitAll();
                 // указываем URL логаута
-                .logoutUrl("/testapi/logout") // FIXME remove /testapi when ready
+//                .logoutUrl("/logout")
                 // указываем URL при удачном логауте
-                .logoutSuccessUrl("/testapi/login?logout") // FIXME remove /testapi when ready
+//                .logoutSuccessUrl("/login?logout")
                 // делаем не валидной текущую сессию
-                .invalidateHttpSession(true);
+//                .invalidateHttpSession(true);
 
     }
 

@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -12,6 +11,11 @@
         <a th:href="@{/main}">Вход</a>
     </div>
 
+    <div sec:authorize="isAuthenticated()">
+        Text visible only to authenticated users.
+    </div>
+
+    <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
     <p>Здесь будет список мероприятий, который могут посмотреть все</p>
 </body>
 </html>

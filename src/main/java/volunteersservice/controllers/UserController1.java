@@ -13,29 +13,30 @@ import volunteersservice.services.UserManager;
 import volunteersservice.utils.ManagerFactory;
 
 @Controller
-public class UserController {
-    private static Logger log = Logger.getLogger(UserController.class);
+public class UserController1 {
+    private static Logger log = Logger.getLogger(UserController1.class);
     private UserManager users;
 
-    public UserController() {
+    public UserController1() {
         super();
         users = ManagerFactory.getUserManager();
     }
 
-    @PostMapping(path = "/register")
-    public @ResponseBody
-    String addNewUser(@RequestParam String email, @RequestParam String name,
+    @PostMapping(path = "/registration")
+    public String addNewUser(@RequestParam String email, @RequestParam String name,
                       @RequestParam String login, @RequestParam String password, @RequestParam String userType,
                       Model model) {
         if (users.addUser(email, login, name, password, UserTypeEnum.valueOf(userType)))
             return ("redirect:/login");
 //            return "User <b>" + name + "</b> with password <i>" + password + "</i> was successfully saved";
         else
-            return "Error happened";
+            return "registration";
     }
 
     @GetMapping("/registration")
     public String registration() {
         return "registration";
     }
+
+
 }

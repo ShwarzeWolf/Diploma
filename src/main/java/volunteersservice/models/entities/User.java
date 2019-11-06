@@ -56,7 +56,7 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TypeID", nullable = false)
-    @NotNull
+//    @NotNull
     UserType userType;
 
     public User() {
