@@ -27,12 +27,12 @@ targetCompatibility = 1.8
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.hibernate:hibernate-core:5.4.6.Final")
-    // compile group:'org.xerial', name:'sqlite-jdbc', version:'3.8.11.2' // SQLite DB for testing now
-    compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4' // https://mvnrepository.com/artifact/postgresql/postgresql
+    compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
     testCompile("junit:junit")
 }
 
 // for 'gradle run' command
 apply plugin: 'application'
-mainClassName = 'service.Application'
+mainClassName = 'volunteersService.Application'
