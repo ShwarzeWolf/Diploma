@@ -11,6 +11,9 @@
         </form>
     </div>
 
+    <div sec:authorize="isAuthenticated()">
+        Text visible only to authenticated users.
+    </div>
 
 
     <div>

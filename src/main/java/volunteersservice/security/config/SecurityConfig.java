@@ -35,14 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
             .and()
                 .logout()
-                .permitAll();
+                .permitAll()
                 // указываем URL логаута
 //                .logoutUrl("/logout")
                 // указываем URL при удачном логауте
-//                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessUrl("/main");
+//                .logoutSuccessUrl("/login?logout");
                 // делаем не валидной текущую сессию
 //                .invalidateHttpSession(true);
-
     }
-
 }

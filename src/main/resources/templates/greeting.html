@@ -8,14 +8,14 @@
 <body>
 <!--    <a href="/main">Вход</a>-->
     <div>
-        <a th:href="@{/main}">Вход</a>
+        <a th:href="@{/login}">Вход</a>
     </div>
 
     <div sec:authorize="isAuthenticated()">
-        Text visible only to authenticated users.
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
     </div>
-
-    <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
     <p>Здесь будет список мероприятий, который могут посмотреть все</p>
 </body>
 </html>
