@@ -10,9 +10,9 @@ import org.hibernate.cfg.Configuration;
 
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.EventStatus;
-import volunteersservice.models.entities.Role;
 import volunteersservice.models.entities.User;
-import volunteersservice.models.entities.UserType;
+import volunteersservice.models.entities.UserRole;
+import volunteersservice.models.entities.VolunteerFunction;
 
 public class HibernateSessionFactoryUtil {
     private static SessionFactory sessionFactory;
@@ -27,10 +27,10 @@ public class HibernateSessionFactoryUtil {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(EventStatus.class);
                 configuration.addAnnotatedClass(RoleStatus.class);
-                configuration.addAnnotatedClass(UserType.class);
+                configuration.addAnnotatedClass(UserRole.class);
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Event.class);
-                configuration.addAnnotatedClass(Role.class);
+                configuration.addAnnotatedClass(VolunteerFunction.class);
                 // configuration.addAnnotatedClass(UserRole.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());

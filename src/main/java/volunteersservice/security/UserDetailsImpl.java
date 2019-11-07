@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import volunteersservice.models.enums.UserTypeEnum;
+import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.models.entities.User;
 
 public class UserDetailsImpl implements UserDetails {
@@ -23,9 +23,9 @@ public class UserDetailsImpl implements UserDetails {
 	}
 
 	@Override
-	public Collection<UserTypeEnum> getAuthorities() {
-		List<UserTypeEnum> res = new ArrayList<>();
-		res.add(userModel.getUserType().getEnum());
+	public Collection<UserRoleEnum> getAuthorities() {
+		List<UserRoleEnum> res = new ArrayList<>();
+		res.add(userModel.getUserRole().getEnum());
 		LOG.info("Get authorities: {}", res.get(0));
 		return res;
 	}
