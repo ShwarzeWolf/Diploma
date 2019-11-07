@@ -110,12 +110,12 @@ public class EventController {
         } catch (Exception ex) {
             return "No such status: " + statusName;
         }
-        return "ok<br><a href=\"/event/" + eventID + "\">Refresh</a>";
+        return "ok<br><a href=\"/testapi/event/" + eventID + "\">Refresh</a>";
     }
 
     @GetMapping("/addEventVolunteerFunctions")
     public String addEventvolunteerFunctionsPage() {
-        return "testapi/testAddEventVolunteerFunctionsForm";
+        return "testapi/testAddEventVolunteerFunctionForm";
     }
 
     @PostMapping("/addEventVolunteerFunctions")

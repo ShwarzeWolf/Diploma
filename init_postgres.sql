@@ -55,10 +55,10 @@ CREATE TABLE VolunteersService.VolunteerFunctions (
 );
 
 CREATE TABLE VolunteersService.UsersVolunteerFunctions (
-    UserRoleID   SERIAL    PRIMARY KEY  NOT NULL,
-    UserID       INTEGER NOT NULL REFERENCES VolunteersService.Users(UserID)                           ON DELETE SET DEFAULT,
-    RoleID       INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctions(VolunteerFunctionID) ON DELETE CASCADE,
-    StatusID     INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctionStatus(StatusID)
+    UserVolunteerFunctionID   SERIAL    PRIMARY KEY  NOT NULL,
+    UserID                    INTEGER NOT NULL REFERENCES VolunteersService.Users(UserID)                           ON DELETE SET DEFAULT,
+    VolunteerFunctionID       INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctions(VolunteerFunctionID) ON DELETE CASCADE,
+    StatusID                  INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctionStatus(StatusID)
 );
 
 ALTER TABLE VolunteersService.EventStatus              OWNER TO java;

@@ -18,20 +18,20 @@ import volunteersservice.utils.ServiceFactory;
 
 @Controller
 @RequestMapping("/testapi")
-public class RolesController {
+public class VolunteerFunctionsController {
 
-    VolunteerFunctionService roles;
+    VolunteerFunctionService volunteerFunctions;
 
-    public RolesController() {
-        roles = ServiceFactory.getVolunteerFunctionService();
+    public VolunteerFunctionsController() {
+        volunteerFunctions = ServiceFactory.getVolunteerFunctionService();
     }
 
-    @GetMapping(path = "/event/{eventID}/addRole")
+    @GetMapping(path = "/event/{eventID}/addVolunteerFunction")
     public String addRolePage(@PathVariable(value = "eventID") String eventID) {
-        return "testapi/testAddRoleForm";
+        return "testapi/testAddVolunteerFunctionForm";
     }
 
-    @PostMapping(path = "/event/{eventID}/addRole")
+    @PostMapping(path = "/event/{eventID}/addVolunteerFunction")
     public @ResponseBody String addRole(@PathVariable(value = "eventID") int eventID, @RequestParam String name,
             @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
             @RequestParam String timeFinish, @RequestParam int numberNeeded) {
@@ -41,10 +41,10 @@ public class RolesController {
             return "No Such event";
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        if (roles.addVolunteerFunction(event, name, description, requirements, LocalDateTime.parse(timeStart, formatter),
+        if (volunteerFunctions.addVolunteerFunction(event, name, description, requirements, LocalDateTime.parse(timeStart, formatter),
                 LocalDateTime.parse(timeFinish, formatter), numberNeeded))
-            return "Role added";
+            return "Volunteer Functions added";
         else
-            return "Error while adding a role";
+            return "Error while adding a volunteer function";
     }
 }
