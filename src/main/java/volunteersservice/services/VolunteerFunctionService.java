@@ -11,10 +11,13 @@ import volunteersservice.models.entities.VolunteerFunction;
 @Service
 public interface VolunteerFunctionService {
 
-	public boolean addVolunteerFunction(Event event, String name, String description, String requirements, LocalDateTime timeStart,
-			LocalDateTime timeFinish, int numberNeeded);
+	public VolunteerFunction addVolunteerFunction(Event event, String name, String description, String requirements,
+			LocalDateTime timeStart, LocalDateTime timeFinish, int numberNeeded);
 
-	public boolean addVolunteerFunction(VolunteerFunction volunteerFunction);
+	public VolunteerFunction addVolunteerFunction(VolunteerFunction volunteerFunction);
+
+	public VolunteerFunction addVolunteerFunction(Event event, String name, String description, String requirements,
+			String timeStart, String timeFinish, int numberNeeded);
 
 	public List<VolunteerFunction> getVolunteerFunctions(Event event);
 }

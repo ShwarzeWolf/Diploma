@@ -1,8 +1,5 @@
 package volunteersservice.controllers.showapi;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +12,7 @@ import volunteersservice.models.entities.Event;
 import volunteersservice.services.EventService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
+import volunteersservice.utils.exceptions.VolunteerFunctionCreationException;
 
 @Controller
 @RequestMapping("/testapi")
@@ -40,11 +38,12 @@ public class VolunteerFunctionsController {
         if (event == null) {
             return "No Such event";
         }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        if (volunteerFunctions.addVolunteerFunction(event, name, description, requirements, LocalDateTime.parse(timeStart, formatter),
-                LocalDateTime.parse(timeFinish, formatter), numberNeeded))
+        try {
+            volunteerFunctions.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
+                    numberNeeded);
             return "Volunteer Functions added";
-        else
-            return "Error while adding a volunteer function";
+        } catch (VolunteerFunctionCreationException ex) {
+            return "Error happened: " + ex;
+        }
     }
 }

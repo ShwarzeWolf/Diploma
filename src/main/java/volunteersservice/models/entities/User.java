@@ -1,6 +1,6 @@
 package volunteersservice.models.entities;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,7 +44,7 @@ public class User {
 
     @Column(name = "RegisterDate", nullable = false)
     @NotNull
-    private Timestamp registerDate;
+    private LocalDateTime registerDate;
 
     @Column(name = "PasswdHash1", nullable = false)
     @NotNull
@@ -76,7 +76,7 @@ public class User {
     }
 
     public User(String email, String login, String userName,
-            Timestamp registerDate, String password, UserRole userRole) {
+            LocalDateTime registerDate, String password, UserRole userRole) {
         this.email = email;
         this.login = login;
         this.name = userName;
@@ -102,7 +102,7 @@ public class User {
         return email;
     }
 
-    public Timestamp getRegisterDate() {
+    public LocalDateTime getRegisterDate() {
         return registerDate;
     }
 

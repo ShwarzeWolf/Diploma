@@ -1,7 +1,5 @@
 package volunteersservice.controllers.showapi;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +20,7 @@ import volunteersservice.services.EventService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
+import volunteersservice.utils.exceptions.VolunteerFunctionCreationException;
 
 @Controller
 @RequestMapping("/testapi")
@@ -43,9 +42,7 @@ public class EventController {
     @PostMapping("/addEvent")
     public @ResponseBody String addEvent(@RequestParam String name, @RequestParam String description,
             @RequestParam String dateStart, @RequestParam String dateFinish) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        events.addEvent(name, description, LocalDateTime.parse(dateStart, formatter),
-                LocalDateTime.parse(dateFinish, formatter));
+        events.addEvent(name, description, dateStart, dateFinish);
         return "ok";
     }
 
@@ -115,7 +112,7 @@ public class EventController {
 
     @GetMapping("/addEventVolunteerFunctions")
     public String addEventvolunteerFunctionsPage() {
-        return "testapi/testAddEventVolunteerFunctionForm";
+        return "testapi/testAddEventVolunteerFunctionsForm";
     }
 
     @PostMapping("/addEventVolunteerFunctions")
@@ -125,13 +122,16 @@ public class EventController {
             @RequestParam String volunteerFunctionDescription, @RequestParam String volunteerFunctionRequirements,
             @RequestParam String volunteerFunctionTimeStart, @RequestParam String volunteerFunctionTimeFinish,
             @RequestParam int volunteerFunctionNumberNeeded) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         List<VolunteerFunction> volunteerFunctions = new ArrayList<>();
         volunteerFunctions.add(new VolunteerFunction(volunteerFunctionName, volunteerFunctionDescription,
-                volunteerFunctionRequirements, LocalDateTime.parse(volunteerFunctionTimeStart, formatter),
-                LocalDateTime.parse(volunteerFunctionTimeFinish, formatter), volunteerFunctionNumberNeeded));
-        events.addEvent(eventName, eventDescription, LocalDateTime.parse(eventDateStart, formatter),
-                LocalDateTime.parse(eventDateFinish, formatter), volunteerFunctions);
-        return "ok";
+                volunteerFunctionRequirements, volunteerFunctionTimeStart, volunteerFunctionTimeFinish,
+                volunteerFunctionNumberNeeded));
+        try {
+            events.addEvent(eventName, eventDescription, eventDateStart, eventDateFinish, volunteerFunctions);
+            return "ok";
+        } catch (VolunteerFunctionCreationException ex) {
+            return "Error happened: " + ex;
+        }
+
     }
 }
