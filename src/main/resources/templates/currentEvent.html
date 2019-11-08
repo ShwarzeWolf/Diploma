@@ -1,19 +1,24 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
 
-<h2><span th:text="${event.getName()}"></span></h2>
+    <h2><span th:text="${event.getName()}"></span></h2>
 
-<span th:text="${event.getDescription()}"> Description </span>
-<span th:text="${event.getDateStart()}"> DateStart</span>
-<span th:text="${event.getDateFinish()}"> DateFinish</span>
+    <span th:text="${event.getDescription()}"> Description </span>
+    <span th:text="${event.getDateStart()}"> DateStart</span>
+    <span th:text="${event.getDateFinish()}"> DateFinish</span>
 
 
-<h2>Roles</h2>
+    <h2>Roles</h2>
 
 </body>
 </html>

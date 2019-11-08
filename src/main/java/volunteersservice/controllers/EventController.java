@@ -1,5 +1,6 @@
 package volunteersservice.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Controller
 public class EventController {
+    private static Logger log = Logger.getLogger(UserController.class);
 
     private EventServiceDefault events;
 
@@ -23,21 +25,21 @@ public class EventController {
 
     @GetMapping("/addEvent")
     public String addEventPage() {
-        return  "testAddEventForm.html";
+        return  "testAddEventForm";
     }
 
     @PostMapping("/addEvent")
-    public @ResponseBody String addEvent(@RequestParam String name,
+    public String addEvent(@RequestParam String name,
                                          @RequestParam String description,
                                          @RequestParam String dateStart,
                                          @RequestParam String dateFinish) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         events.addEvent(name, description, LocalDateTime.parse(dateStart, formatter),
                 LocalDateTime.parse(dateFinish, formatter));
-        return "ok";
+        return "redirect:/main";
     }
 
-    @GetMapping("/events")
+    @GetMapping("/main")
     public String eventsList(@RequestParam(required = false, defaultValue = "all") String showType,
                                            Model model) {
         List<Event> eventsList = events.getAllEvents();
@@ -45,7 +47,7 @@ public class EventController {
         return "main";
     }
 
-    @GetMapping(path = "/events/{eventID}")
+    @GetMapping(path = "/main/{eventID}")
     public String getEventByID(@PathVariable(value = "eventID") String eventID,
                                Model model) {
         try {

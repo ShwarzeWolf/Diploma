@@ -39,6 +39,7 @@ public class User {
     @Column(name = "Email", nullable = false, unique = true)
     @NotNull
     @NotEmpty(message = "Email cannot be empty")
+//    TODO: вернуть проверку на коррекнтность введенного email + добавить обработку в JS
 //    @Email(message = "Email must be valid")
     private String email;
 

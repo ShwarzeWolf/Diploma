@@ -12,9 +12,9 @@ import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.repositories.EventRepository;
 import volunteersservice.utils.HibernateSessionFactoryUtil;
 
+
 @Repository
 public class EventRepositoryHibernate implements EventRepository {
-
     @Override
     public Event getEventByID(int eventID) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Event.class, eventID);

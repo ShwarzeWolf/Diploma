@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import volunteersservice.security.PasswordEncoderImpl;
 import volunteersservice.security.UserDetailsServiceImpl;
 
@@ -24,8 +25,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/registration").permitAll()
+                .antMatchers("/", "/registration", "/main").permitAll()
                 .antMatchers( "/css/**").permitAll()
+//                TODO: в версии продакшн убрать доступ к testapi
+                .antMatchers( "/testapi/**").permitAll()
                 .anyRequest().authenticated()
             .and()
                 .formLogin()
@@ -35,12 +38,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
             .and()
                 .logout()
-                .permitAll()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true);
+//                .permitAll()
                 // указываем URL логаута
 //                .logoutUrl("/logout")
                 // указываем URL при удачном логауте
-                .logoutSuccessUrl("/main");
-//                .logoutSuccessUrl("/login?logout");
+//                .logoutSuccessUrl("/main");
+//              .logoutSuccessUrl("/login?logout");
                 // делаем не валидной текущую сессию
 //                .invalidateHttpSession(true);
     }
