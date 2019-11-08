@@ -1,6 +1,5 @@
 package volunteersservice.repositories.hibernate;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,14 +7,14 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import volunteersservice.repositories.EventRepository;
-import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.models.entities.Event;
+import volunteersservice.models.enums.EventStatusEnum;
+import volunteersservice.repositories.EventRepository;
 import volunteersservice.utils.HibernateSessionFactoryUtil;
+
 
 @Repository
 public class EventRepositoryHibernate implements EventRepository {
-
     @Override
     public Event getEventByID(int eventID) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Event.class, eventID);
@@ -78,7 +77,7 @@ public class EventRepositoryHibernate implements EventRepository {
     public List<Event> getActiveEvents() {
         return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
                 .createQuery("From Event as event where event.dateStart > :date order by event.dateStart")
-                .setParameter("date", Timestamp.valueOf(LocalDateTime.now().plusHours(6))).list();
+                .setParameter("date", LocalDateTime.now().plusHours(6)).list();
     }
 
     @SuppressWarnings("unchecked")
@@ -94,6 +93,6 @@ public class EventRepositoryHibernate implements EventRepository {
     public List<Event> getActiveEventsByStatus(EventStatusEnum status) {
         return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
                 .createQuery("From Event as event where event.status.name = :statusName and event.dateStart > :date order by event.dateStart")
-                .setParameter("statusName", status.name().toLowerCase()).setParameter("date", Timestamp.valueOf(LocalDateTime.now().plusHours(6))).list();
+                .setParameter("statusName", status.name().toLowerCase()).setParameter("date", LocalDateTime.now().plusHours(6)).list();
     }
 }

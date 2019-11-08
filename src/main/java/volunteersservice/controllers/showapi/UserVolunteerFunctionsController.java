@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/testapi")
-public class UserRolesController {
+public class UserVolunteerFunctionsController {
     @GetMapping(path = "/event/{id}/signup")
     public String addUserToRole() {
         return null;

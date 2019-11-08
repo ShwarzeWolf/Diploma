@@ -1,6 +1,6 @@
 package volunteersservice.models.entities;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,15 +39,15 @@ public class Event {
 
     @Column(name = "DateStart", nullable = false)
     @NotNull
-    private Timestamp dateStart;
+    private LocalDateTime dateStart;
 
     @Column(name = "DateFinish", nullable = false)
     @NotNull
-    private Timestamp dateFinish;
+    private LocalDateTime dateFinish;
 
     public Event() {
     }
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StatusID", nullable = false)
     private EventStatus status;
@@ -63,7 +63,8 @@ public class Event {
         this.status = other.status;
     }
 
-    public Event(@NotEmpty String name, @NotEmpty String description, @NotNull Timestamp dateStart, @NotNull Timestamp dateFinish) {
+    public Event(@NotEmpty String name, @NotEmpty String description, @NotNull LocalDateTime dateStart,
+            @NotNull LocalDateTime dateFinish) {
         this.name = name;
         this.description = description;
         this.dateStart = dateStart;
@@ -84,11 +85,11 @@ public class Event {
         return description;
     }
 
-    public Timestamp getDateStart() {
+    public LocalDateTime getDateStart() {
         return dateStart;
     }
 
-    public Timestamp getDateFinish() {
+    public LocalDateTime getDateFinish() {
         return dateFinish;
     }
 
@@ -99,6 +100,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("(Event) %d: %s; %s; %s - %s; %s", eventID, name, description, dateStart, dateFinish, status);
+        return String.format("(Event) %d: %s; %s; %s - %s; %s", eventID, name, description, dateStart, dateFinish,
+                status);
     }
 }

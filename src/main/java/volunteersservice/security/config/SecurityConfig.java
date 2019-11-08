@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import volunteersservice.security.PasswordEncoderImpl;
 import volunteersservice.security.UserDetailsServiceImpl;
 
@@ -23,33 +24,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/resources/**", "/**").permitAll().anyRequest()
-                .permitAll().and();
-
-        http.formLogin()
-                // указываем страницу с формой логина
-                .loginPage("/testapi/login") // FIXME remove /testapi when ready
-                // указываем action с формы логина
-                .loginProcessingUrl("/testapi/login") // FIXME remove /testapi when ready
-                // Перенаправляем в /home после логина (?)
-                .defaultSuccessUrl("/testapi/home") // FIXME remove /testapi when ready
-                // указываем URL при неудачном логине
-                .failureUrl("/testapi/login?error") // FIXME remove /testapi when ready
-                // Указываем параметры логина и пароля с формы логина
-                .usernameParameter("email").passwordParameter("password")
-                // даем доступ к форме логина всем
-                .permitAll();
-
-        http.logout()
-                // разрешаем делать логаут всем
+        http.authorizeRequests()
+                .antMatchers("/", "/registration", "/main").permitAll()
+                .antMatchers( "/css/**").permitAll()
+//                TODO: в версии продакшн убрать доступ к testapi
+                .antMatchers( "/testapi/**").permitAll()
+                .anyRequest().authenticated()
+            .and()
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("login")
+                .passwordParameter("password")
                 .permitAll()
-                // указываем URL логаута
-                .logoutUrl("/testapi/logout") // FIXME remove /testapi when ready
-                // указываем URL при удачном логауте
-                .logoutSuccessUrl("/testapi/login?logout") // FIXME remove /testapi when ready
-                // делаем не валидной текущую сессию
+            .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
-
+//                .permitAll()
+                // указываем URL логаута
+//                .logoutUrl("/logout")
+                // указываем URL при удачном логауте
+//                .logoutSuccessUrl("/main");
+//              .logoutSuccessUrl("/login?logout");
+                // делаем не валидной текущую сессию
+//                .invalidateHttpSession(true);
     }
-
 }

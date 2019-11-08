@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 import volunteersservice.models.entities.User;
 import volunteersservice.repositories.UserRepository;
 import volunteersservice.utils.HibernateSessionFactoryUtil;
+import org.apache.log4j.Logger;
 
 @Repository
 public class UserRepositoryHibernate implements UserRepository {
+	private static Logger LOG = Logger.getLogger(UserRepositoryHibernate.class);
 
 	// private final static Logger LOG = LogManager.getLogger(UserRepositoryHibernate.class.getName());
 
@@ -41,7 +43,7 @@ public class UserRepositoryHibernate implements UserRepository {
 			tx.commit();
 			return true;
 		} catch(Exception ex) {
-			// LOG.error(ex);
+			 LOG.error(ex);
 			return false;
 		} finally {
 			session.close();

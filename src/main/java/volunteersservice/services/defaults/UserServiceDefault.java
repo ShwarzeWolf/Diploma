@@ -1,6 +1,5 @@
 package volunteersservice.services.defaults;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,9 +49,8 @@ public class UserServiceDefault implements UserService {
 	@Override
 	public boolean addUser(String email, String login, String userName, String password,
 			UserRoleEnum roleEnum) {
-		Timestamp registerDate = Timestamp.valueOf(LocalDateTime.now());
 		UserRole userRole = ServiceFactory.getUserRoleService().getRoleByEnum(roleEnum);
-		return userRepository.save(new User(email, login, userName, registerDate, password, userRole));
+		return userRepository.save(new User(email, login, userName, LocalDateTime.now(), password, userRole));
 	}
 
 	@Override

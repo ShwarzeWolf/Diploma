@@ -1,34 +1,48 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Events</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
 
-<h2>List of Events</h2>
-<div class="eventsList">
-    <table>
-        <thead>
-        <tr>
-            <td>Name</td>
-            <td>Date start</td>
-            <td>Date finish</td>
-            <td>View</td>
-        </tr>
-        </thead>
+    <div sec:authorize="!isAuthenticated()">
+        <a th:href="@{/login}">Вход</a>
+    </div>
 
-        <tbody>
-        <tr th:each="event : ${events}">
-            <td><span th:text="${event.getName()}"> Name </span></td>
-            <td><span th:text="${event.getDateStart()}"> Date Start </span></td>
-            <td><span th:text="${event.getDateFinish()}"> Date Finish</span></td>
-            <td><a th:href="@{'/events/' + ${(event.getEventID())}}">view event</a></td>
-        </tr>
-        </tbody>
-    </table>
+    <div sec:authorize="isAuthenticated()">
+        <a th:href="@{/addEvent}">Добавить событие</a>
+    </div>
 
-</div>
+
+    <h2>List of Events</h2>
+    <div class="eventsList">
+        <table>
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Date start</td>
+                <td>Date finish</td>
+                <td>View</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="event : ${events}">
+                <td><span th:text="${event.getName()}"> Name </span></td>
+                <td><span th:text="${event.getDateStart()}"> Date Start </span></td>
+                <td><span th:text="${event.getDateFinish()}"> Date Finish</span></td>
+                <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
 
 </body>
 </html>
