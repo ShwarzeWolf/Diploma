@@ -39,7 +39,7 @@ public class EventController {
         return "redirect:/main";
     }
 
-    @GetMapping("/main")
+    @GetMapping({"/main", ""})
     public String eventsList(@RequestParam(required = false, defaultValue = "all") String showType,
                                            Model model) {
         List<Event> eventsList = events.getAllEvents();
