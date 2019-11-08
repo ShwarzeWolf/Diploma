@@ -7,19 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
     @GetMapping({"/", "/main"})
-    public String greeting(Model model) {
+    public String main(Model model) {
         return "main";
     }
-
-//    @GetMapping({"/main"})
-//    public String greeting(Model model) {
-//        return "main";
-//    }
-//
-//    @GetMapping({"/"})
-//    public String main(Model model) {
-//        return "greeting";
-//    }
-
-
 }
