@@ -39,7 +39,7 @@ public class User {
     @Column(name = "Email", nullable = false, unique = true)
     @NotNull
     @NotEmpty(message = "Email cannot be empty")
-    @Email(message = "Email must be valid")
+//    @Email(message = "Email must be valid")
     private String email;
 
     @Column(name = "RegisterDate", nullable = false)

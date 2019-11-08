@@ -28,11 +28,12 @@ public class UserController {
                                            Model model) {
         if (users.addUser(email, login, name, password, UserRoleEnum.valueOf(userRole))){
             log.info("Зарегистрировались");
-            return ("redirect:/login");
+            return "redirect:/login";
         }
-        else
-            {log.info("Не получилась регистрация");
-                return "registration";}
+        else{
+            log.info("Не получилась регистрация");
+                return "registration";
+        }
     }
 
     @GetMapping("/registration")
