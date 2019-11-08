@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/registration", "/main").permitAll()
+                .antMatchers("/", "/registration", "/main/**").permitAll()
                 .antMatchers( "/css/**").permitAll()
 //                TODO: в версии продакшн убрать доступ к testapi
                 .antMatchers( "/testapi/**").permitAll()
