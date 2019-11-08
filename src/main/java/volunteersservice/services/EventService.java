@@ -22,10 +22,15 @@ public interface EventService {
 
 	public List<Event> getActiveEventsByStatus(EventStatusEnum status);
 
-	public void addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish);
-
-	public void addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish,
+	public Event addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish,
 			List<VolunteerFunction> volunteerFunctions);
+
+	public Event addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish);
+
+	public Event addEvent(String name, String description, String dateStart, String dateFinish,
+			List<VolunteerFunction> volunteerFunctions);
+
+	public Event addEvent(String name, String description, String dateStart, String dateFinish);
 
 	public void setStatus(Event event, EventStatusEnum status);
 }

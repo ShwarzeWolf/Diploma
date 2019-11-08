@@ -1,7 +1,8 @@
 package volunteersservice.services.defaults;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +17,7 @@ import volunteersservice.services.EventService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.RepositoryFactory;
 import volunteersservice.utils.ServiceFactory;
+import volunteersservice.utils.exceptions.EventCreationException;
 
 @Service
 public class EventServiceDefault implements EventService {
@@ -52,21 +54,49 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
-    public void addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish) {
-        eventRepository.save(new Event(name, description, Timestamp.valueOf(dateStart), Timestamp.valueOf(dateFinish)));
+    public Event addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish,
+            List<VolunteerFunction> volunteerFunctions) {
+        if (dateStart.isAfter(dateFinish))
+            throw new EventCreationException("Start date-time is after finish date-time");
+        if (dateStart.isBefore(LocalDateTime.now().plusHours(24)))
+            throw new EventCreationException("You cannot create event which starts in less than 24 hours");
+
+        Event event = new Event(name, description, dateStart, dateFinish);
+        eventRepository.save(event);
+        LOG.info("Event is saved: [{}]", event.toString());
+        if (volunteerFunctions != null) {
+            VolunteerFunctionService volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
+            for (VolunteerFunction r : volunteerFunctions) {
+                r.setEvent(event);
+                volunteerFunctionService.addVolunteerFunction(r);
+            }
+        }
+        return event;
     }
 
     @Override
-    public void addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish,
+    public Event addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish) {
+        return addEvent(name, description, dateStart, dateFinish, null);
+    }
+
+    @Override
+    public Event addEvent(String name, String description, String dateStart, String dateFinish,
             List<VolunteerFunction> volunteerFunctions) {
-        Event event = new Event(name, description, Timestamp.valueOf(dateStart), Timestamp.valueOf(dateFinish));
-        eventRepository.save(event);
-        LOG.info("Event is saved: [{}]", event.toString());
-        VolunteerFunctionService volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
-        for (VolunteerFunction r : volunteerFunctions) {
-            r.setEvent(event);
-            volunteerFunctionService.addVolunteerFunction(r);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime start, finish;
+        try {
+            start = LocalDateTime.parse(dateStart, formatter);
+            finish = LocalDateTime.parse(dateStart, formatter);
+        } catch (DateTimeParseException ex) {
+            throw new EventCreationException(ex);
         }
+
+        return addEvent(name, description, start, finish, volunteerFunctions);
+    }
+
+    @Override
+    public Event addEvent(String name, String description, String dateStart, String dateFinish) {
+        return addEvent(name, description, dateStart, dateFinish, null);
     }
 
     @Override

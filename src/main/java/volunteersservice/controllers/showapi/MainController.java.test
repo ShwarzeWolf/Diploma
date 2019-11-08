@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/testapi")
+//@RequestMapping("/testapi")
 public class MainController {
 
     @GetMapping("/")
@@ -26,7 +26,7 @@ public class MainController {
             httpServletResponse.setHeader("Location", "/testapi/event/" + eventID);
             httpServletResponse.setStatus(302);
         } else {
-            httpServletResponse.setHeader("Location", "/testapi/event/" + eventID + "/addVolunteerFunction");
+            httpServletResponse.setHeader("Location", "/testapi/event/" + eventID + "/addRole");
             httpServletResponse.setStatus(302);
         }
     }
