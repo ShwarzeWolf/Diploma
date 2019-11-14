@@ -1,34 +1,47 @@
-<html>
-<div id="addEvent_form">
-    <form method="post" action="addEvent">
-        <table>
-            <tr>
-                <td>Event name :</td>
-                <td><input type="text" name="name" value="" />
-                </td>
-            </tr>
-            <tr>
-                <td>Event Description :</td>
-                <td><input type="text" name="description" value="" />
-                </td>
-            </tr>
-            <tr>
-                <td>Start date :</td>
-                <td><input type="datetime-local" name="dateStart" value="" />
-                </td>
-            </tr>
-            <tr>
-                <td>End date :</td>
-                <td><input type="datetime-local" name="dateFinish" value="" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input type="submit" value="Add Event" style="font-size:18px; " />
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Events</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
 
+    <div id="addEvent_form">
+        <form method="post" th:action="@{/addEvent}">
+            <table>
+                <tr>
+                    <td>Event name :</td>
+                    <td><input type="text" name="name" value="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Event Description :</td>
+                    <td><input type="text" name="description" value="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Start date :</td>
+                    <td><input type="datetime-local" name="dateStart" value="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>End date :</td>
+                    <td><input type="datetime-local" name="dateFinish" value="" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" name="addEvent" value="Add Event" style="font-size:18px; " />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</body>
 </html>

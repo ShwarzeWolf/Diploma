@@ -28,18 +28,11 @@ targetCompatibility = 1.8
 dependencies {
     compile("org.hibernate:hibernate-core:5.4.6.Final")
     compile group: 'log4j', name: 'log4j', version: '1.2.16'
-
-
     compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-security")
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
-
-
-
     compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
-
     testCompile("org.springframework.security:spring-security-test")
     testCompile("junit:junit")
 }

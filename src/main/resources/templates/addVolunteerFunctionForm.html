@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Role</title>
+</head>
+<body>
+<div id="addVolunteerFunction_form">
+    <form method="post" th:action="@{addVolunteerFunction}">
+        <table>
+            <tr>
+                <td>Function name :</td>
+                <td><input type="text" name="name" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>Volunteer Function Description :</td>
+                <td><input type="text" name="description" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>Requirements :</td>
+                <td><input type="text" name="requirements" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>Start date :</td>
+                <td><input type="datetime-local" name="timeStart" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>End date :</td>
+                <td><input type="datetime-local" name="timeFinish" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>Number of Volunteers :</td>
+                <td><input type="text" name="numberOfVolunteers" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Add Volunteer Function" style="font-size:18px; " />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+</html>

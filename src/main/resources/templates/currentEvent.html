@@ -3,6 +3,7 @@
 <head>
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="../static/css/currentEvent.css" th:href="@{/css/currentEvent.css}" rel="stylesheet" />
 </head>
 <body>
     <div sec:authorize="isAuthenticated()">
@@ -19,6 +20,31 @@
 
 
     <h2>Roles</h2>
+    <table>
+        <theader>
+            <tr>
+                <td th:text="Name"></td>
+                <td th:text="Description"></td>
+                <td th:text="DateStart"></td>
+                <td th:text="DateFinish"></td>
+                <td th:text="Requirement"></td>
+                <td th:text="Numberofvolunteers"></td>
+                <td th:text="Subscribetofunction"></td>
+            </tr>
+        </theader>
+        <tbody>
+        <tr th:each="volunteerFunction: ${volunteerFunctions}">
+            <td th:text="${volunteerFunction.getName()}"></td>
+            <td th:text="${volunteerFunction.getDescription()}"></td>
+            <td th:text="${volunteerFunction.getTimeStart()}"></td>
+            <td th:text="${volunteerFunction.getTimeFinish()}"></td>
+            <td th:text="${volunteerFunction.getRequirements()}"></td>
+            <td th:text="${volunteerFunction.getNumberNeeded()}"></td>
+            <td><input type="submit" value="Get Function"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{'/main/' + ${(event.getEventID())} + '/addVolunteerFunction'}">Add new Function</a>
 
 </body>
 </html>
