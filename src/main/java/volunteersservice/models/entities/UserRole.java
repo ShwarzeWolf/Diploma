@@ -25,14 +25,11 @@ public class UserRole {
     }
 
     public UserRole(UserRole other) {
-        if (this == other) {
-            return;
-        }
         this.roleID = other.roleID;
         this.name = other.name;
     }
 
-    public int getID() {
+    public int getUserRoleID() {
         return this.roleID;
     }
 

@@ -18,7 +18,27 @@
     <span th:text="${event.getDateFinish()}"> DateFinish</span>
 
 
-    <h2>Roles</h2>
+    <h2>volunteerFunctions</h2>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>Deescription</td>
+            <td>Requirements</td>
+            <td>TimeStart</td>
+            <td>TimeFinish</td>
+            <td>NumberNeeded</td>
+            <td>Link</td>
+        </tr>
+        <tr th:each="volunteerFunction : ${volunteerFunctions}">
+            <td><span th:text="${volunteerFunction.getName()}"> Name </span></td>
+            <td><span th:text="${volunteerFunction.getDescription()}"> Deescription </span></td>
+            <td><span th:text="${volunteerFunction.getRequirements()}"> Requirements </span></td>
+            <td><span th:text="${volunteerFunction.getTimeStart()}"> TimeStart </span></td>
+            <td><span th:text="${volunteerFunction.getTimeFinish()}"> TimeFinish </span></td>
+            <td><span th:text="${volunteerFunction.getNumberNeeded()}"> NumberNeeded </span></td>
+            <td><a th:href="@{'/showapi/volunteerFunction/' + ${(volunteerFunction.getVolunteerFunctionID())}}">View Volunteer Function</a></td>
+        </tr>
+    </table>
 
 </body>
 </html>

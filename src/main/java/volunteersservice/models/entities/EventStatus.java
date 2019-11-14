@@ -23,8 +23,6 @@ public class EventStatus {
     }
 
     public EventStatus(EventStatus other) {
-        if (this == other)
-            return;
         this.statusID = other.statusID;
         this.name = other.name;
     }

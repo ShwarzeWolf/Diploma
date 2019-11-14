@@ -1,0 +1,40 @@
+<HTML>
+
+<head />
+
+<body>
+	<h2><span th:text="${volunteerFunction.getName()}"></span></h2>
+
+	<table>
+		<tr>
+			<td>Name</td>
+			<td>Deescription</td>
+			<td>Requirements</td>
+			<td>TimeStart</td>
+			<td>TimeFinish</td>
+			<td>NumberNeeded</td>
+		</tr>
+		<td><span th:text="${volunteerFunction.getName()}"> Name </span></td>
+		<td><span th:text="${volunteerFunction.getDescription()}"> Deescription </span></td>
+		<td><span th:text="${volunteerFunction.getRequirements()}"> Requirements </span></td>
+		<td><span th:text="${volunteerFunction.getTimeStart()}"> TimeStart </span></td>
+		<td><span th:text="${volunteerFunction.getTimeFinish()}"> TimeFinish </span></td>
+		<td><span th:text="${volunteerFunction.getNumberNeeded()}"> NumberNeeded </span></td>
+		</tr>
+	</table>
+
+
+	<h2>Volunteers</h2>
+	<table>
+		<tr>
+			<td>Name</td>
+			<td>Status</td>
+		</tr>
+		<tr th:each="uvf : ${userVolunteerFunctions}">
+			<td><span th:text="${uvf.user.getName()}"> Name </span></td>
+			<td><span th:text="${uvf.getStatus().getName()}"> Status </span></td>
+		</tr>
+	</table>
+</body>
+
+</HTML>

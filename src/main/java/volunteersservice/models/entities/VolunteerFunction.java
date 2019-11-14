@@ -80,10 +80,9 @@ public class VolunteerFunction {
     }
 
     public VolunteerFunction(VolunteerFunction other) {
-        if (this == other)
-            return;
         init(other.event, other.name, other.description, other.requirements, other.timeStart, other.timeFinish,
                 other.numberNeeded);
+        this.volunteerFunctionID = other.volunteerFunctionID;
     }
 
     public VolunteerFunction(Event event, String name, String description, String requirements, LocalDateTime timeStart,

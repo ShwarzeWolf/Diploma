@@ -39,8 +39,8 @@ public class User {
     @Column(name = "Email", nullable = false, unique = true)
     @NotNull
     @NotEmpty(message = "Email cannot be empty")
-//    TODO: вернуть проверку на коррекнтность введенного email + добавить обработку в JS
-//    @Email(message = "Email must be valid")
+    // TODO: добавить обработку в JS
+    @Email(message = "Email must be valid")
     private String email;
 
     @Column(name = "RegisterDate", nullable = false)
@@ -64,8 +64,6 @@ public class User {
     }
 
     public User(User other) {
-        if (this == other)
-            return;
         this.userID = other.userID;
         this.login = other.login;
         this.name = other.name;
@@ -76,8 +74,8 @@ public class User {
         this.userRole = other.userRole;
     }
 
-    public User(String email, String login, String userName,
-            LocalDateTime registerDate, String password, UserRole userRole) {
+    public User(String email, String login, String userName, LocalDateTime registerDate, String password,
+            UserRole userRole) {
         this.email = email;
         this.login = login;
         this.name = userName;
@@ -87,7 +85,7 @@ public class User {
         this.userRole = userRole;
     }
 
-    public int getID() {
+    public int getUserID() {
         return userID;
     }
 

@@ -33,6 +33,11 @@ public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRe
         }
     }
 
+    @Override
+    public VolunteerFunction getVolunteerFunction(int volunteerFunctionID) {
+        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(VolunteerFunction.class, volunteerFunctionID);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public List<VolunteerFunction> getVolunteerFunctions(Event event) {

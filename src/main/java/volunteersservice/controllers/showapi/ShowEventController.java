@@ -1,4 +1,4 @@
-package volunteersservice.controllers;
+package volunteersservice.controllers.showapi;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -6,55 +6,51 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import volunteersservice.models.entities.Event;
+import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.services.defaults.EventServiceDefault;
+import volunteersservice.utils.ServiceFactory;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-public class EventController {
-    private static Logger log = Logger.getLogger(EventController.class);
+@RequestMapping("/showapi")
+public class ShowEventController {
+    private static Logger log = Logger.getLogger(ShowEventController.class);
 
     private EventServiceDefault events;
 
-    public EventController() {
-        super();
+    public ShowEventController() {
         events = new EventServiceDefault();
     }
 
     @GetMapping("/addEvent")
     public String addEventPage() {
-        return  "testAddEventForm";
+        return "showapi/testAddEventForm";
     }
 
     @PostMapping("/addEvent")
-    public String addEvent(@RequestParam String name,
-                                         @RequestParam String description,
-                                         @RequestParam String dateStart,
-                                         @RequestParam String dateFinish) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        events.addEvent(name, description, LocalDateTime.parse(dateStart, formatter),
-                LocalDateTime.parse(dateFinish, formatter));
-        return "redirect:/main";
+    public String addEvent(@RequestParam String name, @RequestParam String description, @RequestParam String dateStart,
+            @RequestParam String dateFinish) {
+        Event ev = events.addEvent(name, description, dateStart, dateFinish);
+        log.info(ev);
+        return "redirect:/showapi/";
     }
 
-    @GetMapping({"/main", ""})
-    public String eventsList(@RequestParam(required = false, defaultValue = "all") String showType,
-                                           Model model) {
+    @GetMapping({ "/events", "" })
+    public String eventsList(@RequestParam(required = false, defaultValue = "all") String showType, Model model) {
         List<Event> eventsList = events.getAllEvents();
         log.info("test");
         model.addAttribute("events", eventsList);
         return "main";
     }
 
-    @GetMapping(path = "/main/{eventID}")
-    public String getEventByID(@PathVariable(value = "eventID") String eventID,
-                               Model model) {
+    @GetMapping(path = "/event/{eventID}")
+    public String getEventByID(@PathVariable(value = "eventID") String eventID, Model model) {
         try {
             Event currentEvent = events.getEventByID(Integer.valueOf(eventID));
             model.addAttribute("event", currentEvent);
-
+            VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
+            model.addAttribute("volunteerFunctions", vfs.getVolunteerFunctions(currentEvent));
             return "currentEvent";
         } catch (NullPointerException ex) {
             return String.format("No such event: eventID=%s", eventID);

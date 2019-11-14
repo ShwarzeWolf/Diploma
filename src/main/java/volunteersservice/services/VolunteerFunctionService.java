@@ -11,6 +11,8 @@ import volunteersservice.models.entities.VolunteerFunction;
 @Service
 public interface VolunteerFunctionService {
 
+	public VolunteerFunction getVolunteerFunctionByID(int volunteerFunctionID);
+
 	public VolunteerFunction addVolunteerFunction(Event event, String name, String description, String requirements,
 			LocalDateTime timeStart, LocalDateTime timeFinish, int numberNeeded);
 

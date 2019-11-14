@@ -24,6 +24,11 @@ public class VolunteerFunctionServiceDefault implements VolunteerFunctionService
     }
 
     @Override
+    public VolunteerFunction getVolunteerFunctionByID(int volunteerFunctionID) {
+        return volunteerFunctionRepository.getVolunteerFunction(volunteerFunctionID);
+    }
+
+    @Override
     public VolunteerFunction addVolunteerFunction(Event event, String name, String description, String requirements,
             LocalDateTime timeStart, LocalDateTime timeFinish, int numberNeeded) {
         VolunteerFunction volunteerFunction = new VolunteerFunction(event, name, description, requirements, timeStart, timeFinish, numberNeeded);
