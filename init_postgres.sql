@@ -1,5 +1,10 @@
 BEGIN TRANSACTION;
 
+\! echo Deleting java role and schema
+
+drop schema if exists VolunteersService cascade;
+drop role if exists java;
+
 \! echo Creating role and schema
 
 CREATE ROLE java WITH LOGIN PASSWORD '123654';
@@ -10,17 +15,17 @@ CREATE SCHEMA VolunteersService AUTHORIZATION java;
 
 CREATE TABLE VolunteersService.EventStatus (
     StatusID     SERIAL    PRIMARY KEY  NOT NULL,
-    Name         VARCHAR(20)            NOT NULL
+    Name         VARCHAR(30)            NOT NULL
 );
 
 CREATE TABLE VolunteersService.UserRole (
     RoleID       SERIAL    PRIMARY KEY  NOT NULL,
-    Name         VARCHAR(20)            NOT NULL
+    Name         VARCHAR(30)            NOT NULL
 );
 
 CREATE TABLE VolunteersService.VolunteerFunctionStatus (
     StatusID     SERIAL    PRIMARY KEY  NOT NULL,
-    Name         VARCHAR(20)            NOT NULL
+    Name         VARCHAR(30)            NOT NULL
 );
 
 CREATE TABLE VolunteersService.Users (
@@ -36,8 +41,9 @@ CREATE TABLE VolunteersService.Users (
 
 CREATE TABLE VolunteersService.Events (
     EventID      SERIAL    PRIMARY KEY  NOT NULL,
-    Name         VARCHAR(40)            NOT NULL,
+    Name         VARCHAR(50)            NOT NULL,
     Description  VARCHAR(300)           NOT NULL,
+    Place        VARCHAR(120)           NOT NULL,
     DateStart    TIMESTAMPTZ            NOT NULL,
     DateFinish   TIMESTAMPTZ            NOT NULL,
     StatusID     INTEGER                NOT NULL REFERENCES VolunteersService.EventStatus(StatusID)
@@ -46,9 +52,9 @@ CREATE TABLE VolunteersService.Events (
 CREATE TABLE VolunteersService.VolunteerFunctions (
     VolunteerFunctionID       SERIAL    PRIMARY KEY  NOT NULL,
     EventID      INTEGER                NOT NULL REFERENCES VolunteersService.Events(EventID) ON DELETE CASCADE,
-    Name         VARCHAR(20)            NOT NULL,
+    Name         VARCHAR(50)            NOT NULL,
     Description  VARCHAR(200)           NOT NULL,
-    Requirements VARCHAR(200)           NOT NULL,
+    Requirements VARCHAR(200)                   ,
     TimeStart    TIMESTAMPTZ            NOT NULL,
     TimeFinish   TIMESTAMPTZ            NOT NULL,
     NumberNeeded INTEGER                NOT NULL

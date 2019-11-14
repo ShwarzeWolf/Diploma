@@ -41,9 +41,8 @@ public class VolunteerFunction {
     @NotEmpty(message = "VolunteerFunction description cannot be empty")
     private String description;
 
-    @Column(name = "Requirements", nullable = false)
+    @Column(name = "Requirements", nullable = true)
     @NotNull
-    @NotEmpty(message = "VolunteerFunction requirements cannot be empty")
     private String requirements;
 
     @Column(name = "TimeStart", nullable = false)

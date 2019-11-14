@@ -29,13 +29,18 @@ public class Event {
 
     @Column(name = "Name", nullable = false)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Name of Event cannot be empty")
     private String name;
 
     @Column(name = "Description", nullable = false)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Description of Event cannot be empty")
     private String description;
+
+    @Column(name = "Place", nullable = false)
+    @NotNull
+    @NotEmpty(message = "Place of event cannot be empty")
+    private String place;
 
     @Column(name = "DateStart", nullable = false)
     @NotNull
