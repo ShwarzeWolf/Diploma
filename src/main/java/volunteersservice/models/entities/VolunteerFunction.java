@@ -41,9 +41,8 @@ public class VolunteerFunction {
     @NotEmpty(message = "VolunteerFunction description cannot be empty")
     private String description;
 
-    @Column(name = "Requirements", nullable = false)
+    @Column(name = "Requirements", nullable = true)
     @NotNull
-    @NotEmpty(message = "VolunteerFunction requirements cannot be empty")
     private String requirements;
 
     @Column(name = "TimeStart", nullable = false)
@@ -80,10 +79,9 @@ public class VolunteerFunction {
     }
 
     public VolunteerFunction(VolunteerFunction other) {
-        if (this == other)
-            return;
         init(other.event, other.name, other.description, other.requirements, other.timeStart, other.timeFinish,
                 other.numberNeeded);
+        this.volunteerFunctionID = other.volunteerFunctionID;
     }
 
     public VolunteerFunction(Event event, String name, String description, String requirements, LocalDateTime timeStart,
@@ -102,7 +100,7 @@ public class VolunteerFunction {
         LocalDateTime start, finish;
         try {
             start = LocalDateTime.parse(timeStart, formatter);
-            finish = LocalDateTime.parse(timeStart, formatter);
+            finish = LocalDateTime.parse(timeFinish, formatter);
         } catch (DateTimeParseException ex) {
             throw new VolunteerFunctionCreationException(ex);
         }

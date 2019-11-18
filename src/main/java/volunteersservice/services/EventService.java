@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import volunteersservice.models.entities.Event;
+import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
 
@@ -21,16 +22,24 @@ public interface EventService {
 	public List<Event> getEventsByStatus(EventStatusEnum status);
 
 	public List<Event> getActiveEventsByStatus(EventStatusEnum status);
+	
+	public List<Event> getEventsForManagers();
+	
+	public List<Event> getEventsForCoordinators();
 
-	public Event addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish,
+	public List<Event> getEventsForVolunteers();
+	
+	// public List<Event> getOrganiserEvents(User organiser); // TODO create such mechanism
+	
+	public Event addEvent(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish,
 			List<VolunteerFunction> volunteerFunctions);
 
-	public Event addEvent(String name, String description, LocalDateTime dateStart, LocalDateTime dateFinish);
+	public Event addEvent(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish);
 
-	public Event addEvent(String name, String description, String dateStart, String dateFinish,
+	public Event addEvent(String name, User organiser, String description, String place, String dateStart, String dateFinish,
 			List<VolunteerFunction> volunteerFunctions);
 
-	public Event addEvent(String name, String description, String dateStart, String dateFinish);
+	public Event addEvent(String name, User organiser, String description, String place, String dateStart, String dateFinish);
 
 	public void setStatus(Event event, EventStatusEnum status);
 }

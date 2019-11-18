@@ -1,0 +1,51 @@
+<HTML>
+
+<head>
+	<title th:text="${volunteerFunction.getName()} + ' volunteerFunction'"> </title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="../static/css/currentEvent.css" th:href="@{/css/currentEvent.css}" rel="stylesheet" />
+</head>
+
+<body>
+	<h2 th:text="${volunteerFunction.getName()}" />
+
+	<table>
+		<tr>
+			<td th:text="Name" />
+			<td th:text="Description" />
+			<td th:text="Requirements" />
+			<td th:text="TimeStart" />
+			<td th:text="TimeFinish" />
+			<td th:text="NumberOfVolunteers" />
+		</tr>
+		<td th:text="${volunteerFunction.getName()}" />
+		<td th:text="${volunteerFunction.getDescription()}" />
+		<td th:text="${volunteerFunction.getRequirements()}" />
+		<td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span th:text="${volunteerFunction.getTimeFinish()}" /></td>
+		<td th:text="${volunteerFunction.getNumberNeeded()}" />
+		</tr>
+	</table>
+
+	<h2>Candidates:</h2>
+	<table>
+		<tr>
+			<td>Name</td>
+			<td>Status</td>
+		</tr>
+		<tr th:each="uvf : ${userVolunteerFunctions}">
+			<td><span th:text="${uvf.user.getName()}" /></td>
+			<td><span th:text="${uvf.getStatus().getName()}" /></td>
+			<td th:if="${volunteerFunction.getEvent().getOrganiser().getLogin() == user.getLogin()}">(Here will be
+				status changing button)</td>
+		</tr>
+	</table>
+
+	<div th:if="${user.getUserRole().getName().equals('volunteer')}">
+		<form method="POST">
+			<input type="hidden" name="volunteerFunctionID" value="${volunteerFunction.getVolunteerFunctionID()}">
+			<button type="submit">Sign me up!</button>
+		</form>
+	</div>
+</body>
+
+</HTML>

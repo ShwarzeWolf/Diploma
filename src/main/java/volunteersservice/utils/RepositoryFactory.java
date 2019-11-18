@@ -21,11 +21,15 @@ public interface RepositoryFactory {
         return new EventStatusRepositoryHibernate();
     }
 
-    public static VolunteerFunctionStatusRepository getVolunteerFunctionStatusRepository() {
-        return new VolunteerFunctionStatusRepositoryHibernate();
+    public static UserVolunteerFunctionStatusRepository getUserVolunteerFunctionStatusRepository() {
+        return new UserVolunteerFunctionStatusRepositoryHibernate();
     }
 
     public static VolunteerFunctionRepository getVolunteerFunctionRepository() {
         return new VolunteerFunctionRepositoryHibernate();
+    }
+
+    public static UserVolunteerFunctionRepository getUserVolunteerFunctionRepository() {
+        return new UserVolunteerFunctionRepositoryHibernate();
     }
 }

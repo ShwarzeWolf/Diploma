@@ -13,9 +13,14 @@ public interface ServiceFactory {
 	public static VolunteerFunctionService getVolunteerFunctionService() {
 		return new VolunteerFunctionServiceDefault();
 	}
-	public static VolunteerFunctionStatusService getRoleStatusService() {
-		return new VolunteerFunctionStatusServiceDefault();
+	public static UserVolunteerFunctionStatusService getUserVolunteerFunctionStatusService() {
+		return new UserVolunteerFunctionStatusServiceDefault();
 	}
+
+	public static UserVolunteerFunctionService getUserVolunteerFunctionService() {
+		return new UserVolunteerFunctionServiceDefault();
+	}
+
 	public static UserService getUserService() {
 		return new UserServiceDefault();
 	}

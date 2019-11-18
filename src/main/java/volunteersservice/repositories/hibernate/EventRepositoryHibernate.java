@@ -3,6 +3,7 @@ package volunteersservice.repositories.hibernate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,9 @@ import volunteersservice.utils.HibernateSessionFactoryUtil;
 
 @Repository
 public class EventRepositoryHibernate implements EventRepository {
+
+    private final static Logger LOG = Logger.getLogger(EventRepositoryHibernate.class);
+
     @Override
     public Event getEventByID(int eventID) {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Event.class, eventID);
@@ -29,6 +33,7 @@ public class EventRepositoryHibernate implements EventRepository {
             tx.commit();
             return true;
         } catch (Exception ex) {
+            LOG.error(ex);
             return false;
         } finally {
             session.close();

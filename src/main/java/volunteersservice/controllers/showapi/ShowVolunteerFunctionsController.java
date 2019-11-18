@@ -15,18 +15,18 @@ import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.exceptions.VolunteerFunctionCreationException;
 
 @Controller
-@RequestMapping("/testapi")
-public class VolunteerFunctionsController {
+@RequestMapping("/showapi")
+public class ShowVolunteerFunctionsController {
 
     VolunteerFunctionService volunteerFunctions;
 
-    public VolunteerFunctionsController() {
+    public ShowVolunteerFunctionsController() {
         volunteerFunctions = ServiceFactory.getVolunteerFunctionService();
     }
 
     @GetMapping(path = "/event/{eventID}/addVolunteerFunction")
     public String addRolePage(@PathVariable(value = "eventID") String eventID) {
-        return "testapi/testAddVolunteerFunctionForm";
+        return "showapi/testAddVolunteerFunctionForm";
     }
 
     @PostMapping(path = "/event/{eventID}/addVolunteerFunction")

@@ -13,12 +13,11 @@ import volunteersservice.services.UserService;
 import volunteersservice.utils.ServiceFactory;
 
 @Controller
-//@RequestMapping("/testapi")
-public class UserController {
+@RequestMapping("/showapi")
+public class ShowUserController {
     private UserService users;
 
-    public UserController() {
-        super();
+    public ShowUserController() {
         users = ServiceFactory.getUserService();
     }
 
@@ -33,7 +32,7 @@ public class UserController {
 
     @GetMapping("/register")
     public String registerPage() {
-        return "testapi/simpleRegisterForm";
+        return "showapi/simpleRegisterForm";
     }
 
     @GetMapping("/users")
@@ -47,7 +46,7 @@ public class UserController {
     }
 
     // @PostMapping(path = "/login")
-    // public @ResponseBody String loginIntoSystem(@RequestParam String email, @RequestParam String password) {
+    // public @ResponseBody String loginIntoSystem(@RequestParam String login, @RequestParam String password) {
     //     if (users.emailPasswordOkay(email, password)) {
     //         User logged = users.getUserByEmail(email);
     //         return "authorisation by email was successful\nLogged in as <b>" + logged.getName() + "</b><br>FullInfo: " + logged;
@@ -60,6 +59,6 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "testapi/simpleLoginForm";
+        return "showapi/simpleLoginForm";
     }
 }

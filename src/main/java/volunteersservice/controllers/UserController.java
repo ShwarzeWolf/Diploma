@@ -1,6 +1,5 @@
 package volunteersservice.controllers;
 
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +15,18 @@ public class UserController {
     private UserService users;
 
     public UserController() {
-        super();
         users = ServiceFactory.getUserService();
     }
 
     @PostMapping("/registration")
-    public String addNewUser(@RequestParam String email, @RequestParam String name,
-                                           @RequestParam String login, @RequestParam String password, @RequestParam String userRole) {
-        if (users.addUser(email, login, name, password, UserRoleEnum.valueOf(userRole))){
+    public String addNewUser(@RequestParam String email, @RequestParam String name, @RequestParam String login,
+            @RequestParam String password, @RequestParam String userRole) {
+        if (users.addUser(email, login, name, password, UserRoleEnum.valueOf(userRole))) {
             log.info("Зарегистрировались");
             return "login";
-        }
-        else{
+        } else {
             log.info("Не получилась регистрация");
-                return "registration";
+            return "registration";
         }
     }
 
