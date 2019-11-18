@@ -66,7 +66,7 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 	@Override
 	public List<User> getAllVolunteersOfFunction(VolunteerFunction volunteerFunction) {
 		return (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
-				"SELECT new User(user) from User as user inner join UserVolunteerFunction as uvf on uvf.user.userID = user.userID where uvf.volunteerFunction.volunteerFunctionID = :vfID")
+				"select new User(user) from User as user inner join UserVolunteerFunction as uvf on uvf.user.userID = user.userID where uvf.volunteerFunction.volunteerFunctionID = :vfID")
 				.setParameter("vfID", volunteerFunction.getVolunteerFunctionID()).list();
 	}
 
@@ -75,7 +75,7 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 	public List<User> getVolunteersOfFunction(VolunteerFunction volunteerFunction,
 			UserVolunteerFunctionStatusEnum status) {
 		return (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
-				"SELECT new User(user) from User as user inner join VolunteerFunction as vf where vf.user.userID = user.userID inner join UserVolunteerFunctionStatus uvfs on uvfs.status.statusID = vf.statusID where uvfs.name = :statusName")
+				"select new User(user) from User as user inner join VolunteerFunction as vf where vf.user.userID = user.userID inner join UserVolunteerFunctionStatus uvfs on uvfs.status.statusID = vf.statusID where uvfs.name = :statusName")
 				.setParameter("statusName", status.name().toLowerCase()).list();
 	}
 
@@ -84,7 +84,14 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 	public List<UserVolunteerFunction> getUserVolunteerFunctionsOfVolunteerFunction(
 			VolunteerFunction volunteerFunction) {
 		return (List<UserVolunteerFunction>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
-			"SELECT new UserVolunteerFunction(uvf) from UserVolunteerFunction as uvf where uvf.volunteerFunction.volunteerFunctionID = :vfID"
-		).setParameter("vfID", volunteerFunction.getVolunteerFunctionID()).list();
+				"select new UserVolunteerFunction(uvf) from UserVolunteerFunction as uvf where uvf.volunteerFunction.volunteerFunctionID = :vfID")
+				.setParameter("vfID", volunteerFunction.getVolunteerFunctionID()).list();
+	}
+
+	@Override
+	public boolean alreadySignedUp(int userID, int volunteerFunctionID) {
+		return ((Long) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
+				"select count(*) from UserVolunteerFunction as uvf where uvf.user.userID = :userID and uvf.volunteerFunction.volunteerFunctionID = :vfID")
+				.setParameter("userID", userID).setParameter("vfID", volunteerFunctionID).uniqueResult()) > 0;
 	}
 }

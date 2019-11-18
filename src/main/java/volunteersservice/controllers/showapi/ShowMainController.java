@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/showapi")
 public class ShowMainController {
 
-    @GetMapping("/")
+    @GetMapping({ "/", "" })
     public String mainPage() {
         return "showapi/simpleMainPage";
     }

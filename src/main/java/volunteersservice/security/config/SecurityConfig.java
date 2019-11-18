@@ -2,6 +2,7 @@ package volunteersservice.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -30,8 +31,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                TODO: в версии продакшн убрать доступ к showapi
                 .antMatchers("/showapi/**").permitAll()
                 .antMatchers("/showapi/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/main/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/main*").permitAll()
                 .anyRequest().authenticated()
             .and()
+                .csrf().disable() // FIXME maybe? This solves the problem of POST-requests sometimes
+            // .and()
                 .formLogin()
                 .loginPage("/login")
                 .usernameParameter("login")
@@ -42,13 +47,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
-//                .permitAll()
-                // указываем URL логаута
-//                .logoutUrl("/logout")
-                // указываем URL при удачном логауте
-//                .logoutSuccessUrl("/main");
-//              .logoutSuccessUrl("/login?logout");
-                // делаем не валидной текущую сессию
-//                .invalidateHttpSession(true);
     }
 }

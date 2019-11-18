@@ -2,20 +2,19 @@ package volunteersservice.repositories.hibernate;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import volunteersservice.repositories.VolunteerFunctionRepository;
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.VolunteerFunction;
+import volunteersservice.repositories.VolunteerFunctionRepository;
 import volunteersservice.utils.HibernateSessionFactoryUtil;
 
 @Repository
 public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRepository {
-    private final Logger LOG = LogManager.getLogger(VolunteerFunctionRepositoryHibernate.class.getName());
+    private final Logger LOG = Logger.getLogger(VolunteerFunctionRepositoryHibernate.class);
 
     @Override
     public boolean save(VolunteerFunction VolunteerFunction) {

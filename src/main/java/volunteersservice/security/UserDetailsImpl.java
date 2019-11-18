@@ -30,6 +30,10 @@ public class UserDetailsImpl implements UserDetails {
 		return res;
 	}
 
+	public User getUser() {
+		return userModel;
+	}
+
 	@Override
 	public String getPassword() {
 		return userModel.getHash1() + userModel.getHash2();

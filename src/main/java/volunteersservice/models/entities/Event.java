@@ -26,6 +26,11 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EventID")
     private int eventID;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organiserID", referencedColumnName = "userID", nullable = false)
+    @NotNull
+    User organiser;
 
     @Column(name = "Name", nullable = false)
     @NotNull
@@ -50,28 +55,29 @@ public class Event {
     @NotNull
     private LocalDateTime dateFinish;
 
-    public Event() {
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StatusID", nullable = false)
     private EventStatus status;
+    
+    public Event() {
+    }
 
     public Event(Event other) {
-        if (this == other)
-            return;
         this.eventID = other.eventID;
         this.name = other.name;
+        this.organiser = other.organiser;
         this.description = other.description;
+        this.place = other.place;
         this.dateStart = other.dateStart;
         this.dateFinish = other.dateFinish;
         this.status = other.status;
     }
 
-    public Event(@NotEmpty String name, @NotEmpty String description, @NotNull LocalDateTime dateStart,
-            @NotNull LocalDateTime dateFinish) {
+    public Event(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish) {
         this.name = name;
+        this.organiser = organiser;
         this.description = description;
+        this.place = place;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
@@ -82,12 +88,20 @@ public class Event {
         return this.eventID;
     }
 
+    public User getOrganiser() {
+        return organiser;
+    }
+
     public String getName() {
         return this.name;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public String getPlace() {
+        return place;
     }
 
     public LocalDateTime getDateStart() {
@@ -98,6 +112,10 @@ public class Event {
         return dateFinish;
     }
 
+    public EventStatus getStatus() {
+        return status;
+    }
+
     public void setStatus(EventStatusEnum statusEnum) {
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
         this.status = eventStatusRepository.getStatusByName(statusEnum.name().toLowerCase());
@@ -105,7 +123,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("(Event) %d: %s; %s; %s - %s; %s", eventID, name, description, dateStart, dateFinish,
+        return String.format("(Event) %d: by [%s]%s; %s; %s - %s; %s", eventID, organiser, name, description, dateStart, dateFinish,
                 status);
     }
 }

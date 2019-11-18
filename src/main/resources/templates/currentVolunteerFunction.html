@@ -1,0 +1,47 @@
+<HTML>
+
+<head />
+
+<body>
+	<h2><span th:text="${volunteerFunction.getName()}"></span></h2>
+
+	<table>
+		<tr>
+			<td>Name</td>
+			<td>Deescription</td>
+			<td>Requirements</td>
+			<td>TimeStart</td>
+			<td>TimeFinish</td>
+			<td>NumberNeeded</td>
+		</tr>
+		<td><span th:text="${volunteerFunction.getName()}" /></td>
+		<td><span th:text="${volunteerFunction.getDescription()}" /></td>
+		<td><span th:text="${volunteerFunction.getRequirements()}" /></td>
+		<td><span th:text="${volunteerFunction.getTimeStart()}" /></td>
+		<td><span th:text="${volunteerFunction.getTimeFinish()}" /></td>
+		<td><span th:text="${volunteerFunction.getNumberNeeded()}" /></td>
+		</tr>
+	</table>
+
+	<h2>Candidates:</h2>
+	<table>
+		<tr>
+			<td>Name</td>
+			<td>Status</td>
+		</tr>
+		<tr th:each="uvf : ${userVolunteerFunctions}">
+			<td><span th:text="${uvf.user.getName()}" /></td>
+			<td><span th:text="${uvf.getStatus().getName()}" /></td>
+			<td th:if="${volunteerFunction.getEvent().getOrganiser().getLogin() == user.getLogin()}">(Here will be status changing button)</td>
+		</tr>
+	</table>
+
+	<div th:if="${user.getUserRole().getName().equals('volunteer')}">
+		<form method="POST">
+			<input type="hidden" name="volunteerFunctionID" value="${volunteerFunction.getVolunteerFunctionID()}" >
+			<button type="submit">Sign me up!</button>
+		</form>
+	</div>
+</body>
+
+</HTML>

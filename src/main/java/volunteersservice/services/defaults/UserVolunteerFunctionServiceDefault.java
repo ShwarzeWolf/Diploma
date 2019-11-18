@@ -12,6 +12,7 @@ import volunteersservice.repositories.UserVolunteerFunctionRepository;
 import volunteersservice.repositories.UserVolunteerFunctionStatusRepository;
 import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.utils.RepositoryFactory;
+import volunteersservice.utils.exceptions.UserVolunteerFunctionCreationException;
 
 @Service
 public class UserVolunteerFunctionServiceDefault implements UserVolunteerFunctionService {
@@ -34,6 +35,9 @@ public class UserVolunteerFunctionServiceDefault implements UserVolunteerFunctio
 	@Override
 	public UserVolunteerFunction addUserVolunteerFunction(User user, VolunteerFunction volunteerFunction) {
 		UserVolunteerFunction res = new UserVolunteerFunction(user, volunteerFunction);
+		if (userVolunteerFunctions.alreadySignedUp(user.getUserID(), volunteerFunction.getVolunteerFunctionID())) {
+			throw new UserVolunteerFunctionCreationException("User is already signed up to this VolunteerFunction");
+		}
 		userVolunteerFunctions.save(res);
 		return res;
 	}

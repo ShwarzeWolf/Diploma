@@ -21,9 +21,9 @@ public interface UserVolunteerFunctionRepository {
 
     public List<User> getAllVolunteersOfFunction(VolunteerFunction volunteerFunction);
 
-    public List<User> getVolunteersOfFunction(VolunteerFunction volunteerFunction,
-            UserVolunteerFunctionStatusEnum status);
+    public List<User> getVolunteersOfFunction(VolunteerFunction volunteerFunction, UserVolunteerFunctionStatusEnum status);
 
-    public List<UserVolunteerFunction> getUserVolunteerFunctionsOfVolunteerFunction(
-            VolunteerFunction volunteerFunction);
+    public List<UserVolunteerFunction> getUserVolunteerFunctionsOfVolunteerFunction(VolunteerFunction volunteerFunction);
+
+    public boolean alreadySignedUp(int userID, int volunteerFunctionID);
 }
