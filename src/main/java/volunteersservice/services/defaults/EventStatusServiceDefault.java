@@ -18,6 +18,6 @@ public class EventStatusServiceDefault implements EventStatusService {
 
     @Override
     public EventStatus getStatusByEnum(EventStatusEnum statusEnum) {
-        return eventStatusRepository.getStatusByName(statusEnum.name().toLowerCase());
+        return eventStatusRepository.getStatusByEnum(statusEnum);
     }
 }

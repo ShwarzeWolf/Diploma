@@ -81,7 +81,7 @@ public class Event {
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
-        this.status = eventStatusRepository.getStatusByName(EventStatusEnum.UNCHECKED.name().toLowerCase());
+        this.status = eventStatusRepository.getStatusByEnum(EventStatusEnum.UNCHECKED);
     }
 
     public int getEventID() {
@@ -118,7 +118,7 @@ public class Event {
 
     public void setStatus(EventStatusEnum statusEnum) {
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
-        this.status = eventStatusRepository.getStatusByName(statusEnum.name().toLowerCase());
+        this.status = eventStatusRepository.getStatusByEnum(statusEnum);
     }
 
     @Override

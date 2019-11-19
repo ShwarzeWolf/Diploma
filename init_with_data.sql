@@ -2,6 +2,11 @@
 -- PostgreSQL database dump
 --
 
+TRANSACTION BEGIN
+
+DROP SCHEMA IF EXISTS VolunteersService cascade;
+DROP ROLE IF EXISTS java;
+
 CREATE ROLE java WITH LOGIN PASSWORD '123654';
 
 -- Dumped from database version 12.0
@@ -256,22 +261,22 @@ ALTER SEQUENCE volunteersservice.volunteerfunctions_volunteerfunctionid_seq OWNE
 
 
 --
--- Name: volunteerfunctionstatus; Type: TABLE; Schema: volunteersservice; Owner: java
+-- Name: uservolunteerfunctionstatus; Type: TABLE; Schema: volunteersservice; Owner: java
 --
 
-CREATE TABLE volunteersservice.volunteerfunctionstatus (
+CREATE TABLE volunteersservice.uservolunteerfunctionstatus (
     statusid integer NOT NULL,
     name character varying(30) NOT NULL
 );
 
 
-ALTER TABLE volunteersservice.volunteerfunctionstatus OWNER TO java;
+ALTER TABLE volunteersservice.uservolunteerfunctionstatus OWNER TO java;
 
 --
--- Name: volunteerfunctionstatus_statusid_seq; Type: SEQUENCE; Schema: volunteersservice; Owner: java
+-- Name: uservolunteerfunctionstatus_statusid_seq; Type: SEQUENCE; Schema: volunteersservice; Owner: java
 --
 
-CREATE SEQUENCE volunteersservice.volunteerfunctionstatus_statusid_seq
+CREATE SEQUENCE volunteersservice.uservolunteerfunctionstatus_statusid_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -280,13 +285,13 @@ CREATE SEQUENCE volunteersservice.volunteerfunctionstatus_statusid_seq
     CACHE 1;
 
 
-ALTER TABLE volunteersservice.volunteerfunctionstatus_statusid_seq OWNER TO java;
+ALTER TABLE volunteersservice.uservolunteerfunctionstatus_statusid_seq OWNER TO java;
 
 --
--- Name: volunteerfunctionstatus_statusid_seq; Type: SEQUENCE OWNED BY; Schema: volunteersservice; Owner: java
+-- Name: uservolunteerfunctionstatus_statusid_seq; Type: SEQUENCE OWNED BY; Schema: volunteersservice; Owner: java
 --
 
-ALTER SEQUENCE volunteersservice.volunteerfunctionstatus_statusid_seq OWNED BY volunteersservice.volunteerfunctionstatus.statusid;
+ALTER SEQUENCE volunteersservice.uservolunteerfunctionstatus_statusid_seq OWNED BY volunteersservice.uservolunteerfunctionstatus.statusid;
 
 
 --
@@ -332,10 +337,10 @@ ALTER TABLE ONLY volunteersservice.volunteerfunctions ALTER COLUMN volunteerfunc
 
 
 --
--- Name: volunteerfunctionstatus statusid; Type: DEFAULT; Schema: volunteersservice; Owner: java
+-- Name: uservolunteerfunctionstatus statusid; Type: DEFAULT; Schema: volunteersservice; Owner: java
 --
 
-ALTER TABLE ONLY volunteersservice.volunteerfunctionstatus ALTER COLUMN statusid SET DEFAULT nextval('volunteersservice.volunteerfunctionstatus_statusid_seq'::regclass);
+ALTER TABLE ONLY volunteersservice.uservolunteerfunctionstatus ALTER COLUMN statusid SET DEFAULT nextval('volunteersservice.uservolunteerfunctionstatus_statusid_seq'::regclass);
 
 
 --
@@ -353,11 +358,11 @@ COPY volunteersservice.events (eventid, organiserid, name, description, place, d
 --
 
 COPY volunteersservice.eventstatus (statusid, name) FROM stdin;
-1	unchecked
-2	approved
-3	coordinated
-4	published
-5	expired
+1	UNCHECKED
+2	APPROVED
+3	COORDINATED
+4	PUBLISHED
+5	EXPIRED
 \.
 
 
@@ -366,10 +371,10 @@ COPY volunteersservice.eventstatus (statusid, name) FROM stdin;
 --
 
 COPY volunteersservice.userrole (roleid, name) FROM stdin;
-1	organiser
-2	manager
-3	coordinator
-4	volunteer
+1	ORGANISER
+2	MANAGER
+3	COORDINATOR
+4	VOLUNTEER
 \.
 
 
@@ -409,16 +414,16 @@ COPY volunteersservice.volunteerfunctions (volunteerfunctionid, eventid, name, d
 
 
 --
--- Data for Name: volunteerfunctionstatus; Type: TABLE DATA; Schema: volunteersservice; Owner: java
+-- Data for Name: uservolunteerfunctionstatus; Type: TABLE DATA; Schema: volunteersservice; Owner: java
 --
 
-COPY volunteersservice.volunteerfunctionstatus (statusid, name) FROM stdin;
-1	unchecked
-2	denied
-3	approved
-4	participated
-5	partly
-6	absent
+COPY volunteersservice.uservolunteerfunctionstatus (statusid, name) FROM stdin;
+1	UNCHECKED
+2	DENIED
+3	APPROVED
+4	PARTICIPATED
+5	PARTLY
+6	ABSENT
 \.
 
 
@@ -465,10 +470,10 @@ SELECT pg_catalog.setval('volunteersservice.volunteerfunctions_volunteerfunction
 
 
 --
--- Name: volunteerfunctionstatus_statusid_seq; Type: SEQUENCE SET; Schema: volunteersservice; Owner: java
+-- Name: uservolunteerfunctionstatus_statusid_seq; Type: SEQUENCE SET; Schema: volunteersservice; Owner: java
 --
 
-SELECT pg_catalog.setval('volunteersservice.volunteerfunctionstatus_statusid_seq', 6, true);
+SELECT pg_catalog.setval('volunteersservice.uservolunteerfunctionstatus_statusid_seq', 6, true);
 
 
 --
@@ -536,11 +541,11 @@ ALTER TABLE ONLY volunteersservice.volunteerfunctions
 
 
 --
--- Name: volunteerfunctionstatus volunteerfunctionstatus_pkey; Type: CONSTRAINT; Schema: volunteersservice; Owner: java
+-- Name: uservolunteerfunctionstatus uservolunteerfunctionstatus_pkey; Type: CONSTRAINT; Schema: volunteersservice; Owner: java
 --
 
-ALTER TABLE ONLY volunteersservice.volunteerfunctionstatus
-    ADD CONSTRAINT volunteerfunctionstatus_pkey PRIMARY KEY (statusid);
+ALTER TABLE ONLY volunteersservice.uservolunteerfunctionstatus
+    ADD CONSTRAINT uservolunteerfunctionstatus_pkey PRIMARY KEY (statusid);
 
 
 --
@@ -572,7 +577,7 @@ ALTER TABLE ONLY volunteersservice.users
 --
 
 ALTER TABLE ONLY volunteersservice.usersvolunteerfunctions
-    ADD CONSTRAINT usersvolunteerfunctions_statusid_fkey FOREIGN KEY (statusid) REFERENCES volunteersservice.volunteerfunctionstatus(statusid);
+    ADD CONSTRAINT usersvolunteerfunctions_statusid_fkey FOREIGN KEY (statusid) REFERENCES volunteersservice.uservolunteerfunctionstatus(statusid);
 
 
 --
@@ -603,3 +608,5 @@ ALTER TABLE ONLY volunteersservice.volunteerfunctions
 -- PostgreSQL database dump complete
 --
 
+
+END TRANSACTION

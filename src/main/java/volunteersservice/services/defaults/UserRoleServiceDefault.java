@@ -18,6 +18,6 @@ public class UserRoleServiceDefault implements UserRoleService {
 
     @Override
     public UserRole getRoleByEnum(UserRoleEnum typeEnum) {
-        return userRoleRepository.getRoleByName(typeEnum.name().toLowerCase());
+        return userRoleRepository.getRoleByEnum(typeEnum);
     }
 }

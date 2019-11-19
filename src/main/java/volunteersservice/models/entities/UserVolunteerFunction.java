@@ -49,7 +49,7 @@ public class UserVolunteerFunction {
         this.user = user;
         this.volunteerFunction = volunteerFunction;
         UserVolunteerFunctionStatusRepository volunteerFunctionStatusRepository = RepositoryFactory.getUserVolunteerFunctionStatusRepository();
-        this.status = volunteerFunctionStatusRepository.getStatusByName(UserVolunteerFunctionStatusEnum.UNCHECKED.name().toLowerCase());
+        this.status = volunteerFunctionStatusRepository.getStatusByEnum(UserVolunteerFunctionStatusEnum.UNCHECKED);
     }
 
     public User getUser() {
