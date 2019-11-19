@@ -36,7 +36,7 @@
 		</tr>
 	</table>
 
-	<div th:if="${user.getUserRole().getName().equals('volunteer')}">
+	<div th:if="${user != null && user.getUserRole().getName().equals('VOLUNTEER')}">
 		<form method="POST">
 			<input type="hidden" name="volunteerFunctionID" value="${volunteerFunction.getVolunteerFunctionID()}" >
 			<button type="submit">Sign me up!</button>

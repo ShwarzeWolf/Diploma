@@ -41,25 +41,23 @@
                 <td>Name</td>
                 <td>Deescription</td>
                 <td>Requirements</td>
-                <td>TimeStart</td>
-                <td>TimeFinish</td>
+                <td>Time</td>
                 <td>NumberNeeded</td>
                 <td>Link</td>
             </tr>
             <tr th:each="volunteerFunction : ${volunteerFunctions}">
-                <td><span th:text="${volunteerFunction.getName()}" /></td>
-                <td><span th:text="${volunteerFunction.getDescription()}" /></td>
-                <td><span th:text="${volunteerFunction.getRequirements()}" /></td>
-                <td><span th:text="${volunteerFunction.getTimeStart()}" /></td>
-                <td><span th:text="${volunteerFunction.getTimeFinish()}" /></td>
-                <td><span th:text="${volunteerFunction.getNumberNeeded()}" /></td>
+                <td th:text="${volunteerFunction.getName()}" />
+                <td th:text="${volunteerFunction.getDescription()}" />
+                <td th:text="${volunteerFunction.getRequirements()}" />
+                <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span th:text="${volunteerFunction.getTimeFinish()}" /></td>
+                <td th:text="${volunteerFunction.getNumberNeeded()}" />
                 <td><a th:href="@{'/volunteerFunction/' + ${(volunteerFunction.getVolunteerFunctionID())}}">View
                         Volunteer Function</a></td>
             </tr>
         </table>
     </div>
 
-    <div th:if="${event.getOrganiser().getLogin() == user.getLogin()}">
+    <div th:if="${user != null && event.getOrganiser().getLogin() == user.getLogin()}">
         <p>You are the organiser of this event. You can add another VolunteerFunction:</p>
         <form method="post">
             <table>

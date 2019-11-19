@@ -17,8 +17,12 @@
         <a th:href="@{/login}">Вход</a>
     </div>
 
-    <div th:if="${roleName.equals('ORGANISER')}">
+    <div th:if="${roleName != null && roleName.equals('ORGANISER')}">
         <a th:href="@{/addEvent}">Добавить событие</a>
+    </div>
+
+    <div th:if="${roleName != null && roleName.equals('ADMIN')}">
+        <a th:href="@{/registration}">Зарегистрировать человека</a>
     </div>
 
 

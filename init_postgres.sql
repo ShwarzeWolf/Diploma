@@ -2,8 +2,8 @@ BEGIN TRANSACTION;
 
 \! echo Deleting java role and schema
 
-drop schema if exists VolunteersService cascade;
-drop role if exists java;
+DROP SCHEMA IF EXISTS VolunteersService CASCADE;
+DROP ROLE IF EXISTS java;
 
 \! echo Creating role and schema
 
@@ -78,8 +78,8 @@ ALTER TABLE VolunteersService.UsersVolunteerFunctions     OWNER TO java;
 
 \! echo Inserting data
 
-INSERT INTO VolunteersService.UserRole                (Name) values ('ORGANISER'), ('MANAGER'), ('COORDINATOR'), ('VOLUNTEER');
-INSERT INTO VolunteersService.EventStatus             (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED');
-INSERT INTO VolunteersService.VolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPRIVED'), ('PARTICIPATED'), ('PARTICIPATED'), ('ABSENT');
+INSERT INTO VolunteersService.UserRole                    (Name) values ('ORGANISER'), ('MANAGER'), ('COORDINATOR'), ('VOLUNTEER'), ('ADMIN');
+INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED');
+INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPRIVED'), ('PARTICIPATED'), ('PARTICIPATED'), ('ABSENT');
 
 END TRANSACTION;
