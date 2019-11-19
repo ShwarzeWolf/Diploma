@@ -44,7 +44,7 @@ public class VolunteerFunctionServiceDefault implements VolunteerFunctionService
         LocalDateTime start, finish;
         try {
             start = LocalDateTime.parse(timeStart, formatter);
-            finish = LocalDateTime.parse(timeStart, formatter);
+            finish = LocalDateTime.parse(timeFinish, formatter);
         } catch (DateTimeParseException ex) {
             throw new EventCreationException(ex);
         }

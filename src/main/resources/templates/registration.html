@@ -15,8 +15,10 @@
         <td>
             <p><input type="radio" name="userRole" value="VOLUNTEER" checked>Volunteer</p>
             <p><input type="radio" name="userRole" value="ORGANISER">Organiser</p>
+            <p th:if="${roleName != null && roleName.equals('ADMIN')}"><input type="radio" name="userRole" value="COORDINATOR">Coordinator</p>
+            <p th:if="${roleName != null && roleName.equals('ADMIN')}"><input type="radio" name="userRole" value="MANAGER">Manager</p>
         </td>
-        <div><input type="submit" value="Sign up"/></div>
+        <div><input type="submit" value="Register"/></div>
     </form>
 </body>
 </html>

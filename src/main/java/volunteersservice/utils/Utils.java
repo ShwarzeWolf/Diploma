@@ -56,7 +56,7 @@ public class Utils {
         if (res.getClass() == UserDetailsImpl.class) {
             return ((UserDetailsImpl) res).getUser();
         } else {
-            return new User("unathorized@unathorized", "unathorized", "unathorized", null, "unathorized", null);
+            return null;//new User("unathorized@unathorized", "unathorized", "unathorized", null, "unathorized", null);
         }
     }
 }

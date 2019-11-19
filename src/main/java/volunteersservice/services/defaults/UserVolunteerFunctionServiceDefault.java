@@ -45,7 +45,7 @@ public class UserVolunteerFunctionServiceDefault implements UserVolunteerFunctio
 	@Override
 	public void setStatus(UserVolunteerFunction userVolunteerFunction, UserVolunteerFunctionStatusEnum statusEnum) {
 		UserVolunteerFunctionStatusRepository volunteerFunctionStatusRepository = RepositoryFactory.getUserVolunteerFunctionStatusRepository();
-		userVolunteerFunction.setStatus(volunteerFunctionStatusRepository.getStatusByName(statusEnum.name().toLowerCase()));
+		userVolunteerFunction.setStatus(volunteerFunctionStatusRepository.getStatusByEnum(statusEnum));
 		userVolunteerFunctions.update(userVolunteerFunction);
 	}
 

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "VolunteersService.VolunteerFunctionStatus")
+@Table(name = "VolunteersService.UserVolunteerFunctionStatus")
 public class UserVolunteerFunctionStatus {
 
     @Id
@@ -37,6 +37,6 @@ public class UserVolunteerFunctionStatus {
 
     @Override
     public String toString() {
-        return String.format("(VolunteerFunctionStatus) %d: %s", statusID, name);
+        return String.format("(UserVolunteerFunctionStatus) %d: %s", statusID, name);
     }
 }

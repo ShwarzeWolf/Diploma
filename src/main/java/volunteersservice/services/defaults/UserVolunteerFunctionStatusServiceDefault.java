@@ -18,6 +18,6 @@ public class UserVolunteerFunctionStatusServiceDefault implements UserVolunteerF
 
     @Override
     public UserVolunteerFunctionStatus getStatusByEnum(UserVolunteerFunctionStatusEnum statusEnum) {
-        return userVolunteerFunctionStatusRepository.getStatusByName(statusEnum.name().toLowerCase());
+        return userVolunteerFunctionStatusRepository.getStatusByEnum(statusEnum);
     }
 }

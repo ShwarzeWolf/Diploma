@@ -20,7 +20,17 @@ This is a web-application which improves the work of volunteers managers, it pro
 4. Launch ```gradle build``` to build or ```gradle run``` to build and run
 5. Main page will be located at localhost:8080/
 
+### Usage
+
+You can create volunteers and organisers right from the beginning, but there is no point until you have manager and organiser.  
+The right way to register them is registration by admin.
+And the proper way to add admin now: you need to register it as volunteer/organiser, and then change its ```RoleID``` in database to the one
+which is used for role ADMIN in ```VolunteersService.UserRoles```. Technically, you can live without an ADMIN role, and you can create manager and
+organiser in the same way.
+
 ### Sample data
 
-You can initialize service with sample data, in that case you do not need to launch ```init_postgres.sql``` script, but ```init_with_data.sql``` with the same command.  
-For now, there are two volunteers (Username:Password are qwe:qwe and wer:wer) and two organisers (asd:asd and sdf:sdf).
+You can initialize service with sample data, in that case you do not need to launch ```init_postgres.sql``` script, but ```init_with_data.sql``` with the same command.
+Beware of losing your data as this script will drop schema on start and recreate it with sample data.  
+For now, there are two volunteers (Username:Password are qwe:qwe and wer:wer), two organisers (asd:asd and sdf:sdf), coordinator (coordinator:coordinator),
+manager (manager:manager) and administrator (admin:admin).  

@@ -2,8 +2,8 @@ BEGIN TRANSACTION;
 
 \! echo Deleting java role and schema
 
-drop schema if exists VolunteersService cascade;
-drop role if exists java;
+DROP SCHEMA IF EXISTS VolunteersService CASCADE;
+DROP ROLE IF EXISTS java;
 
 \! echo Creating role and schema
 
@@ -23,7 +23,7 @@ CREATE TABLE VolunteersService.UserRole (
     Name         VARCHAR(30)            NOT NULL
 );
 
-CREATE TABLE VolunteersService.VolunteerFunctionStatus (
+CREATE TABLE VolunteersService.UserVolunteerFunctionStatus (
     StatusID     SERIAL    PRIMARY KEY  NOT NULL,
     Name         VARCHAR(30)            NOT NULL
 );
@@ -65,21 +65,21 @@ CREATE TABLE VolunteersService.UsersVolunteerFunctions (
     UserVolunteerFunctionID   SERIAL    PRIMARY KEY  NOT NULL,
     UserID                    INTEGER NOT NULL REFERENCES VolunteersService.Users(UserID)                           ON DELETE SET DEFAULT,
     VolunteerFunctionID       INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctions(VolunteerFunctionID) ON DELETE CASCADE,
-    StatusID                  INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctionStatus(StatusID)
+    StatusID                  INTEGER NOT NULL REFERENCES VolunteersService.UserVolunteerFunctionStatus(StatusID)
 );
 
-ALTER TABLE VolunteersService.EventStatus              OWNER TO java;
-ALTER TABLE VolunteersService.UserRole                 OWNER TO java;
-ALTER TABLE VolunteersService.VolunteerFunctionStatus  OWNER TO java;
-ALTER TABLE VolunteersService.Users                    OWNER TO java;
-ALTER TABLE VolunteersService.Events                   OWNER TO java;
-ALTER TABLE VolunteersService.VolunteerFunctions       OWNER TO java;
-ALTER TABLE VolunteersService.UsersVolunteerFunctions  OWNER TO java;
+ALTER TABLE VolunteersService.EventStatus                 OWNER TO java;
+ALTER TABLE VolunteersService.UserRole                    OWNER TO java;
+ALTER TABLE VolunteersService.UserVolunteerFunctionStatus OWNER TO java;
+ALTER TABLE VolunteersService.Users                       OWNER TO java;
+ALTER TABLE VolunteersService.Events                      OWNER TO java;
+ALTER TABLE VolunteersService.VolunteerFunctions          OWNER TO java;
+ALTER TABLE VolunteersService.UsersVolunteerFunctions     OWNER TO java;
 
 \! echo Inserting data
 
-INSERT INTO VolunteersService.UserRole                (Name) values ('organiser'), ('manager'), ('coordinator'), ('volunteer');
-INSERT INTO VolunteersService.EventStatus             (Name) values ('unchecked'), ('approved'), ('coordinated'), ('published'), ('expired');
-INSERT INTO VolunteersService.VolunteerFunctionStatus (Name) values ('unchecked'), ('denied'), ('approved'), ('participated'), ('partly'), ('absent');
+INSERT INTO VolunteersService.UserRole                    (Name) values ('ORGANISER'), ('MANAGER'), ('COORDINATOR'), ('VOLUNTEER'), ('ADMIN');
+INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED');
+INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPRIVED'), ('PARTICIPATED'), ('PARTICIPATED'), ('ABSENT');
 
 END TRANSACTION;
