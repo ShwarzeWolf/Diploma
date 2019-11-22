@@ -40,11 +40,12 @@
             <td th:text="${volunteerFunction.getTimeFinish()}"></td>
             <td th:text="${volunteerFunction.getRequirements()}"></td>
             <td th:text="${volunteerFunction.getNumberNeeded()}"></td>
-            <td><input type="submit" value="Get Function"/></td>
+            <td><button type="submit" value="Send a request" th:onclick="alert('user added')"/>Подать заявку</td>
         </tr>
         </tbody>
     </table>
-    <a th:href="@{'/main/' + ${(event.getEventID())} + '/addVolunteerFunction'}">Add new Function</a>
+    <p><a th:href="@{'/main/' + ${(event.getEventID())} + '/addVolunteerFunction'}">Add new Function</a></p>
+    <p><a th:href="@{'/main/'}">Back to main page</a></p>
 
 </body>
 </html>
