@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import volunteersservice.models.entities.UserRole;
 import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.repositories.UserRoleRepository;
-import volunteersservice.utils.HibernateSessionFactoryUtil;
+import volunteersservice.utils.HibernateUtil;
 
 @Repository
 public class UserRoleRepositoryHibernate implements UserRoleRepository {
@@ -13,14 +13,14 @@ public class UserRoleRepositoryHibernate implements UserRoleRepository {
     @Deprecated
     @Override
     public UserRole getRoleByName(String typeName) {
-        return (UserRole) HibernateSessionFactoryUtil.getSessionFactory().openSession()
+        return (UserRole) HibernateUtil.getSession()
                 .createQuery("select new UserRole(userRole) from UserRole as userRole where userRole.name = :name")
                 .setParameter("name", typeName).uniqueResult();
     }
 
     @Override
     public UserRole getRoleByEnum(UserRoleEnum roleEnum) {
-        return (UserRole) HibernateSessionFactoryUtil.getSessionFactory().openSession()
+        return (UserRole) HibernateUtil.getSession()
                 .createQuery("select new UserRole(userRole) from UserRole as userRole where userRole.name = :name")
                 .setParameter("name", roleEnum.name()).uniqueResult();
     }

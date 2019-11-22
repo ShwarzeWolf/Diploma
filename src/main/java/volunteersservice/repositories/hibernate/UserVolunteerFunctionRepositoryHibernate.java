@@ -12,7 +12,7 @@ import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.repositories.UserVolunteerFunctionRepository;
-import volunteersservice.utils.HibernateSessionFactoryUtil;
+import volunteersservice.utils.HibernateUtil;
 
 @Repository
 public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFunctionRepository {
@@ -21,19 +21,19 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 
 	@Override
 	public UserVolunteerFunction getUserVolunteerFunctionByID(int id) {
-		return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(UserVolunteerFunction.class, id);
+		return HibernateUtil.getSession().get(UserVolunteerFunction.class, id);
 	}
 
 	@Override
 	public UserVolunteerFunction getUserVolunteerFunction(int userID, int volunteerFunctionID) {
-		return (UserVolunteerFunction) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
+		return (UserVolunteerFunction) HibernateUtil.getSession().createQuery(
 				"select UserVolunteerFunction(function) from UserVolunteerFucntion userfunc where userfunc.user.userID = :userID and userfunc.volunteerFunction.volunteerFunctionID = :vfID")
 				.setParameter("userID", userID).setParameter("vfID", volunteerFunctionID).uniqueResult();
 	}
 
 	@Override
 	public boolean save(UserVolunteerFunction userVolunteerFunction) {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.save(userVolunteerFunction);
@@ -49,7 +49,7 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 
 	@Override
 	public boolean update(UserVolunteerFunction userVolunteerFunction) {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.update(userVolunteerFunction);
@@ -65,7 +65,7 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<User> getAllVolunteersOfFunction(VolunteerFunction volunteerFunction) {
-		return (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
+		return (List<User>) HibernateUtil.getSession().createQuery(
 				"select new User(user) from User as user inner join UserVolunteerFunction as uvf on uvf.user.userID = user.userID where uvf.volunteerFunction.volunteerFunctionID = :vfID")
 				.setParameter("vfID", volunteerFunction.getVolunteerFunctionID()).list();
 	}
@@ -74,7 +74,7 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 	@Override
 	public List<User> getVolunteersOfFunction(VolunteerFunction volunteerFunction,
 			UserVolunteerFunctionStatusEnum status) {
-		return (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
+		return (List<User>) HibernateUtil.getSession().createQuery(
 				"select new User(user) from User as user inner join VolunteerFunction as vf where vf.user.userID = user.userID inner join UserVolunteerFunctionStatus uvfs on uvfs.status.statusID = vf.statusID where uvfs.name = :statusName")
 				.setParameter("statusName", status.name().toLowerCase()).list();
 	}
@@ -83,14 +83,14 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 	@Override
 	public List<UserVolunteerFunction> getUserVolunteerFunctionsOfVolunteerFunction(
 			VolunteerFunction volunteerFunction) {
-		return (List<UserVolunteerFunction>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
+		return (List<UserVolunteerFunction>) HibernateUtil.getSession().createQuery(
 				"select new UserVolunteerFunction(uvf) from UserVolunteerFunction as uvf where uvf.volunteerFunction.volunteerFunctionID = :vfID")
 				.setParameter("vfID", volunteerFunction.getVolunteerFunctionID()).list();
 	}
 
 	@Override
 	public boolean alreadySignedUp(int userID, int volunteerFunctionID) {
-		return ((Long) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
+		return ((Long) HibernateUtil.getSession().createQuery(
 				"select count(*) from UserVolunteerFunction as uvf where uvf.user.userID = :userID and uvf.volunteerFunction.volunteerFunctionID = :vfID")
 				.setParameter("userID", userID).setParameter("vfID", volunteerFunctionID).uniqueResult()) > 0;
 	}

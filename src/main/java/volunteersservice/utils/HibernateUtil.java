@@ -1,6 +1,7 @@
 package volunteersservice.utils;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -13,11 +14,12 @@ import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.UserVolunteerFunctionStatus;
 import volunteersservice.models.entities.VolunteerFunction;
 
-public class HibernateSessionFactoryUtil {
+public class HibernateUtil {
     private static SessionFactory sessionFactory;
-    private final static Logger LOG = Logger.getLogger(HibernateSessionFactoryUtil.class);
+    private static Session session;
+    private final static Logger LOG = Logger.getLogger(HibernateUtil.class);
 
-    private HibernateSessionFactoryUtil() {
+    private HibernateUtil() {
     }
 
     public static SessionFactory getSessionFactory() {
@@ -40,5 +42,11 @@ public class HibernateSessionFactoryUtil {
             }
         }
         return sessionFactory;
+    }
+
+    public static Session getSession() {
+        if (session == null || !session.isOpen())
+            session = getSessionFactory().openSession();
+        return session;
     }
 }

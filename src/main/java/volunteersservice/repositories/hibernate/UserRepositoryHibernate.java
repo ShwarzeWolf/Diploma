@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import volunteersservice.models.entities.User;
 import volunteersservice.repositories.UserRepository;
-import volunteersservice.utils.HibernateSessionFactoryUtil;
+import volunteersservice.utils.HibernateUtil;
 import org.apache.log4j.Logger;
 
 @Repository
@@ -17,31 +17,33 @@ public class UserRepositoryHibernate implements UserRepository {
 
 	@Override
 	public User getUserByID(int id) {
-		return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(User.class, id);
+		return HibernateUtil.getSession().get(User.class, id);
 	}
 
 	@Override
 	public User getUserByEmail(String email) {
-		return (User) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("select new User(user) from User as user where user.email = :email")
-					.setParameter("email", email).uniqueResult();
+		return (User) HibernateUtil.getSession()
+				.createQuery("select new User(user) from User as user where user.email = :email")
+				.setParameter("email", email).uniqueResult();
 	}
 
 	@Override
 	public User getUserByLogin(String login) {
-		return (User) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("select new User(user) from User as user where user.login = :login")
-					.setParameter("login", login).uniqueResult();
+		return (User) HibernateUtil.getSession()
+				.createQuery("select new User(user) from User as user where user.login = :login")
+				.setParameter("login", login).uniqueResult();
 	}
 
 	@Override
 	public boolean save(User user) {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.save(user);
 			tx.commit();
 			return true;
-		} catch(Exception ex) {
-			 LOG.error(ex);
+		} catch (Exception ex) {
+			LOG.error(ex);
 			return false;
 		} finally {
 			session.close();
@@ -50,13 +52,13 @@ public class UserRepositoryHibernate implements UserRepository {
 
 	@Override
 	public boolean update(User user) {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.update(user);
 			tx.commit();
 			return true;
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			return false;
 		} finally {
 			session.close();
@@ -65,13 +67,13 @@ public class UserRepositoryHibernate implements UserRepository {
 
 	@Override
 	public boolean delete(User user) {
-		Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.delete(user);
 			tx.commit();
 			return true;
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			return false;
 		} finally {
 			session.close();
@@ -81,6 +83,6 @@ public class UserRepositoryHibernate implements UserRepository {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<User> findAll() {
-		return (List<User>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From User").list();
+		return (List<User>) HibernateUtil.getSession().createQuery("From User").list();
 	}
 }

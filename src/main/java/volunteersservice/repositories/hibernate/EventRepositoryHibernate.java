@@ -11,8 +11,7 @@ import org.springframework.stereotype.Repository;
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.repositories.EventRepository;
-import volunteersservice.utils.HibernateSessionFactoryUtil;
-
+import volunteersservice.utils.HibernateUtil;
 
 @Repository
 public class EventRepositoryHibernate implements EventRepository {
@@ -21,12 +20,12 @@ public class EventRepositoryHibernate implements EventRepository {
 
     @Override
     public Event getEventByID(int eventID) {
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Event.class, eventID);
+        return HibernateUtil.getSession().get(Event.class, eventID);
     }
 
     @Override
     public boolean save(Event event) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
             session.save(event);
@@ -42,7 +41,7 @@ public class EventRepositoryHibernate implements EventRepository {
 
     @Override
     public boolean delete(Event event) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
             session.delete(event);
@@ -57,7 +56,7 @@ public class EventRepositoryHibernate implements EventRepository {
 
     @Override
     public boolean update(Event event) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
             session.update(event);
@@ -73,14 +72,14 @@ public class EventRepositoryHibernate implements EventRepository {
     @SuppressWarnings("unchecked")
     @Override
     public List<Event> getAllEvents() {
-        return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
-                .createQuery("From Event as event order by event.dateStart").list();
+        return (List<Event>) HibernateUtil.getSession().createQuery("From Event as event order by event.dateStart")
+                .list();
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<Event> getActiveEvents() {
-        return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
+        return (List<Event>) HibernateUtil.getSession()
                 .createQuery("From Event as event where event.dateStart > :date order by event.dateStart")
                 .setParameter("date", LocalDateTime.now().plusHours(6)).list();
     }
@@ -88,7 +87,7 @@ public class EventRepositoryHibernate implements EventRepository {
     @SuppressWarnings("unchecked")
     @Override
     public List<Event> getEventsByStatus(EventStatusEnum status) {
-        return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
+        return (List<Event>) HibernateUtil.getSession()
                 .createQuery("From Event as event where event.status.name = :statusName order by event.dateStart")
                 .setParameter("statusName", status.name().toLowerCase()).list();
     }
@@ -96,8 +95,9 @@ public class EventRepositoryHibernate implements EventRepository {
     @SuppressWarnings("unchecked")
     @Override
     public List<Event> getActiveEventsByStatus(EventStatusEnum status) {
-        return (List<Event>) HibernateSessionFactoryUtil.getSessionFactory().openSession()
-                .createQuery("From Event as event where event.status.name = :statusName and event.dateStart > :date order by event.dateStart")
-                .setParameter("statusName", status.name().toLowerCase()).setParameter("date", LocalDateTime.now().plusHours(6)).list();
+        return (List<Event>) HibernateUtil.getSession().createQuery(
+                "From Event as event where event.status.name = :statusName and event.dateStart > :date order by event.dateStart")
+                .setParameter("statusName", status.name().toLowerCase())
+                .setParameter("date", LocalDateTime.now().plusHours(6)).list();
     }
 }
