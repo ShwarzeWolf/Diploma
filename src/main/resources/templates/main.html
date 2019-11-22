@@ -3,19 +3,40 @@
 
 <head>
     <title>Events</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
 <body>
-    <div sec:authorize="isAuthenticated()">
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out" />
-        </form>
+    <div id="header">
+        <div class="head_line">
+            <div class="head_line_block_left">
+<!--                The "Вход" block must be the first among the elements of the current block-->
+                <div class="head_one_element" sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}">Вход</a>
+                </div>
+
+            </div>
+
+            <div class="head_line_block_right">
+
+                <div class="head_one_element"  sec:authorize="isAuthenticated()">
+                    <a th:href="@{/personal_account}" th:text="${name_and_role}">Личный кабинет</a>
+                </div>
+<!--                The "sign out" block must be the last among the elements of the current block-->
+                <div class="head_one_element"  sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Sign Out" />
+                    </form>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <div sec:authorize="!isAuthenticated()">
-        <a th:href="@{/login}">Вход</a>
-    </div>
+
+
+
 
     <div th:if="${roleName != null && roleName.equals('ORGANISER')}">
         <a th:href="@{/addEvent}">Добавить событие</a>

@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import volunteersservice.security.PasswordEncoderImpl;
 import volunteersservice.security.UserDetailsServiceImpl;
@@ -40,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .usernameParameter("login")
+                .failureUrl("/login-error")
                 .passwordParameter("password")
                 .permitAll()
             .and()

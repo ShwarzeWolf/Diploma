@@ -1,11 +1,14 @@
 package volunteersservice.controllers;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import volunteersservice.models.entities.User;
 import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.services.UserService;
 import volunteersservice.utils.ServiceFactory;
@@ -40,8 +43,8 @@ public class UserController {
         return "registration";
     }
 
-    @GetMapping("/login")
-    public String logIn() {
-        return "login";
+    @GetMapping("/personal_account")
+    public String goToAcc() {
+        return "personal_account";
     }
 }
