@@ -1,13 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <title>Events</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
+
 <body>
     <div sec:authorize="isAuthenticated()">
         <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
+            <input type="submit" value="Sign Out" />
         </form>
     </div>
 
@@ -15,8 +17,12 @@
         <a th:href="@{/login}">Вход</a>
     </div>
 
-    <div sec:authorize="isAuthenticated()">
+    <div th:if="${roleName != null && roleName.equals('ORGANISER')}">
         <a th:href="@{/addEvent}">Добавить событие</a>
+    </div>
+
+    <div th:if="${roleName != null && roleName.equals('ADMIN')}">
+        <a th:href="@{/registration}">Зарегистрировать человека</a>
     </div>
 
 
@@ -24,25 +30,26 @@
     <div class="eventsList">
         <table>
             <thead>
-            <tr>
-                <td>Name</td>
-                <td>Date start</td>
-                <td>Date finish</td>
-                <td>View</td>
-            </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>Date start</td>
+                    <td>Date finish</td>
+                    <td>View</td>
+                </tr>
             </thead>
 
             <tbody>
-            <tr th:each="event : ${events}">
-                <td><span th:text="${event.getName()}"> Name </span></td>
-                <td><span th:text="${event.getDateStart()}"> Date Start </span></td>
-                <td><span th:text="${event.getDateFinish()}"> Date Finish</span></td>
-                <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
-            </tr>
+                <tr th:each="event : ${events}">
+                    <td><span th:text="${event.getName()}"> Name </span></td>
+                    <td><span th:text="${event.getDateStart()}"> Date Start </span></td>
+                    <td><span th:text="${event.getDateFinish()}"> Date Finish</span></td>
+                    <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
+                </tr>
             </tbody>
         </table>
 
     </div>
 
 </body>
+
 </html>

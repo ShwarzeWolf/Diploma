@@ -10,28 +10,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import volunteersservice.models.enums.VolunteerFunctionStatusEnum;
-import volunteersservice.repositories.VolunteerFunctionStatusRepository;
+import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
+import volunteersservice.repositories.UserVolunteerFunctionStatusRepository;
 import volunteersservice.utils.RepositoryFactory;
 
 @Entity
 @Table(name = "VolunteersService.UsersVolunteerFunctions")
 public class UserVolunteerFunction {
 
-    public UserVolunteerFunction() {
-    }
-
-    public UserVolunteerFunction(User user, VolunteerFunction volunteerFunction) {
-        this.user = user;
-        this.volunteerFunction = volunteerFunction;
-        VolunteerFunctionStatusRepository volunteerFunctionStatusRepository = RepositoryFactory.getVolunteerFunctionStatusRepository();
-        this.status = volunteerFunctionStatusRepository.getStatusByName(VolunteerFunctionStatusEnum.UNCHECKED.name().toLowerCase());
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserVolunteerFunctionID")
-    int UserVolunteerRoFunction;
+    int userVolunteerFunctionID;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID", nullable = false)
@@ -43,17 +33,38 @@ public class UserVolunteerFunction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StatusID", nullable = false)
-    VolunteerFunctionStatus status;
+    UserVolunteerFunctionStatus status;
+
+    public UserVolunteerFunction() {
+    }
+
+    public UserVolunteerFunction(UserVolunteerFunction other) {
+        this.userVolunteerFunctionID = other.userVolunteerFunctionID;
+        this.user = other.user;
+        this.volunteerFunction = other.volunteerFunction;
+        this.status = other.status;
+    }
+
+    public UserVolunteerFunction(User user, VolunteerFunction volunteerFunction) {
+        this.user = user;
+        this.volunteerFunction = volunteerFunction;
+        UserVolunteerFunctionStatusRepository volunteerFunctionStatusRepository = RepositoryFactory.getUserVolunteerFunctionStatusRepository();
+        this.status = volunteerFunctionStatusRepository.getStatusByEnum(UserVolunteerFunctionStatusEnum.UNCHECKED);
+    }
 
     public User getUser() {
         return user;
     }
 
-    public VolunteerFunction getvolunteerFunction() {
+    public VolunteerFunction getVolunteerFunction() {
         return volunteerFunction;
     }
 
-    public VolunteerFunctionStatus getStatus() {
+    public UserVolunteerFunctionStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(UserVolunteerFunctionStatus status) {
+        this.status = status;
     }
 }

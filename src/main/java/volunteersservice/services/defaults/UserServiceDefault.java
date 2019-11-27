@@ -3,8 +3,7 @@ package volunteersservice.services.defaults;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import volunteersservice.models.entities.User;
@@ -20,7 +19,7 @@ import volunteersservice.utils.Utils;
 public class UserServiceDefault implements UserService {
 
 	private final UserRepository userRepository;
-	private final static Logger LOG = LogManager.getLogger(UserServiceDefault.class.getName());
+	private final static Logger LOG = Logger.getLogger(UserServiceDefault.class);
 
 	public UserServiceDefault() {
 		userRepository = RepositoryFactory.getUserRepository();

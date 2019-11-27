@@ -15,8 +15,6 @@ import org.apache.log4j.Logger;
 public class UserRepositoryHibernate implements UserRepository {
 	private static Logger LOG = Logger.getLogger(UserRepositoryHibernate.class);
 
-	// private final static Logger LOG = LogManager.getLogger(UserRepositoryHibernate.class.getName());
-
 	@Override
 	public User getUserByID(int id) {
 		return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(User.class, id);

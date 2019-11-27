@@ -1,51 +1,96 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <title th:text="${event.getName()} + ' event'"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="../static/css/currentEvent.css" th:href="@{/css/currentEvent.css}" rel="stylesheet" />
 </head>
+
 <body>
     <div sec:authorize="isAuthenticated()">
         <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
+            <input type="submit" value="Sign Out" />
         </form>
     </div>
 
     <h2><span th:text="${event.getName()}"></span></h2>
 
-    <span th:text="${event.getDescription()}"> Description </span>
-    <span th:text="${event.getDateStart()}"> DateStart</span>
-    <span th:text="${event.getDateFinish()}"> DateFinish</span>
-
-
-    <h2>Roles</h2>
     <table>
-        <theader>
-            <tr>
-                <td th:text="Name"></td>
-                <td th:text="Description"></td>
-                <td th:text="DateStart"></td>
-                <td th:text="DateFinish"></td>
-                <td th:text="Requirement"></td>
-                <td th:text="Numberofvolunteers"></td>
-                <td th:text="Subscribetofunction"></td>
-            </tr>
-        </theader>
-        <tbody>
-        <tr th:each="volunteerFunction: ${volunteerFunctions}">
-            <td th:text="${volunteerFunction.getName()}"></td>
-            <td th:text="${volunteerFunction.getDescription()}"></td>
-            <td th:text="${volunteerFunction.getTimeStart()}"></td>
-            <td th:text="${volunteerFunction.getTimeFinish()}"></td>
-            <td th:text="${volunteerFunction.getRequirements()}"></td>
-            <td th:text="${volunteerFunction.getNumberNeeded()}"></td>
-            <td><button type="submit" value="Send a request" th:onclick="alert('user added')"/>Подать заявку</td>
+        <tr>
+            <td>Description: </td>
+            <td th:text="${event.getDescription()}" />
         </tr>
-        </tbody>
+        <tr>
+            <td>Place: </td>
+            <td th:text="${event.getPlace()}" />
+        </tr>
+        <tr>
+            <td>Time: </td>
+            <td><span th:text="${event.getDateStart()}" /> - <span th:text="${event.getDateFinish()}" /></td>
+        </tr>
+        <tr>
+            <td>Organised by:</td>
+            <td th:text="${event.getOrganiser().getName()}" />
+        </tr>
     </table>
-    <p><a th:href="@{'/main/' + ${(event.getEventID())} + '/addVolunteerFunction'}">Add new Function</a></p>
-    <p><a th:href="@{'/main/'}">Back to main page</a></p>
+
+    <div th:if="${not #lists.isEmpty(volunteerFunctions)}">
+        <h2>volunteerFunctions</h2>
+        <table>
+            <tr>
+                <td th:text="Name" />
+                <td th:text="Description" />
+                <td th:text="Requirements" />
+                <td th:text="Time" />
+                <td th:text="NumberOfVolunteers" />
+                <td th:text="Link" />
+            </tr>
+            <tr th:each="volunteerFunction : ${volunteerFunctions}">
+                <td th:text="${volunteerFunction.getName()}" />
+                <td th:text="${volunteerFunction.getDescription()}" />
+                <td th:text="${volunteerFunction.getRequirements()}" />
+                <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span th:text="${volunteerFunction.getTimeFinish()}" /></td>
+                <td th:text="${volunteerFunction.getNumberNeeded()}" />
+                <td><a th:href="@{'/volunteerFunction/' + ${(volunteerFunction.getVolunteerFunctionID())}}">View
+                        Volunteer Function</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <div th:if="${user != null && event.getOrganiser().getLogin() == user.getLogin()}">
+        <p>You are the organiser of this event. You can add another VolunteerFunction:</p>
+        <form method="post">
+            <table>
+                <tr>
+                    <td>Function name :</td>
+                    <td><input type="text" name="name" value="" /></td>
+                </tr>
+                <tr>
+                    <td>Function description :</td>
+                    <td><input type="text" name="description" value="" /></td>
+                </tr>
+                <tr>
+                    <td>Function requirements :</td>
+                    <td><input type="text" name="requirements" value="" /></td>
+                </tr>
+                <tr>
+                    <td>Start time :</td>
+                    <td><input type="datetime-local" name="timeStart" value="" /></td>
+                </tr>
+                <tr>
+                    <td>End time :</td>
+                    <td><input type="datetime-local" name="timeFinish" value="" /></td>
+                </tr>
+                <tr>
+                    <td>Number of volunteers needed :</td>
+                    <td><input type="number" name="numberNeeded" value="" /></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Add Volunteer function" style="font-size:18px; " /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 
 </body>
 </html>

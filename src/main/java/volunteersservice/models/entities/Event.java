@@ -26,16 +26,26 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EventID")
     private int eventID;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organiserID", referencedColumnName = "userID", nullable = false)
+    @NotNull
+    User organiser;
 
     @Column(name = "Name", nullable = false)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Name of Event cannot be empty")
     private String name;
 
     @Column(name = "Description", nullable = false)
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Description of Event cannot be empty")
     private String description;
+
+    @Column(name = "Place", nullable = false)
+    @NotNull
+    @NotEmpty(message = "Place of event cannot be empty")
+    private String place;
 
     @Column(name = "DateStart", nullable = false)
     @NotNull
@@ -45,36 +55,41 @@ public class Event {
     @NotNull
     private LocalDateTime dateFinish;
 
-    public Event() {
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StatusID", nullable = false)
     private EventStatus status;
+    
+    public Event() {
+    }
 
     public Event(Event other) {
-        if (this == other)
-            return;
         this.eventID = other.eventID;
         this.name = other.name;
+        this.organiser = other.organiser;
         this.description = other.description;
+        this.place = other.place;
         this.dateStart = other.dateStart;
         this.dateFinish = other.dateFinish;
         this.status = other.status;
     }
 
-    public Event(@NotEmpty String name, @NotEmpty String description, @NotNull LocalDateTime dateStart,
-            @NotNull LocalDateTime dateFinish) {
+    public Event(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish) {
         this.name = name;
+        this.organiser = organiser;
         this.description = description;
+        this.place = place;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
-        this.status = eventStatusRepository.getStatusByName(EventStatusEnum.UNCHECKED.name().toLowerCase());
+        this.status = eventStatusRepository.getStatusByEnum(EventStatusEnum.UNCHECKED);
     }
 
     public int getEventID() {
         return this.eventID;
+    }
+
+    public User getOrganiser() {
+        return organiser;
     }
 
     public String getName() {
@@ -85,6 +100,10 @@ public class Event {
         return description;
     }
 
+    public String getPlace() {
+        return place;
+    }
+
     public LocalDateTime getDateStart() {
         return dateStart;
     }
@@ -93,14 +112,18 @@ public class Event {
         return dateFinish;
     }
 
+    public EventStatus getStatus() {
+        return status;
+    }
+
     public void setStatus(EventStatusEnum statusEnum) {
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
-        this.status = eventStatusRepository.getStatusByName(statusEnum.name().toLowerCase());
+        this.status = eventStatusRepository.getStatusByEnum(statusEnum);
     }
 
     @Override
     public String toString() {
-        return String.format("(Event) %d: %s; %s; %s - %s; %s", eventID, name, description, dateStart, dateFinish,
+        return String.format("(Event) %d: by [%s]%s; %s; %s - %s; %s", eventID, organiser, name, description, dateStart, dateFinish,
                 status);
     }
 }
