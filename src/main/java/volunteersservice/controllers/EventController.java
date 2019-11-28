@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import volunteersservice.models.entities.Event;
+import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
+import volunteersservice.services.UserService;
 import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.services.EventService;
@@ -27,12 +30,15 @@ public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
     private EventService eventService;
+    private UserService users;
     private VolunteerFunctionService volunteerFunctionManager;
+    private UserVolunteerFunctionService userVolunteerFunctionManager;
 
     public EventController() {
         LOG.info("EventController is alive");
         eventService = ServiceFactory.getEventService();
         volunteerFunctionManager = ServiceFactory.getVolunteerFunctionService();
+        userVolunteerFunctionManager = ServiceFactory.getUserVolunteerFunctionService();
     }
 
     @GetMapping("/addEvent")
@@ -51,7 +57,7 @@ public class EventController {
     }
 
     @GetMapping({ "/main", "" })
-    public String eventsList(HttpServletRequest request, Model model) {
+    public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
         List<Event> eventsList = eventService.getAllEvents(); // TODO change to getEventsForVolunteers() / others depending on user
         model.addAttribute("events", eventsList);
         // 
@@ -70,6 +76,14 @@ public class EventController {
         String roleName = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findAny()
                 .get().getAuthority();
         model.addAttribute("roleName", roleName);
+
+        User user = Utils.getUserFromContext();
+        if (user != null){
+            String str = new String(user.getName() + " : " + roleName);
+            model.addAttribute("name_and_role", str);
+        }
+
+
         return "main";
     }
 
@@ -138,5 +152,17 @@ public class EventController {
                 numberOfVolunteers);
 
         return "redirect:/main/" + eventID;
+    }
+
+
+    @GetMapping("/main/{eventID}/volunteers")
+    public String getListOfVolunteers(@PathVariable(value="eventID") String eventID,
+                                      Model model){
+        Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
+
+        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionManager.getAllVolunteersOfEvent(currentEvent);
+        model.addAttribute("registeredUsers", registeredUsers);
+
+        return "volunteersForEvent";
     }
 }

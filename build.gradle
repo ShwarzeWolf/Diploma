@@ -34,6 +34,8 @@ dependencies {
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
     compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
     testCompile("org.springframework.security:spring-security-test")
+
+
 }
 
 // for 'gradle run' command

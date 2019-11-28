@@ -26,4 +26,6 @@ public interface UserVolunteerFunctionRepository {
     public List<UserVolunteerFunction> getUserVolunteerFunctionsOfVolunteerFunction(VolunteerFunction volunteerFunction);
 
     public boolean alreadySignedUp(int userID, int volunteerFunctionID);
+
+    public List<UserVolunteerFunction> getAllVolunteersOfEvent(int eventId);
 }

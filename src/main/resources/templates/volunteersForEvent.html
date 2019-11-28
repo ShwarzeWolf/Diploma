@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Volunteers for current event</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<table>
+    <tr th:each="users : ${registeredUsers}">
+        <td th:text="${users.getUser().getName()}"></td>
+        <td th:text="${users.getVolunteerFunction().getName()}"></td>
+    </tr>
+</table>
+</html>

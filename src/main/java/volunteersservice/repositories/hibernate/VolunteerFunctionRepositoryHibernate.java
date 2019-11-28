@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.repositories.VolunteerFunctionRepository;
-import volunteersservice.utils.HibernateSessionFactoryUtil;
+import volunteersservice.utils.HibernateUtil;
 
 @Repository
 public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRepository {
@@ -18,7 +18,7 @@ public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRe
 
     @Override
     public boolean save(VolunteerFunction VolunteerFunction) {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
             session.save(VolunteerFunction);
@@ -34,13 +34,13 @@ public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRe
 
     @Override
     public VolunteerFunction getVolunteerFunction(int volunteerFunctionID) {
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(VolunteerFunction.class, volunteerFunctionID);
+        return HibernateUtil.getSession().get(VolunteerFunction.class, volunteerFunctionID);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<VolunteerFunction> getVolunteerFunctions(Event event) {
-        return (List<VolunteerFunction>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery(
+        return (List<VolunteerFunction>) HibernateUtil.getSession().createQuery(
                 "Select new VolunteerFunction(volunteerFunction) From VolunteerFunction as volunteerFunction inner join Event as event on event.eventID = volunteerFunction.event.eventID where event.eventID = :eventID")
                 .setParameter("eventID", event.getEventID()).list();
     }
