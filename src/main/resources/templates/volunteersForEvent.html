@@ -6,23 +6,33 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <h2>Volunteers for current event:</h2>
+<h3></h3>
 <table class="table">
     <thead>
         <tr>
             <th scope="col" th:text="UserName"></th>
             <th scope="col" th:text="UserFunction"></th>
-            <th scope="col" th:text="FunctionStatus">"</th>
-            <th scope="col" th:text="Estimation">"</th>
-            <th scope="col" th:text="getNumberOfHours">"</th>
+            <th scope="col" th:text="FunctionStatus"></th>
+            <th scope="col" th:text="Action"></th>
+            <!--- <th scope="col" th:text="Estimation">"</th>
+            <th scope="col" th:text="getNumberOfHours">"</th> --->
         </tr>
     </thead>
     <tbody>
         <tr th:each="users : ${registeredUsers}">
             <td th:text="${users.getUser().getName()}"></td>
             <td th:text="${users.getVolunteerFunction().getName()}"></td>
-            <td th:text="${users.getStatus().getName()}">"</td>
-            <td th:text="${users.getEstimation()}"></td>
-            <td th:text="${users.getNumberOfHours()}"></td>
+            <td th:text="${users.getStatus().getName()}"></td>
+            <td>
+                <div class="button-group">
+                    <form action="#" th:action="@{volunteers}" method="post">
+                        <button type="submit" name="uvfIdNewStatus" th:value="${users.getUserVolunteerFunctionID()} + ' Accept'" class="btn btn-success">Принять</button>
+                        <button type="submit" name="uvfIdNewStatus" th:value="${users.getUserVolunteerFunctionID()} + ' Reject'" class="btn btn-secondary">Отклонить</button>
+                    </form>
+                </div>
+            </td>
+            <!--- <td th:text="${users.getEstimation()}"></td>
+            <td th:text="${users.getNumberOfHours()}"></td> --->
         </tr>
     </tbody>
 </table>

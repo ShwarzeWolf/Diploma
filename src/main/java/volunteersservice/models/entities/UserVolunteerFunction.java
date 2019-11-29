@@ -85,4 +85,8 @@ public class UserVolunteerFunction {
     public int getNumberOfHours(){
         return this.numberOfHours;
     }
+
+    public int getUserVolunteerFunctionID(){
+        return this.userVolunteerFunctionID;
+    }
 }

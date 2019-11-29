@@ -79,6 +79,6 @@ ALTER TABLE VolunteersService.UsersVolunteerFunctions     OWNER TO java;
 
 INSERT INTO VolunteersService.UserRole                    (Name) values ('ORGANISER'), ('MANAGER'), ('COORDINATOR'), ('VOLUNTEER'), ('ADMIN');
 INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED');
-INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPRIVED'), ('PARTICIPATED'), ('PARTICIPATED'), ('ABSENT');
+INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPROVED'), ('RECALLED');
 
 END TRANSACTION;

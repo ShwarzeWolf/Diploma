@@ -47,7 +47,7 @@ public class User {
     @NotNull
     private String hash2;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RoleID", nullable = false)
     @NotNull
     UserRole userRole;

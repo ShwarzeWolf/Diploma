@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import volunteersservice.models.entities.Event;
-import volunteersservice.models.entities.User;
-import volunteersservice.models.entities.UserVolunteerFunction;
-import volunteersservice.models.entities.VolunteerFunction;
+import volunteersservice.models.entities.*;
+import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.UserService;
 import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.services.VolunteerFunctionService;
@@ -163,6 +161,32 @@ public class EventController {
         List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService.getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
 
+        model.addAttribute("UVF", new UserVolunteerFunction());
+
         return "volunteersForEvent";
+    }
+
+    @PostMapping("/main/{eventID}/volunteers")
+    public String changeVolunteerStatus(@PathVariable(value="eventID") String eventID,
+                                        @RequestParam (value="uvfIdNewStatus", required=true) String uvfIdNewStatus){
+
+        int userVolunteerFunctionId = Integer.parseInt(uvfIdNewStatus.split(" ")[0]);
+        UserVolunteerFunction uvf = userVolunteerFunctionService.getUserVolunteerFunctionByID(userVolunteerFunctionId);
+
+        String command = uvfIdNewStatus.split(" ")[1];
+
+        switch (command){
+            case "Accept":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
+                break;
+            case "Reject":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
+                break;
+            default:
+                LOG.info("no status changed");
+                break;
+        }
+
+        return "redirect:/main/" + eventID + "/volunteers";
     }
 }
