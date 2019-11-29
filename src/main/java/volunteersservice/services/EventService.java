@@ -15,6 +15,8 @@ public interface EventService {
 
 	public Event getEventByID(int eventID);
 
+	public void deleteEvent(Event event);
+
 	public List<Event> getAllEvents();
 
 	public List<Event> getActiveEvents();
@@ -29,8 +31,18 @@ public interface EventService {
 
 	public List<Event> getEventsForVolunteers();
 	
-	// public List<Event> getOrganiserEvents(User organiser); // TODO create such mechanism
+	public List<Event> getActiveEventsCoordinatedBy(User coordinator);
 	
+	public List<Event> getExpiredEventsCoordinatedBy(User coordinator);
+
+	public List<Event> getActiveEventsWithVolunteer(User volunteer);
+
+	public List<Event> getExpiredEventsWithVolunteer(User volunteer);
+	
+	public List<Event> getActiveEventsOfOrganiser(User organiser);
+	
+	public List<Event> getExpiredEventsOfOrganiser(User organiser);
+
 	public Event addEvent(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish,
 			List<VolunteerFunction> volunteerFunctions);
 
@@ -42,4 +54,6 @@ public interface EventService {
 	public Event addEvent(String name, User organiser, String description, String place, String dateStart, String dateFinish);
 
 	public void setStatus(Event event, EventStatusEnum status);
+
+	public void setCoordinator(Event event, User coordinator);
 }

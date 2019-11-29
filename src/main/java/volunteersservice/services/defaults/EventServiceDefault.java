@@ -5,8 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import volunteersservice.models.entities.Event;
@@ -23,7 +22,7 @@ import volunteersservice.utils.exceptions.EventCreationException;
 @Service
 public class EventServiceDefault implements EventService {
     private final EventRepository eventRepository;
-    private final static Logger LOG = LogManager.getLogger(EventService.class.getName());
+    private final static Logger LOG = Logger.getLogger(EventService.class.getName());
 
     public EventServiceDefault() {
         eventRepository = RepositoryFactory.getEventRepository();
@@ -32,6 +31,11 @@ public class EventServiceDefault implements EventService {
     @Override
     public Event getEventByID(int eventID) {
         return eventRepository.getEventByID(eventID);
+    }
+
+    @Override
+    public void deleteEvent(Event event) {
+        eventRepository.delete(event);
     }
 
     @Override
@@ -70,6 +74,36 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
+    public List<Event> getActiveEventsCoordinatedBy(User coordinator) {
+        return eventRepository.getEventsCoordinatedBy(coordinator, true);
+    }
+
+    @Override
+    public List<Event> getExpiredEventsCoordinatedBy(User coordinator) {
+        return eventRepository.getEventsCoordinatedBy(coordinator, false);
+    }
+
+    @Override
+    public List<Event> getActiveEventsWithVolunteer(User volunteer) {
+        return eventRepository.getEventsWithVolunteer(volunteer, true);
+    }
+
+    @Override
+    public List<Event> getExpiredEventsWithVolunteer(User volunteer) {
+        return eventRepository.getEventsWithVolunteer(volunteer, false);
+    }
+
+    @Override
+    public List<Event> getActiveEventsOfOrganiser(User organiser) {
+        return eventRepository.getEventsOfOrganiser(organiser, true);
+    }
+
+    @Override
+    public List<Event> getExpiredEventsOfOrganiser(User organiser) {
+        return eventRepository.getEventsOfOrganiser(organiser, false);
+    }
+
+    @Override
     public Event addEvent(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish,
             List<VolunteerFunction> volunteerFunctions) {
         if (dateStart.isAfter(dateFinish))
@@ -79,7 +113,7 @@ public class EventServiceDefault implements EventService {
 
         Event event = new Event(name, organiser, description, place, dateStart, dateFinish);
         eventRepository.save(event);
-        LOG.info("Event is saved: [{}]", event.toString());
+        LOG.info("Event is saved: [" + event.toString() + "]");
         if (volunteerFunctions != null) {
             VolunteerFunctionService volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
             for (VolunteerFunction r : volunteerFunctions) {
@@ -118,6 +152,12 @@ public class EventServiceDefault implements EventService {
     @Override
     public void setStatus(Event event, EventStatusEnum status) {
         event.setStatus(status);
+        eventRepository.update(event);
+    }
+
+    @Override
+    public void setCoordinator(Event event, User coordinator) {
+        event.setCoordinator(coordinator);
         eventRepository.update(event);
     }
 }

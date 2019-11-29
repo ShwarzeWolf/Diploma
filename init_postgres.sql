@@ -40,14 +40,15 @@ CREATE TABLE VolunteersService.Users (
 );
 
 CREATE TABLE VolunteersService.Events (
-    EventID      SERIAL    PRIMARY KEY  NOT NULL,
-    OrganiserID  INTEGER                NOT NULL REFERENCES VolunteersService.Users(UserID),
-    Name         VARCHAR(50)            NOT NULL,
-    Description  VARCHAR(300)           NOT NULL,
-    Place        VARCHAR(120)           NOT NULL,
-    DateStart    TIMESTAMPTZ            NOT NULL,
-    DateFinish   TIMESTAMPTZ            NOT NULL,
-    StatusID     INTEGER                NOT NULL REFERENCES VolunteersService.EventStatus(StatusID)
+    EventID       SERIAL    PRIMARY KEY  NOT NULL,
+    OrganiserID   INTEGER                NOT NULL REFERENCES VolunteersService.Users(UserID),
+    CoordinatorID INTEGER                         REFERENCES VolunteersService.Users(UserID),
+    Name          VARCHAR(50)            NOT NULL,
+    Description   VARCHAR(300)           NOT NULL,
+    Place         VARCHAR(120)           NOT NULL,
+    DateStart     TIMESTAMPTZ            NOT NULL,
+    DateFinish    TIMESTAMPTZ            NOT NULL,
+    StatusID      INTEGER                NOT NULL REFERENCES VolunteersService.EventStatus(StatusID)
 );
 
 CREATE TABLE VolunteersService.VolunteerFunctions (
@@ -79,7 +80,7 @@ ALTER TABLE VolunteersService.UsersVolunteerFunctions     OWNER TO java;
 \! echo Inserting data
 
 INSERT INTO VolunteersService.UserRole                    (Name) values ('ORGANISER'), ('MANAGER'), ('COORDINATOR'), ('VOLUNTEER'), ('ADMIN');
-INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED');
-INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPRIVED'), ('PARTICIPATED'), ('PARTICIPATED'), ('ABSENT');
+INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED'), ('EXPIRED');
+INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPRIVED'), ('PARTICIPATED'), ('ABSENT');
 
 END TRANSACTION;

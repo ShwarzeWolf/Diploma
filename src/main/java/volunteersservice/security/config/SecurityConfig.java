@@ -8,9 +8,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 import volunteersservice.security.PasswordEncoderImpl;
 import volunteersservice.security.UserDetailsServiceImpl;
 
@@ -29,9 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/registration", "/main/**").permitAll()
                 .antMatchers("/css/**").permitAll()
-//                TODO: в версии продакшн убрать доступ к showapi
-                .antMatchers("/showapi/**").permitAll()
-                .antMatchers("/showapi/*").permitAll()
+//                TODO fix security
                 .antMatchers(HttpMethod.POST, "/main/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/main*").permitAll()
                 .anyRequest().authenticated()

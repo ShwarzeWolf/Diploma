@@ -28,9 +28,13 @@ public class Event {
     private int eventID;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organiserID", referencedColumnName = "userID", nullable = false)
+    @JoinColumn(name = "OrganiserID", referencedColumnName = "UserID", nullable = false)
     @NotNull
     User organiser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CoordinatorID", referencedColumnName = "UserID", nullable = true)
+    User coordinator;
 
     @Column(name = "Name", nullable = false)
     @NotNull
@@ -66,6 +70,7 @@ public class Event {
         this.eventID = other.eventID;
         this.name = other.name;
         this.organiser = other.organiser;
+        this.coordinator = other.coordinator;
         this.description = other.description;
         this.place = other.place;
         this.dateStart = other.dateStart;
@@ -90,6 +95,10 @@ public class Event {
 
     public User getOrganiser() {
         return organiser;
+    }
+
+    public User getCoordinator() {
+        return coordinator;
     }
 
     public String getName() {
@@ -119,6 +128,10 @@ public class Event {
     public void setStatus(EventStatusEnum statusEnum) {
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
         this.status = eventStatusRepository.getStatusByEnum(statusEnum);
+    }
+    
+    public void setCoordinator(User coordinator) {
+        this.coordinator = coordinator;
     }
 
     @Override

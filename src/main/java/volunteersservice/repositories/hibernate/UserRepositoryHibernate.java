@@ -2,6 +2,7 @@ package volunteersservice.repositories.hibernate;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import volunteersservice.models.entities.User;
 import volunteersservice.repositories.UserRepository;
 import volunteersservice.utils.HibernateUtil;
-import org.apache.log4j.Logger;
 
 @Repository
 public class UserRepositoryHibernate implements UserRepository {
@@ -23,14 +23,14 @@ public class UserRepositoryHibernate implements UserRepository {
 	@Override
 	public User getUserByEmail(String email) {
 		return (User) HibernateUtil.getSession()
-				.createQuery("select new User(user) from User as user where user.email = :email")
+				.createQuery("from User as user where user.email = :email")
 				.setParameter("email", email).uniqueResult();
 	}
 
 	@Override
 	public User getUserByLogin(String login) {
 		return (User) HibernateUtil.getSession()
-				.createQuery("select new User(user) from User as user where user.login = :login")
+				.createQuery("from User as user where user.login = :login")
 				.setParameter("login", login).uniqueResult();
 	}
 
@@ -38,6 +38,7 @@ public class UserRepositoryHibernate implements UserRepository {
 	public boolean save(User user) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
+		LOG.info("Trying to save user: " + user);
 		try {
 			session.save(user);
 			tx.commit();
@@ -83,6 +84,6 @@ public class UserRepositoryHibernate implements UserRepository {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<User> findAll() {
-		return (List<User>) HibernateUtil.getSession().createQuery("From User").list();
+		return (List<User>) HibernateUtil.getSession().createQuery("from User").list();
 	}
 }

@@ -17,7 +17,7 @@
 
             <div class="head_line_block_right">
                 <!--                The "sign out" block must be the last among the elements of the current block-->
-                <div class="head_one_element"  sec:authorize="isAuthenticated()">
+                <div class="head_one_element" sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}" method="post">
                         <input type="submit" value="Sign Out" />
                     </form>
@@ -47,6 +47,10 @@
             <td>Organised by:</td>
             <td th:text="${event.getOrganiser().getName()}" />
         </tr>
+        <tr th:if="${event.getCoordinator() != null}">
+            <td>Organised by:</td>
+            <td th:text="${event.getCoordinator().getName()}" />
+        </tr>
     </table>
 
     <div th:if="${not #lists.isEmpty(volunteerFunctions)}">
@@ -70,6 +74,43 @@
                         Volunteer Function</a></td>
             </tr>
         </table>
+    </div>
+
+    <div
+        th:if="${event.getStatus().getName() == 'UNCHECKED' && user != null && user.getUserRole().getName() == 'MANAGER'}">
+        You are manager. You can change status of this event:
+        <!-- Need some fix for look of link below and similar ones -->
+        <form th:action="${'./' + event.getEventID() + '/setEventStatus'}" method="post">
+            <button type="submit" name="changeStatus" value="APPROVED">Approve</button>
+            <button type="submit" name="changeStatus" value="REJECTED">Reject</button>
+        </form>
+    </div>
+
+    <div th:if="${user != null && user.getUserRole().getName() == 'COORDINATOR' && event.getCoordinator() == null}">
+        You are coordinator and this event is not coordinated yet.
+        <form th:action="${'./' + event.getEventID() + '/coordinate'}" method="post">
+            <button type="submit">I will be coordinating this</button>
+        </form>
+    </div>
+
+    <div th:if="${user != null && event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin()}">
+        <div th:if="${event.getStatus().getName() == 'COORDINATED'}">
+            You coordinate this event, you can publish it for volunteers when it's ready.
+            <form th:action="${'./' + event.getEventID() + '/setEventStatus'}" method="post">
+                <button type="submit" name="changeStatus" value="PUBLISHED">Publish event</button>
+            </form>
+        </div>
+        <div th:if="${event.getStatus().getName() == 'PUBLISHED'}">
+            You coordinate this event, you can re-edit it if you found something wrong.
+            <form th:action="${'./' + event.getEventID() + '/setEventStatus'}" method="post">
+                <button type="submit" name="changeStatus" value="COORDINATED">Un-publish event</button>
+            </form>
+        </div>
+        If you cannot longer coordinate this event, you can drop it
+        <form th:action="${'./' + event.getEventID() + '/coordinate'}" method="post">
+            <button type="submit" name="drop" value="true">I can't coordinate this now</button>
+        </form>
+        
     </div>
 
     <div th:if="${user != null && event.getOrganiser().getLogin() == user.getLogin()}">
