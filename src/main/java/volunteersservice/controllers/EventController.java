@@ -30,15 +30,15 @@ public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
     private EventService eventService;
-    private UserService users;
-    private VolunteerFunctionService volunteerFunctionManager;
-    private UserVolunteerFunctionService userVolunteerFunctionManager;
+    private UserService userService;
+    private VolunteerFunctionService volunteerFunctionService;
+    private UserVolunteerFunctionService userVolunteerFunctionService;
 
     public EventController() {
         LOG.info("EventController is alive");
         eventService = ServiceFactory.getEventService();
-        volunteerFunctionManager = ServiceFactory.getVolunteerFunctionService();
-        userVolunteerFunctionManager = ServiceFactory.getUserVolunteerFunctionService();
+        volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
+        userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
     }
 
     @GetMapping("/addEvent")
@@ -148,7 +148,7 @@ public class EventController {
             return "Event does not exist";
         };
 
-        volunteerFunctionManager.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
+        volunteerFunctionService.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
                 numberOfVolunteers);
 
         return "redirect:/main/" + eventID;
@@ -160,7 +160,7 @@ public class EventController {
                                       Model model){
         Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
 
-        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionManager.getAllVolunteersOfEvent(currentEvent);
+        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService.getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
 
         return "volunteersForEvent";

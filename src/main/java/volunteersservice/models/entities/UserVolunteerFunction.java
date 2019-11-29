@@ -77,4 +77,12 @@ public class UserVolunteerFunction {
     public void setStatus(UserVolunteerFunctionStatus status) {
         this.status = status;
     }
+
+    public int getEstimation(){
+        return this.estimation;
+    }
+
+    public int getNumberOfHours(){
+        return this.numberOfHours;
+    }
 }

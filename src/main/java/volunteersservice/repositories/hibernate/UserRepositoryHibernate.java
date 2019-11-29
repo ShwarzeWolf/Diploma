@@ -38,6 +38,7 @@ public class UserRepositoryHibernate implements UserRepository {
 	public boolean save(User user) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
+		LOG.info("Saving user " + user);
 		try {
 			session.save(user);
 			tx.commit();
