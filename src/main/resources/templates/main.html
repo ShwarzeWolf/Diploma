@@ -11,20 +11,24 @@
     <div id="header">
         <div class="head_line">
             <div class="head_line_block_left">
-<!--                The "Вход" block must be the first among the elements of the current block-->
+                <!-- The "Вход" block must be the first among the elements of the current block -->
                 <div class="head_one_element" sec:authorize="!isAuthenticated()">
                     <a th:href="@{/login}">Вход</a>
                 </div>
-
+                <div
+                    th:if="${roleName != null && (roleName =='COORDINATOR' || roleName == 'MANAGER' || roleName =='ADMIN')}">
+                    <a href="/pool">Pool of events</a>
+                </div>
             </div>
+
 
             <div class="head_line_block_right">
 
-                <div class="head_one_element"  sec:authorize="isAuthenticated()">
+                <div class="head_one_element" sec:authorize="isAuthenticated()">
                     <a th:href="@{/personal_account}" th:text="${name_and_role}">Личный кабинет</a>
                 </div>
-<!--                The "sign out" block must be the last among the elements of the current block-->
-                <div class="head_one_element"  sec:authorize="isAuthenticated()">
+                <!-- The "sign out" block must be the last among the elements of the current block -->
+                <div class="head_one_element" sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}" method="post">
                         <input type="submit" value="Sign Out" />
                     </form>
@@ -34,41 +38,40 @@
         </div>
     </div>
 
-
-
-
-
-    <div th:if="${roleName != null && roleName.equals('ORGANISER')}">
+    <div th:if="${roleName != null && roleName == 'ORGANISER'}">
         <a th:href="@{/addEvent}">Добавить событие</a>
     </div>
 
-    <div th:if="${roleName != null && roleName.equals('ADMIN')}">
+    <div th:if="${roleName != null && roleName == 'ADMIN'}">
         <a th:href="@{/registration}">Зарегистрировать человека</a>
     </div>
 
-
     <h2>List of Events</h2>
-    <div class="eventsList">
+    <div th:if="${events != null && events.size() > 0}" class="eventsList">
         <table>
             <thead>
                 <tr>
                     <td>Name</td>
                     <td>Date start</td>
                     <td>Date finish</td>
+                    <td th:if="${advanced != null && advanced.equals(true)}">Status</td>
                     <td>View</td>
                 </tr>
             </thead>
 
             <tbody>
                 <tr th:each="event : ${events}">
-                    <td><span th:text="${event.getName()}"> Name </span></td>
-                    <td><span th:text="${event.getDateStart()}"> Date Start </span></td>
-                    <td><span th:text="${event.getDateFinish()}"> Date Finish</span></td>
+                    <td th:text="${event.getName()}" />
+                    <td th:text="${event.getDateStart()}" />
+                    <td th:text="${event.getDateFinish()}" />
+                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getStatus().getName()}" />
                     <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
                 </tr>
             </tbody>
         </table>
-
+    </div>
+    <div th:if="${events == null || events.size() == 0}">
+        There are currently no events avaliable
     </div>
 
 </body>

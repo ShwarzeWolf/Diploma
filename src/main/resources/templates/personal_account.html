@@ -1,9 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Personal account</title>
 </head>
+
 <body>
-    <p>Here will be a list of events for this user (now doing)</p>
+    <h2>Current events</h2>
+    <div th:if="${currentEvents != null && currentEvents.size() > 0}" class="eventsList">
+        <table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Date start</td>
+                    <td>Date finish</td>
+                    <td th:if="${advanced != null && advanced.equals(true)}">Status</td>
+                    <td>View</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="event : ${currentEvents}">
+                    <td th:text="${event.getName()}" />
+                    <td th:text="${event.getDateStart()}" />
+                    <td th:text="${event.getDateFinish()}" />
+                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getStatus().getName()}" />
+                    <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${currentEvents == null || currentEvents.size() == 0}">
+        There are no current events
+    </div>
+
+    <h2>Expired events</h2>
+    <div th:if="${expiredEvents != null && expiredEvents.size() > 0}" class="eventsList">
+        <table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Date start</td>
+                    <td>Date finish</td>
+                    <td th:if="${advanced != null && advanced.equals(true)}">Status</td>
+                    <td>View</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="event : ${expiredEvents}">
+                    <td th:text="${event.getName()}" />
+                    <td th:text="${event.getDateStart()}" />
+                    <td th:text="${event.getDateFinish()}" />
+                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getStatus().getName()}" />
+                    <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${expiredEvents == null || expiredEvents.size() == 0}">
+        There are no expired events yet
+    </div>
 </body>
+
 </html>

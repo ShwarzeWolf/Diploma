@@ -3,33 +3,41 @@ package volunteersservice.utils;
 import volunteersservice.repositories.*;
 import volunteersservice.repositories.hibernate.*;
 
-public interface RepositoryFactory {
+public class RepositoryFactory {
+
+    private final static UserRepository USER_REPOSITORY = new UserRepositoryHibernate();
+    private final static UserRoleRepository USER_ROLE_REPOSITORY = new UserRoleRepositoryHibernate();
+    private final static EventRepository EVENT_REPOSITORY = new EventRepositoryHibernate();
+    private final static EventStatusRepository EVENT_STATUS_REPOSITORY = new EventStatusRepositoryHibernate();
+    private final static UserVolunteerFunctionStatusRepository USER_VOLUNTEER_FUNCTION_STATUS_REPOSITORY = new UserVolunteerFunctionStatusRepositoryHibernate();
+    private final static VolunteerFunctionRepository VOLUNTEER_FUNCTION_REPOSITORY = new VolunteerFunctionRepositoryHibernate();
+    private final static UserVolunteerFunctionRepository USER_VOLUNTEER_FUNCTION_REPOSITORY = new UserVolunteerFunctionRepositoryHibernate();
 
     public static UserRepository getUserRepository() {
-        return new UserRepositoryHibernate();
+        return USER_REPOSITORY;
     }
 
     public static UserRoleRepository getUserRoleRepository() {
-        return new UserRoleRepositoryHibernate();
+        return USER_ROLE_REPOSITORY;
     }
 
     public static EventRepository getEventRepository() {
-        return new EventRepositoryHibernate();
+        return EVENT_REPOSITORY;
     }
 
     public static EventStatusRepository getEventStatusRepository() {
-        return new EventStatusRepositoryHibernate();
+        return EVENT_STATUS_REPOSITORY;
     }
 
     public static UserVolunteerFunctionStatusRepository getUserVolunteerFunctionStatusRepository() {
-        return new UserVolunteerFunctionStatusRepositoryHibernate();
+        return USER_VOLUNTEER_FUNCTION_STATUS_REPOSITORY;
     }
 
     public static VolunteerFunctionRepository getVolunteerFunctionRepository() {
-        return new VolunteerFunctionRepositoryHibernate();
+        return VOLUNTEER_FUNCTION_REPOSITORY;
     }
 
     public static UserVolunteerFunctionRepository getUserVolunteerFunctionRepository() {
-        return new UserVolunteerFunctionRepositoryHibernate();
+        return USER_VOLUNTEER_FUNCTION_REPOSITORY;
     }
 }

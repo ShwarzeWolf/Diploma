@@ -1,5 +1,5 @@
 package volunteersservice.models.enums;
 
 public enum UserVolunteerFunctionStatusEnum {
-	UNCHECKED, DENIED, APPROVED, RECALLED
+	UNCHECKED, DENIED, APPROVED, PARTICIPATED, ABSENT
 }

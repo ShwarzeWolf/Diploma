@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +13,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import volunteersservice.models.entities.Event;
+import volunteersservice.models.entities.User;
+import volunteersservice.models.entities.UserVolunteerFunction;
+import volunteersservice.models.entities.VolunteerFunction;
+import volunteersservice.models.enums.EventStatusEnum;
+import volunteersservice.services.EventService;
 import volunteersservice.models.entities.*;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.UserService;
 import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.services.VolunteerFunctionService;
-import volunteersservice.services.EventService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
 
@@ -41,9 +45,6 @@ public class EventController {
 
     @GetMapping("/addEvent")
     public String addEventPage(Model model) {
-        // User user = ((UserDetailsImpl)
-        // SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-        // model.addAttribute("user", user);
         return "addEventForm";
     }
 
@@ -56,7 +57,7 @@ public class EventController {
 
     @GetMapping({ "/main", "" })
     public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
-        List<Event> eventsList = eventService.getAllEvents(); // TODO change to getEventsForVolunteers() / others depending on user
+        List<Event> eventsList = eventService.getEventsForVolunteers();
         model.addAttribute("events", eventsList);
         // 
         // FIXME #userRole
@@ -71,17 +72,27 @@ public class EventController {
         // } else {
         // LOG.info("not ok");
         // }
-        String roleName = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findAny()
-                .get().getAuthority();
-        model.addAttribute("roleName", roleName);
-
         User user = Utils.getUserFromContext();
+        model.addAttribute("roleName", user != null ? user.getUserRole().getName() : "ROLE_ANONYMOUS");
         if (user != null){
-            String str = new String(user.getName() + " : " + roleName);
+            String str = new String(user.getName() + " : " + user.getUserRole().getName());
             model.addAttribute("name_and_role", str);
         }
+        return "main";
+    }
 
-
+    @GetMapping("/pool")
+    public String eventPool(Model model) {
+        User user = Utils.getUserFromContext();
+        model.addAttribute("advanced", true);
+        if (user.getUserRole().getName().equals("COORDINATOR"))
+            model.addAttribute("events", eventService.getEventsForCoordinators());
+        else if (user.getUserRole().getName().equals("MANAGER"))
+            model.addAttribute("events", eventService.getEventsForManagers());
+        else if (user.getUserRole().getName().equals("ADMIN"))
+            model.addAttribute("events", eventService.getAllEvents());
+        else
+            return "redirect:/main";
         return "main";
     }
 
@@ -93,6 +104,38 @@ public class EventController {
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
         model.addAttribute("volunteerFunctions", vfs.getVolunteerFunctions(currentEvent));
         return "currentEvent";
+    }
+
+    // TODO "APROVED"/"REJECTED" are only avaliable for MANAGER role and only for UNCHECKED events
+    //      "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's COORDINATED
+    //      "COORDINATED" is only avaliable for COORDINATOR of the event when it's PUBLISHED
+    @PostMapping("/main/{eventID}/setEventStatus")
+    public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus) {
+        if (changeStatus.equals("APPROVED"))
+            eventService.setStatus(eventService.getEventByID(eventID), EventStatusEnum.APPROVED);
+        else if (changeStatus.equals("REJECTED"))
+            eventService.deleteEvent(eventService.getEventByID(eventID));
+        else if (changeStatus.equals("PUBLISHED"))
+            eventService.setStatus(eventService.getEventByID(eventID), EventStatusEnum.PUBLISHED);
+        return "redirect:/main/" + eventID;
+    }
+
+    // TODO "coordinate" is only avaliable for COORDINATOR role and only for APROVED events
+    //      and "coordinate drop" is only avaliable for COORDINATOR of this event
+    @PostMapping("/main/{eventID}/coordinate")
+    public String coordinateEvent(@PathVariable int eventID, @RequestParam(required = false, defaultValue = "false") boolean drop) {
+        User user = Utils.getUserFromContext();
+        Event event = eventService.getEventByID(eventID);
+        if (!drop) {
+            LOG.info("Setting a coordinator for event " + eventID + ": " + user.getLogin());
+            eventService.setCoordinator(event, user);
+            eventService.setStatus(event, EventStatusEnum.COORDINATED);
+        } else {
+            LOG.info("Dropping a coordinator of event: " + eventID + ", decided by " + user.getLogin());
+            eventService.setCoordinator(event, null);
+            eventService.setStatus(event, EventStatusEnum.APPROVED);
+        }
+        return "redirect:/main/" + eventID;
     }
 
     @PostMapping("/main/{eventID}")
