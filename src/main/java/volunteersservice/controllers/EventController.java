@@ -19,6 +19,9 @@ import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.services.EventService;
+import volunteersservice.models.entities.*;
+import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
+import volunteersservice.services.UserService;
 import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
@@ -29,12 +32,15 @@ public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
     private EventService eventService;
-    private VolunteerFunctionService volunteerFunctionManager;
+    private UserService userService;
+    private VolunteerFunctionService volunteerFunctionService;
+    private UserVolunteerFunctionService userVolunteerFunctionService;
 
     public EventController() {
         LOG.info("EventController is alive");
         eventService = ServiceFactory.getEventService();
-        volunteerFunctionManager = ServiceFactory.getVolunteerFunctionService();
+        volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
+        userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
     }
 
     @GetMapping("/addEvent")
@@ -183,9 +189,47 @@ public class EventController {
             return "Event does not exist";
         };
 
-        volunteerFunctionManager.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
+        volunteerFunctionService.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
                 numberOfVolunteers);
 
         return "redirect:/main/" + eventID;
+    }
+
+
+    @GetMapping("/main/{eventID}/volunteers")
+    public String getListOfVolunteers(@PathVariable(value="eventID") String eventID,
+                                      Model model){
+        Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
+
+        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService.getAllVolunteersOfEvent(currentEvent);
+        model.addAttribute("registeredUsers", registeredUsers);
+
+        model.addAttribute("UVF", new UserVolunteerFunction());
+
+        return "volunteersForEvent";
+    }
+
+    @PostMapping("/main/{eventID}/volunteers")
+    public String changeVolunteerStatus(@PathVariable(value="eventID") String eventID,
+                                        @RequestParam (value="uvfIdNewStatus", required=true) String uvfIdNewStatus){
+
+        int userVolunteerFunctionId = Integer.parseInt(uvfIdNewStatus.split(" ")[0]);
+        UserVolunteerFunction uvf = userVolunteerFunctionService.getUserVolunteerFunctionByID(userVolunteerFunctionId);
+
+        String command = uvfIdNewStatus.split(" ")[1];
+
+        switch (command){
+            case "Accept":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
+                break;
+            case "Reject":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
+                break;
+            default:
+                LOG.info("no status changed");
+                break;
+        }
+
+        return "redirect:/main/" + eventID + "/volunteers";
     }
 }

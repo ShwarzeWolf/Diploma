@@ -3,11 +3,9 @@ BEGIN TRANSACTION;
 \! echo Deleting java role and schema
 
 DROP SCHEMA IF EXISTS VolunteersService CASCADE;
-DROP ROLE IF EXISTS java;
 
 \! echo Creating role and schema
 
-CREATE ROLE java WITH LOGIN PASSWORD '123654';
 
 CREATE SCHEMA VolunteersService AUTHORIZATION java;
 
@@ -66,8 +64,10 @@ CREATE TABLE VolunteersService.UsersVolunteerFunctions (
     UserVolunteerFunctionID   SERIAL    PRIMARY KEY  NOT NULL,
     UserID                    INTEGER NOT NULL REFERENCES VolunteersService.Users(UserID)                           ON DELETE SET DEFAULT,
     VolunteerFunctionID       INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctions(VolunteerFunctionID) ON DELETE CASCADE,
-    StatusID                  INTEGER NOT NULL REFERENCES VolunteersService.UserVolunteerFunctionStatus(StatusID)
-);
+    StatusID                  INTEGER NOT NULL REFERENCES VolunteersService.UserVolunteerFunctionStatus(StatusID),
+    NumberOfHours             INTEGER,
+    Estimation                INTEGER
+                                                       );
 
 ALTER TABLE VolunteersService.EventStatus                 OWNER TO java;
 ALTER TABLE VolunteersService.UserRole                    OWNER TO java;
@@ -80,7 +80,7 @@ ALTER TABLE VolunteersService.UsersVolunteerFunctions     OWNER TO java;
 \! echo Inserting data
 
 INSERT INTO VolunteersService.UserRole                    (Name) values ('ORGANISER'), ('MANAGER'), ('COORDINATOR'), ('VOLUNTEER'), ('ADMIN');
-INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED'), ('EXPIRED');
-INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPRIVED'), ('PARTICIPATED'), ('ABSENT');
+INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED');
+INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPROVED'), ('RECALLED'), ('PARTICIPATED'), ('ABSENT');
 
 END TRANSACTION;

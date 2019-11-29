@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
@@ -62,6 +63,11 @@ public class UserVolunteerFunctionServiceDefault implements UserVolunteerFunctio
 	@Override
 	public List<UserVolunteerFunction> getUserVolunteerFunctionsOfVolunteerFunction(VolunteerFunction volunteerFunction) {
 		return userVolunteerFunctions.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction);
+	}
+
+	@Override
+	public List<UserVolunteerFunction> getAllVolunteersOfEvent(Event event){
+		return userVolunteerFunctions.getAllVolunteersOfEvent(event.getEventID());
 	}
 
 }

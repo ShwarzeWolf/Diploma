@@ -94,4 +94,14 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 				"select count(*) from UserVolunteerFunction as uvf where uvf.user.userID = :userID and uvf.volunteerFunction.volunteerFunctionID = :vfID")
 				.setParameter("userID", userID).setParameter("vfID", volunteerFunctionID).uniqueResult()) > 0;
 	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UserVolunteerFunction> getAllVolunteersOfEvent(int eventId){
+		return (List<UserVolunteerFunction>) HibernateUtil.getSession().createQuery(
+				"select new UserVolunteerFunction(uvf) from UserVolunteerFunction as uvf inner join VolunteerFunction as vf on uvf.volunteerFunction.volunteerFunctionID = vf.volunteerFunctionID where vf.event.eventID = :eventId")
+				.setParameter("eventId", eventId).list();
+
+	}
 }
