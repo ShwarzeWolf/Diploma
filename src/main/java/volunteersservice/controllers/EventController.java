@@ -1,9 +1,5 @@
 package volunteersservice.controllers;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -12,20 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.services.EventService;
-import volunteersservice.models.entities.*;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
+import volunteersservice.services.EventService;
 import volunteersservice.services.UserService;
 import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class EventController {
@@ -81,8 +78,27 @@ public class EventController {
         return "main";
     }
 
-    @GetMapping("/pool")
-    public String eventPool(Model model) {
+    @GetMapping("/listOfMyEvents")
+    public String myEventPool(Model model) {
+        EventService eventService = ServiceFactory.getEventService();
+        User user = Utils.getUserFromContext();
+        model.addAttribute("advanced", true);
+        if (user.getUserRole().getName().equals("COORDINATOR")) {
+            model.addAttribute("currentEvents", eventService.getActiveEventsCoordinatedBy(user));
+            model.addAttribute("expiredEvents", eventService.getExpiredEventsCoordinatedBy(user));
+        } else if (user.getUserRole().getName().equals("VOLUNTEER")) {
+            model.addAttribute("currentEvents", eventService.getActiveEventsWithVolunteer(user));
+            model.addAttribute("expiredEvents", eventService.getExpiredEventsWithVolunteer(user));
+        } else if (user.getUserRole().getName().equals("ORGANISER")) {
+            model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
+            model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
+        }
+        return "myEventPool";
+    }
+
+    @GetMapping("/listOfEventsToManage")
+    public String poolEventsToManage(Model model) {
+        EventService eventService = ServiceFactory.getEventService();
         User user = Utils.getUserFromContext();
         model.addAttribute("advanced", true);
         if (user.getUserRole().getName().equals("COORDINATOR"))
@@ -91,10 +107,9 @@ public class EventController {
             model.addAttribute("events", eventService.getEventsForManagers());
         else if (user.getUserRole().getName().equals("ADMIN"))
             model.addAttribute("events", eventService.getAllEvents());
-        else
-            return "redirect:/main";
-        return "main";
+        return "poolEventsToManage";
     }
+
 
     @GetMapping("/main/{eventID}")
     public String getEventByID(@PathVariable int eventID, Model model) {

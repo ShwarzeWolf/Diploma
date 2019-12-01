@@ -24,4 +24,6 @@ public interface UserService {
 	public boolean emailPasswordOkay(String email, String password);
 
 	public boolean loginPasswordOkay(String login, String password);
+
+	public boolean changePassword(String login, String oldPassword, String newPassword1, String newPassword2);
 }

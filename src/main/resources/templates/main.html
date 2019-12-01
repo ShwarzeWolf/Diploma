@@ -15,38 +15,50 @@
                 <div class="head_one_element" sec:authorize="!isAuthenticated()">
                     <a th:href="@{/login}">Вход</a>
                 </div>
-                <div
-                    th:if="${roleName != null && (roleName =='COORDINATOR' || roleName == 'MANAGER' || roleName =='ADMIN')}">
-                    <a href="/pool">Pool of events</a>
+
+                <div class="head_one_element" th:if="${roleName != null && roleName == 'ADMIN'}">
+                    <a th:href="@{/registration}">Register person</a>
+                </div>
+
+                <div class="head_one_element" th:if="${roleName != null && roleName == 'ORGANISER'}">
+                    <a th:href="@{/addEvent}">Add event</a>
+                </div>
+
+                <div class="head_one_element" th:if="${roleName != null && (roleName =='COORDINATOR' || roleName == 'VOLUNTEER' || roleName =='ORGANISER')}">
+                    <a th:href="@{/listOfMyEvents}" >Pool of my events</a>
+                </div>
+
+                <div class="head_one_element" th:if="${roleName != null && (roleName =='COORDINATOR' || roleName == 'MANAGER' || roleName =='ADMIN')}">
+                    <a th:href="@{/listOfEventsToManage}" >Pool events to manage</a>
                 </div>
             </div>
 
 
             <div class="head_line_block_right">
+<!--                JUST FOR TESTING-->
+                <div class="head_one_element" sec:authorize="isAuthenticated()">
+                    <p th:text="${name_and_role}"></p>
+                </div>
 
                 <div class="head_one_element" sec:authorize="isAuthenticated()">
-                    <a th:href="@{/personal_account}" th:text="${name_and_role}">Личный кабинет</a>
+                    <a th:href="@{/personal_account}">My profile</a>
                 </div>
+
                 <!-- The "sign out" block must be the last among the elements of the current block -->
                 <div class="head_one_element" sec:authorize="isAuthenticated()">
                     <form th:action="@{/logout}" method="post">
                         <input type="submit" value="Sign Out" />
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <div th:if="${roleName != null && roleName == 'ORGANISER'}">
-        <a th:href="@{/addEvent}">Добавить событие</a>
-    </div>
 
-    <div th:if="${roleName != null && roleName == 'ADMIN'}">
-        <a th:href="@{/registration}">Зарегистрировать человека</a>
-    </div>
 
-    <h2>List of Events</h2>
+
+
+    <h2>List of events to sign up</h2>
     <div th:if="${events != null && events.size() > 0}" class="eventsList">
         <table>
             <thead>

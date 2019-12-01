@@ -53,6 +53,20 @@ public class UserServiceDefault implements UserService {
 	}
 
 	@Override
+	public boolean changePassword(String login, String oldPassword, String newPassword1, String newPassword2){
+		if (!(loginPasswordOkay(login, oldPassword)))
+			return false;
+		if (newPassword1.equals(newPassword2)){
+			User logging = userRepository.getUserByLogin(login);
+			logging.setHash1(newPassword1);
+			logging.setHash2(newPassword1);
+			return userRepository.update(logging) ? true : false;
+		}
+		else
+			return false;
+	}
+
+	@Override
 	public boolean emailPasswordOkay(String email, String password) {
 		// LOG.info("Trying to get user: email=\"" + email + "\"");
 		User logging = userRepository.getUserByEmail(email);
