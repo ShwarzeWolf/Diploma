@@ -10,10 +10,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col" th:text="UserName"></th>
-            <th scope="col" th:text="UserFunction"></th>
-            <th scope="col" th:text="FunctionStatus"></th>
-            <th scope="col" th:text="Action"></th>
+            <th scope="col">User Name</th>
+            <th scope="col">User Function</th>
+            <th scope="col">Function Time</th>
+            <th scope="col">Function status</th>
+            <th scope="col">Action</th>
             <!--- <th scope="col" th:text="Estimation">"</th>
             <th scope="col" th:text="getNumberOfHours">"</th> --->
         </tr>
@@ -22,6 +23,7 @@
         <tr th:each="users : ${registeredUsers}">
             <td th:text="${users.getUser().getName()}"></td>
             <td th:text="${users.getVolunteerFunction().getName()}"></td>
+            <td th:text="${users.getVolunteerFunction().getTimeStart().toString()} + ' ' + ${users.getVolunteerFunction().getTimeFinish().toString()}"></td>
             <td th:text="${users.getStatus().getName()}"></td>
             <td>
                 <div class="button-group">
