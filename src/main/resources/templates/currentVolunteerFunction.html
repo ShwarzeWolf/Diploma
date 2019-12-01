@@ -1,12 +1,30 @@
-<HTML>
-
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 	<title th:text="${volunteerFunction.getName()} + ' volunteerFunction'"> </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link href="../static/css/currentEvent.css" th:href="@{/css/currentEvent.css}" rel="stylesheet" />
+	<link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 
 <body>
+	<div id="header">
+		<div class="head_line">
+			<div class="head_line_block_left">
+				<a th:href="@{/main}">Главная</a>
+			</div>
+
+			<div class="head_line_block_right">
+				<!--                The "sign out" block must be the last among the elements of the current block-->
+				<div class="head_one_element" sec:authorize="isAuthenticated()">
+					<form th:action="@{/logout}" method="post">
+						<input type="submit" value="Sign Out" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<h2 th:text="${volunteerFunction.getName()}" />
 
 	<table>
