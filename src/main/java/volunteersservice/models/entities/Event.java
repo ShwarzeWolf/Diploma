@@ -26,7 +26,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EventID")
     private int eventID;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OrganiserID", referencedColumnName = "UserID", nullable = false)
     @NotNull
@@ -62,7 +62,10 @@ public class Event {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StatusID", nullable = false)
     private EventStatus status;
-    
+
+    @Column(name = "Message", nullable = false)
+    private String message;
+
     public Event() {
     }
 
@@ -78,7 +81,8 @@ public class Event {
         this.status = other.status;
     }
 
-    public Event(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish) {
+    public Event(String name, User organiser, String description, String place, LocalDateTime dateStart,
+            LocalDateTime dateFinish) {
         this.name = name;
         this.organiser = organiser;
         this.description = description;
@@ -87,6 +91,7 @@ public class Event {
         this.dateFinish = dateFinish;
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
         this.status = eventStatusRepository.getStatusByEnum(EventStatusEnum.UNCHECKED);
+        this.message = "";
     }
 
     public int getEventID() {
@@ -125,18 +130,30 @@ public class Event {
         return status;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public void setStatus(EventStatusEnum statusEnum) {
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
         this.status = eventStatusRepository.getStatusByEnum(statusEnum);
     }
-    
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void addToMessage(String messageAddition) {
+        this.message += "\n" + messageAddition;
+    }
+
     public void setCoordinator(User coordinator) {
         this.coordinator = coordinator;
     }
 
     @Override
     public String toString() {
-        return String.format("(Event) %d: by [%s]%s; %s; %s - %s; %s", eventID, organiser, name, description, dateStart, dateFinish,
-                status);
+        return String.format("(Event) %d: by [%s]%s; %s; %s - %s; %s; %s", eventID, organiser, name, description,
+                dateStart, dateFinish, status, message);
     }
 }

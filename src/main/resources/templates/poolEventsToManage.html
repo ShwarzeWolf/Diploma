@@ -27,25 +27,28 @@
     <div th:if="${events != null && events.size() > 0}" class="eventsList">
         <table>
             <thead>
-            <tr>
-                <td>Name</td>
-                <td>Date start</td>
-                <td>Date finish</td>
-                <td th:if="${advanced != null && advanced.equals(true)}">Status</td>
-                <td>View</td>
-            </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>Date start</td>
+                    <td>Date finish</td>
+                    <td>Status</td>
+                    <td>Message</td>
+                    <td>View</td>
+                </tr>
             </thead>
 
             <tbody>
-            <tr th:each="event : ${events}">
-                <td th:text="${event.getName()}" />
-                <td th:text="${event.getDateStart()}" />
-                <td th:text="${event.getDateFinish()}" />
-                <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getStatus().getName()}" />
-                <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
-            </tr>
+                <tr th:each="event : ${events}">
+                    <td th:text="${event.getName()}" />
+                    <td th:text="${event.getDateStart()}" />
+                    <td th:text="${event.getDateFinish()}" />
+                    <td th:text="${event.getStatus().getName()}" />
+                    <td th:text="${event.getMessage()}" />
+                    <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
+                </tr>
             </tbody>
         </table>
     </div>
 </body>
+
 </html>

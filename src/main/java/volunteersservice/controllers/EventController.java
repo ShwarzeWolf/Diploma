@@ -1,5 +1,10 @@
 package volunteersservice.controllers;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -8,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
@@ -15,21 +21,16 @@ import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.EventService;
-import volunteersservice.services.UserService;
 import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
     private EventService eventService;
-    private UserService userService;
     private VolunteerFunctionService volunteerFunctionService;
     private UserVolunteerFunctionService userVolunteerFunctionService;
 
@@ -56,9 +57,9 @@ public class EventController {
     public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
         List<Event> eventsList = eventService.getEventsForVolunteers();
         model.addAttribute("events", eventsList);
-        // 
+        //
         // FIXME #userRole
-        //        isUserInRole or hasRole in Thymeleaf aren't working
+        // isUserInRole or hasRole in Thymeleaf aren't working
         // String roleName =
         // SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findAny().get().getAuthority();
         // String roleToString =
@@ -71,7 +72,7 @@ public class EventController {
         // }
         User user = Utils.getUserFromContext();
         model.addAttribute("roleName", user != null ? user.getUserRole().getName() : "ROLE_ANONYMOUS");
-        if (user != null){
+        if (user != null) {
             String str = new String(user.getName() + " : " + user.getUserRole().getName());
             model.addAttribute("name_and_role", str);
         }
@@ -110,7 +111,6 @@ public class EventController {
         return "poolEventsToManage";
     }
 
-
     @GetMapping("/main/{eventID}")
     public String getEventByID(@PathVariable int eventID, Model model) {
         Event currentEvent = eventService.getEventByID(eventID);
@@ -122,23 +122,23 @@ public class EventController {
     }
 
     // TODO "APROVED"/"REJECTED" are only avaliable for MANAGER role and only for UNCHECKED events
-    //      "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's COORDINATED
-    //      "COORDINATED" is only avaliable for COORDINATOR of the event when it's PUBLISHED
+    // "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's COORDINATED
+    // "COORDINATED" is only avaliable for COORDINATOR of the event when it's PUBLISHED
     @PostMapping("/main/{eventID}/setEventStatus")
-    public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus) {
-        if (changeStatus.equals("APPROVED"))
-            eventService.setStatus(eventService.getEventByID(eventID), EventStatusEnum.APPROVED);
-        else if (changeStatus.equals("REJECTED"))
-            eventService.deleteEvent(eventService.getEventByID(eventID));
-        else if (changeStatus.equals("PUBLISHED"))
-            eventService.setStatus(eventService.getEventByID(eventID), EventStatusEnum.PUBLISHED);
+    public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus, @RequestParam(required = false) String message) {
+        @NotNull Event event = eventService.getEventByID(eventID);
+        eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
+        if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
+            eventService.setMessage(event, message);
         return "redirect:/main/" + eventID;
     }
 
-    // TODO "coordinate" is only avaliable for COORDINATOR role and only for APROVED events
-    //      and "coordinate drop" is only avaliable for COORDINATOR of this event
+    // TODO "coordinate" is only avaliable for COORDINATOR role and only for APROVED
+    // events
+    // and "coordinate drop" is only avaliable for COORDINATOR of this event
     @PostMapping("/main/{eventID}/coordinate")
-    public String coordinateEvent(@PathVariable int eventID, @RequestParam(required = false, defaultValue = "false") boolean drop) {
+    public String coordinateEvent(@PathVariable int eventID,
+            @RequestParam(required = false, defaultValue = "false") boolean drop) {
         User user = Utils.getUserFromContext();
         Event event = eventService.getEventByID(eventID);
         if (!drop) {
@@ -170,7 +170,8 @@ public class EventController {
         UserVolunteerFunctionService uvfs = ServiceFactory.getUserVolunteerFunctionService();
         VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
         model.addAttribute("volunteerFunction", volunteerFunction);
-        model.addAttribute("userVolunteerFunctions", uvfs.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction));
+        model.addAttribute("userVolunteerFunctions",
+                uvfs.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction));
         model.addAttribute("user", Utils.getUserFromContext()); // FIXME #userRole
         return "currentVolunteerFunction";
     }
@@ -185,24 +186,21 @@ public class EventController {
     }
 
     @GetMapping("/main/{eventID}/addVolunteerFunction")
-    public String addVolunteerFunctionPage(@PathVariable(value = "eventID") String eventID){
+    public String addVolunteerFunctionPage(@PathVariable(value = "eventID") String eventID) {
         return "addVolunteerFunctionForm";
     }
 
     @PostMapping("/main/{eventID}/addVolunteerFunction")
-    public String addVolunteerFunction(@PathVariable(value="eventID") String eventID,
-                                       @RequestParam String name,
-                                       @RequestParam String description,
-                                       @RequestParam String requirements,
-                                       @RequestParam String timeStart,
-                                       @RequestParam String timeFinish,
-                                       @RequestParam int numberOfVolunteers){
+    public String addVolunteerFunction(@PathVariable(value = "eventID") String eventID, @RequestParam String name,
+            @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
+            @RequestParam String timeFinish, @RequestParam int numberOfVolunteers) {
 
         Event event = eventService.getEventByID(Integer.parseInt(eventID));
 
         if (event == null) {
             return "Event does not exist";
-        };
+        }
+        ;
 
         volunteerFunctionService.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
                 numberOfVolunteers);
@@ -210,13 +208,12 @@ public class EventController {
         return "redirect:/main/" + eventID;
     }
 
-
     @GetMapping("/main/{eventID}/volunteers")
-    public String getListOfVolunteers(@PathVariable(value="eventID") String eventID,
-                                      Model model){
+    public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
         Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
 
-        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService.getAllVolunteersOfEvent(currentEvent);
+        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService
+                .getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
 
         model.addAttribute("UVF", new UserVolunteerFunction());
@@ -225,24 +222,24 @@ public class EventController {
     }
 
     @PostMapping("/main/{eventID}/volunteers")
-    public String changeVolunteerStatus(@PathVariable(value="eventID") String eventID,
-                                        @RequestParam (value="uvfIdNewStatus", required=true) String uvfIdNewStatus){
+    public String changeVolunteerStatus(@PathVariable(value = "eventID") String eventID,
+            @RequestParam(value = "uvfIdNewStatus", required = true) String uvfIdNewStatus) {
 
         int userVolunteerFunctionId = Integer.parseInt(uvfIdNewStatus.split(" ")[0]);
         UserVolunteerFunction uvf = userVolunteerFunctionService.getUserVolunteerFunctionByID(userVolunteerFunctionId);
 
         String command = uvfIdNewStatus.split(" ")[1];
 
-        switch (command){
-            case "Accept":
-                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
-                break;
-            case "Reject":
-                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
-                break;
-            default:
-                LOG.info("no status changed");
-                break;
+        switch (command) {
+        case "Accept":
+            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
+            break;
+        case "Reject":
+            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
+            break;
+        default:
+            LOG.info("no status changed");
+            break;
         }
 
         return "redirect:/main/" + eventID + "/volunteers";
