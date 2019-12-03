@@ -62,7 +62,6 @@ public class UserController {
             answer = "Password changed successfully";
         else
             answer = "Password has not been changed";
-        //FIXME (maybe): how to change place in post request which repeated in get request???
         model.addAttribute("person", user);
         model.addAttribute("password_change_status", answer);
         return "personal_account";

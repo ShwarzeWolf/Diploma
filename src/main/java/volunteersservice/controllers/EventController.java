@@ -57,19 +57,6 @@ public class EventController {
     public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
         List<Event> eventsList = eventService.getEventsForVolunteers();
         model.addAttribute("events", eventsList);
-        //
-        // FIXME #userRole
-        // isUserInRole or hasRole in Thymeleaf aren't working
-        // String roleName =
-        // SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findAny().get().getAuthority();
-        // String roleToString =
-        // SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findAny().get().toString()
-        // LOG.info("User has role - " + roleName + ", toString - " + roleToString);
-        // if (request.isUserInRole(roleName)) {
-        // LOG.info("ok");
-        // } else {
-        // LOG.info("not ok");
-        // }
         User user = Utils.getUserFromContext();
         model.addAttribute("roleName", user != null ? user.getUserRole().getName() : "ROLE_ANONYMOUS");
         if (user != null) {
@@ -172,7 +159,7 @@ public class EventController {
         model.addAttribute("volunteerFunction", volunteerFunction);
         model.addAttribute("userVolunteerFunctions",
                 uvfs.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction));
-        model.addAttribute("user", Utils.getUserFromContext()); // FIXME #userRole
+        model.addAttribute("user", Utils.getUserFromContext());
         return "currentVolunteerFunction";
     }
 
