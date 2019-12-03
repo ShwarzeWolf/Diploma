@@ -156,6 +156,18 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
+    public void setMessage(Event event, String message) {
+        event.setMessage(message);
+        eventRepository.update(event);
+    }
+
+    @Override
+    public void addToMessage(Event event, String messageAddition) {
+        event.addToMessage(messageAddition);
+        eventRepository.update(event);
+    }
+
+    @Override
     public void setCoordinator(Event event, User coordinator) {
         event.setCoordinator(coordinator);
         eventRepository.update(event);

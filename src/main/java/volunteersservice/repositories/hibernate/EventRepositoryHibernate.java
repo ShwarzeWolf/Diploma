@@ -116,9 +116,10 @@ public class EventRepositoryHibernate implements EventRepository {
     @Override
     public List<Event> getEventsWithVolunteer(User volunteer, boolean active) {
         return (List<Event>) HibernateUtil.getSession()
-                .createQuery("select new Event(event) from Event as event inner join UserVolunteerFunction as uvf "
-                        + "on uvf.volunteerFunction.event.eventID = event.eventID inner join User as user on "
-                        + "user.userID = uvf.userUserID where user.userID = :volunteerID and event.dateFinish "
+                .createQuery("select new Event(event) from Event as event inner join VolunteerFunction as vf on "
+                        + "vf.event.eventID = event.eventID inner join UserVolunteerFunction as uvf "
+                        + "on uvf.volunteerFunction.volunteerFunctionID = vf.volunteerFunctionID inner join User as user on "
+                        + "user.userID = uvf.user.userID where user.userID = :volunteerID and event.dateFinish "
                         + (active ? ">" : "<") + ":dateNow order by event.dateStart")
                 .setParameter("volunteerID", volunteer.getUserID()).setParameter("dateNow", LocalDateTime.now()).list();
     }
@@ -127,8 +128,9 @@ public class EventRepositoryHibernate implements EventRepository {
     @Override
     public List<Event> getEventsOfOrganiser(User organiser, boolean active) {
         return (List<Event>) HibernateUtil.getSession()
-                .createQuery("from Event as event where event.organiser.userID = :organiserID and event.dateFinish "
-                        + (active ? ">" : "<") + ":dateNow order by event.dateStart")
+                .createQuery("from Event as event where event.organiser.userID = :organiserID and (event.dateFinish "
+                        + (active ? ">" : "<") + ":dateNow " + (active ? "and not" : "or") + " event.status.name = 'REJECTED'"
+                        + ") order by event.dateStart")
                 .setParameter("organiserID", organiser.getUserID()).setParameter("dateNow", LocalDateTime.now()).list();
     }
 }

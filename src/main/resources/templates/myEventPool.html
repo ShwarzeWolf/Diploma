@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Pool of my events</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="header">
+        <div class="head_line">
+            <div class="head_line_block_left">
+                <a th:href="@{/main}">Главная</a>
+            </div>
+
+            <div class="head_line_block_right">
+                <!--                The "sign out" block must be the last among the elements of the current block-->
+                <div class="head_one_element" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Sign Out" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <h2>Current events</h2>
+    <div th:if="${currentEvents != null && currentEvents.size() > 0}" class="eventsList">
+        <table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Date start</td>
+                    <td>Date finish</td>
+                    <td>Status</td>
+                    <td>Message</td>
+                    <td>View</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="event : ${currentEvents}">
+                    <td th:text="${event.getName()}" />
+                    <td th:text="${event.getDateStart()}" />
+                    <td th:text="${event.getDateFinish()}" />
+                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getStatus().getName()}" />
+                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getMessage()}" />
+                    <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${currentEvents == null || currentEvents.size() == 0}">
+        There are no current events
+    </div>
+
+    <h2>Expired events</h2>
+    <div th:if="${expiredEvents != null && expiredEvents.size() > 0}" class="eventsList">
+        <table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Date start</td>
+                    <td>Date finish</td>
+                    <td>Status</td>
+                    <td>Message</td>
+                    <td>View</td>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="event : ${expiredEvents}">
+                    <td th:text="${event.getName()}" />
+                    <td th:text="${event.getDateStart()}" />
+                    <td th:text="${event.getDateFinish()}" />
+                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getStatus().getName()}" />
+                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getMessage()}" />
+                    <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${expiredEvents == null || expiredEvents.size() == 0}">
+        There are no expired events yet
+    </div>
+</body>
+
+</html>

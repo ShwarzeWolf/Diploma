@@ -13,7 +13,7 @@ CREATE ROLE java WITH LOGIN PASSWORD '123654';
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
---SET client_encoding = 'UTF8';
+-- SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
@@ -47,7 +47,8 @@ CREATE TABLE volunteersservice.events (
     place character varying(120) NOT NULL,
     datestart timestamp with time zone NOT NULL,
     datefinish timestamp with time zone NOT NULL,
-    statusid integer NOT NULL
+    statusid integer NOT NULL,
+    message character varying(200) DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -191,7 +192,9 @@ CREATE TABLE volunteersservice.usersvolunteerfunctions (
     uservolunteerfunctionid integer NOT NULL,
     userid integer NOT NULL,
     volunteerfunctionid integer NOT NULL,
-    statusid integer NOT NULL
+    statusid integer NOT NULL,
+    numberofhours integer DEFAULT 0 NOT NULL,
+    estimation integer DEFAULT 0 NOT NULL
 );
 
 
@@ -346,9 +349,9 @@ ALTER TABLE ONLY volunteersservice.volunteerfunctions ALTER COLUMN volunteerfunc
 -- Data for Name: events; Type: TABLE DATA; Schema: volunteersservice; Owner: java
 --
 
-COPY volunteersservice.events (eventid, organiserid, coordinatorid, name, description, place, datestart, datefinish, statusid) FROM stdin;
-1	3	\N	New Year 2020	New Year 2020 celebration	North Pole	2019-12-31 23:00:00+03	2020-12-01 19:00:00+03	1
-2	4	\N	International women's day 2020	8th of March is a holiday for women, so we need only male volunteers to help with celebration preparations.	Russia, Saint-Petersburg, Nevskiy Prospect, building #16	2020-03-08 13:00:00+03	2020-03-08 22:30:00+03	1
+COPY volunteersservice.events (eventid, organiserid, coordinatorid, name, description, place, datestart, datefinish, statusid, message) FROM stdin;
+1	3	\N	New Year 2020	New Year 2020 celebration	North Pole	2019-12-31 23:00:00+03	2020-12-01 19:00:00+03	1	
+2	4	\N	International women's day 2020	8th of March is a holiday for women, so we need only male volunteers to help with celebration preparations.	Russia, Saint-Petersburg, Nevskiy Prospect, building #16	2020-03-08 13:00:00+03	2020-03-08 22:30:00+03	1	
 \.
 
 
@@ -361,7 +364,7 @@ COPY volunteersservice.eventstatus (statusid, name) FROM stdin;
 2	APPROVED
 3	COORDINATED
 4	PUBLISHED
-5	EXPIRED
+6	REJECTED
 \.
 
 
@@ -398,7 +401,7 @@ COPY volunteersservice.users (userid, login, email, name, registerdate, passwdha
 -- Data for Name: usersvolunteerfunctions; Type: TABLE DATA; Schema: volunteersservice; Owner: java
 --
 
-COPY volunteersservice.usersvolunteerfunctions (uservolunteerfunctionid, userid, volunteerfunctionid, statusid) FROM stdin;
+COPY volunteersservice.usersvolunteerfunctions (uservolunteerfunctionid, userid, volunteerfunctionid, statusid, numberofhours, estimation) FROM stdin;
 \.
 
 
@@ -410,8 +413,9 @@ COPY volunteersservice.uservolunteerfunctionstatus (statusid, name) FROM stdin;
 1	UNCHECKED
 2	DENIED
 3	APPRIVED
-4	PARTICIPATED
-5	ABSENT
+4	RECALLED
+5	PARTICIPATED
+6	ABSENT
 \.
 
 
@@ -440,7 +444,7 @@ SELECT pg_catalog.setval('volunteersservice.events_eventid_seq', 2, true);
 -- Name: eventstatus_statusid_seq; Type: SEQUENCE SET; Schema: volunteersservice; Owner: java
 --
 
-SELECT pg_catalog.setval('volunteersservice.eventstatus_statusid_seq', 5, true);
+SELECT pg_catalog.setval('volunteersservice.eventstatus_statusid_seq', 6, true);
 
 
 --
@@ -468,7 +472,7 @@ SELECT pg_catalog.setval('volunteersservice.usersvolunteerfunctions_uservoluntee
 -- Name: uservolunteerfunctionstatus_statusid_seq; Type: SEQUENCE SET; Schema: volunteersservice; Owner: java
 --
 
-SELECT pg_catalog.setval('volunteersservice.uservolunteerfunctionstatus_statusid_seq', 5, true);
+SELECT pg_catalog.setval('volunteersservice.uservolunteerfunctionstatus_statusid_seq', 6, true);
 
 
 --

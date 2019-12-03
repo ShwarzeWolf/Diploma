@@ -80,6 +80,7 @@
         You are manager. You can change status of this event:
         <!-- Need some fix for look of link below and similar ones -->
         <form th:action="${'./' + event.getEventID() + '/setEventStatus'}" method="post">
+            Optional message: <input type="text" maxlength="300" name="message" />
             <button type="submit" name="changeStatus" value="APPROVED">Approve</button>
             <button type="submit" name="changeStatus" value="REJECTED">Reject</button>
         </form>
@@ -109,7 +110,6 @@
         <form th:action="${'./' + event.getEventID() + '/coordinate'}" method="post">
             <button type="submit" name="drop" value="true">I can't coordinate this now</button>
         </form>
-        
     </div>
 
     <div th:if="${user != null && event.getOrganiser().getLogin() == user.getLogin()}">

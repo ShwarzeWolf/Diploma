@@ -55,5 +55,9 @@ public interface EventService {
 
 	public void setStatus(Event event, EventStatusEnum status);
 
+	public void setMessage(Event event, String message);
+
+	public void addToMessage(Event event, String messageAddition);
+
 	public void setCoordinator(Event event, User coordinator);
 }

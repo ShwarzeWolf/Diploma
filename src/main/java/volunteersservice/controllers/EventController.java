@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
@@ -19,12 +20,10 @@ import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.services.EventService;
+import volunteersservice.services.*;
 import volunteersservice.models.entities.*;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
-import volunteersservice.services.UserService;
-import volunteersservice.services.UserVolunteerFunctionService;
-import volunteersservice.services.VolunteerFunctionService;
+import volunteersservice.services.EventService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
 
@@ -33,7 +32,6 @@ public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
     private EventService eventService;
-    private UserService userService;
     private VolunteerFunctionService volunteerFunctionService;
     private UserVolunteerFunctionService userVolunteerFunctionService;
 
@@ -56,34 +54,40 @@ public class EventController {
         return "redirect:/main";
     }
 
-    @GetMapping({ "/main", "" })
+    @GetMapping({ "/main", "/" })
     public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
         List<Event> eventsList = eventService.getEventsForVolunteers();
         model.addAttribute("events", eventsList);
-        // 
-        // FIXME #userRole
-        //        isUserInRole or hasRole in Thymeleaf aren't working
-        // String roleName =
-        // SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findAny().get().getAuthority();
-        // String roleToString =
-        // SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findAny().get().toString()
-        // LOG.info("User has role - " + roleName + ", toString - " + roleToString);
-        // if (request.isUserInRole(roleName)) {
-        // LOG.info("ok");
-        // } else {
-        // LOG.info("not ok");
-        // }
         User user = Utils.getUserFromContext();
         model.addAttribute("roleName", user != null ? user.getUserRole().getName() : "ROLE_ANONYMOUS");
-        if (user != null){
+        if (user != null) {
             String str = new String(user.getName() + " : " + user.getUserRole().getName());
             model.addAttribute("name_and_role", str);
         }
         return "main";
     }
 
-    @GetMapping("/pool")
-    public String eventPool(Model model) {
+    @GetMapping("/listOfMyEvents")
+    public String myEventPool(Model model) {
+        EventService eventService = ServiceFactory.getEventService();
+        User user = Utils.getUserFromContext();
+        model.addAttribute("advanced", true);
+        if (user.getUserRole().getName().equals("COORDINATOR")) {
+            model.addAttribute("currentEvents", eventService.getActiveEventsCoordinatedBy(user));
+            model.addAttribute("expiredEvents", eventService.getExpiredEventsCoordinatedBy(user));
+        } else if (user.getUserRole().getName().equals("VOLUNTEER")) {
+            model.addAttribute("currentEvents", eventService.getActiveEventsWithVolunteer(user));
+            model.addAttribute("expiredEvents", eventService.getExpiredEventsWithVolunteer(user));
+        } else if (user.getUserRole().getName().equals("ORGANISER")) {
+            model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
+            model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
+        }
+        return "myEventPool";
+    }
+
+    @GetMapping("/listOfEventsToManage")
+    public String poolEventsToManage(Model model) {
+        EventService eventService = ServiceFactory.getEventService();
         User user = Utils.getUserFromContext();
         model.addAttribute("advanced", true);
         if (user.getUserRole().getName().equals("COORDINATOR"))
@@ -92,9 +96,7 @@ public class EventController {
             model.addAttribute("events", eventService.getEventsForManagers());
         else if (user.getUserRole().getName().equals("ADMIN"))
             model.addAttribute("events", eventService.getAllEvents());
-        else
-            return "redirect:/main";
-        return "main";
+        return "poolEventsToManage";
     }
 
     @GetMapping("/main/{eventID}")
@@ -108,23 +110,23 @@ public class EventController {
     }
 
     // TODO "APROVED"/"REJECTED" are only avaliable for MANAGER role and only for UNCHECKED events
-    //      "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's COORDINATED
-    //      "COORDINATED" is only avaliable for COORDINATOR of the event when it's PUBLISHED
+    // "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's COORDINATED
+    // "COORDINATED" is only avaliable for COORDINATOR of the event when it's PUBLISHED
     @PostMapping("/main/{eventID}/setEventStatus")
-    public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus) {
-        if (changeStatus.equals("APPROVED"))
-            eventService.setStatus(eventService.getEventByID(eventID), EventStatusEnum.APPROVED);
-        else if (changeStatus.equals("REJECTED"))
-            eventService.deleteEvent(eventService.getEventByID(eventID));
-        else if (changeStatus.equals("PUBLISHED"))
-            eventService.setStatus(eventService.getEventByID(eventID), EventStatusEnum.PUBLISHED);
+    public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus, @RequestParam(required = false) String message) {
+        @NotNull Event event = eventService.getEventByID(eventID);
+        eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
+        if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
+            eventService.setMessage(event, message);
         return "redirect:/main/" + eventID;
     }
 
-    // TODO "coordinate" is only avaliable for COORDINATOR role and only for APROVED events
-    //      and "coordinate drop" is only avaliable for COORDINATOR of this event
+    // TODO "coordinate" is only avaliable for COORDINATOR role and only for APROVED
+    // events
+    // and "coordinate drop" is only avaliable for COORDINATOR of this event
     @PostMapping("/main/{eventID}/coordinate")
-    public String coordinateEvent(@PathVariable int eventID, @RequestParam(required = false, defaultValue = "false") boolean drop) {
+    public String coordinateEvent(@PathVariable int eventID,
+            @RequestParam(required = false, defaultValue = "false") boolean drop) {
         User user = Utils.getUserFromContext();
         Event event = eventService.getEventByID(eventID);
         if (!drop) {
@@ -156,8 +158,9 @@ public class EventController {
         UserVolunteerFunctionService uvfs = ServiceFactory.getUserVolunteerFunctionService();
         VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
         model.addAttribute("volunteerFunction", volunteerFunction);
-        model.addAttribute("userVolunteerFunctions", uvfs.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction));
-        model.addAttribute("user", Utils.getUserFromContext()); // FIXME #userRole
+        model.addAttribute("userVolunteerFunctions",
+                uvfs.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction));
+        model.addAttribute("user", Utils.getUserFromContext());
         return "currentVolunteerFunction";
     }
 
@@ -171,24 +174,21 @@ public class EventController {
     }
 
     @GetMapping("/main/{eventID}/addVolunteerFunction")
-    public String addVolunteerFunctionPage(@PathVariable(value = "eventID") String eventID){
+    public String addVolunteerFunctionPage(@PathVariable(value = "eventID") String eventID) {
         return "addVolunteerFunctionForm";
     }
 
     @PostMapping("/main/{eventID}/addVolunteerFunction")
-    public String addVolunteerFunction(@PathVariable(value="eventID") String eventID,
-                                       @RequestParam String name,
-                                       @RequestParam String description,
-                                       @RequestParam String requirements,
-                                       @RequestParam String timeStart,
-                                       @RequestParam String timeFinish,
-                                       @RequestParam int numberOfVolunteers){
+    public String addVolunteerFunction(@PathVariable(value = "eventID") String eventID, @RequestParam String name,
+            @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
+            @RequestParam String timeFinish, @RequestParam int numberOfVolunteers) {
 
         Event event = eventService.getEventByID(Integer.parseInt(eventID));
 
         if (event == null) {
             return "Event does not exist";
-        };
+        }
+        ;
 
         volunteerFunctionService.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
                 numberOfVolunteers);
@@ -198,11 +198,11 @@ public class EventController {
 
 
     @GetMapping("/main/{eventID}/volunteers")
-    public String getListOfVolunteers(@PathVariable(value="eventID") String eventID,
-                                      Model model){
+    public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
         Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
 
-        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService.getAllVolunteersOfEvent(currentEvent);
+        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService
+                .getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
 
         LocalDateTime timeNow = LocalDateTime.now();

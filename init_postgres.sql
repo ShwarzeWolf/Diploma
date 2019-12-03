@@ -46,7 +46,8 @@ CREATE TABLE VolunteersService.Events (
     Place         VARCHAR(120)           NOT NULL,
     DateStart     TIMESTAMPTZ            NOT NULL,
     DateFinish    TIMESTAMPTZ            NOT NULL,
-    StatusID      INTEGER                NOT NULL REFERENCES VolunteersService.EventStatus(StatusID)
+    StatusID      INTEGER                NOT NULL REFERENCES VolunteersService.EventStatus(StatusID),
+    Message       VARCHAR(200)           NOT NULL DEFAULT ''
 );
 
 CREATE TABLE VolunteersService.VolunteerFunctions (
@@ -54,7 +55,7 @@ CREATE TABLE VolunteersService.VolunteerFunctions (
     EventID      INTEGER                NOT NULL REFERENCES VolunteersService.Events(EventID) ON DELETE CASCADE,
     Name         VARCHAR(50)            NOT NULL,
     Description  VARCHAR(200)           NOT NULL,
-    Requirements VARCHAR(200)                   ,
+    Requirements VARCHAR(200)           NOT NULL DEFAULT '',
     TimeStart    TIMESTAMPTZ            NOT NULL,
     TimeFinish   TIMESTAMPTZ            NOT NULL,
     NumberNeeded INTEGER                NOT NULL
@@ -65,9 +66,9 @@ CREATE TABLE VolunteersService.UsersVolunteerFunctions (
     UserID                    INTEGER NOT NULL REFERENCES VolunteersService.Users(UserID)                           ON DELETE SET DEFAULT,
     VolunteerFunctionID       INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctions(VolunteerFunctionID) ON DELETE CASCADE,
     StatusID                  INTEGER NOT NULL REFERENCES VolunteersService.UserVolunteerFunctionStatus(StatusID),
-    NumberOfHours             INTEGER,
-    Estimation                INTEGER
-                                                       );
+    NumberOfHours             INTEGER NOT NULL DEFAULT 0,
+    Estimation                INTEGER NOT NULL DEFAULT 0
+);
 
 ALTER TABLE VolunteersService.EventStatus                 OWNER TO java;
 ALTER TABLE VolunteersService.UserRole                    OWNER TO java;
@@ -80,7 +81,7 @@ ALTER TABLE VolunteersService.UsersVolunteerFunctions     OWNER TO java;
 \! echo Inserting data
 
 INSERT INTO VolunteersService.UserRole                    (Name) values ('ORGANISER'), ('MANAGER'), ('COORDINATOR'), ('VOLUNTEER'), ('ADMIN');
-INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED');
+INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED'), ('REJECTED');
 INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPROVED'), ('RECALLED'), ('PARTICIPATED'), ('ABSENT');
 
 END TRANSACTION;

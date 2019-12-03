@@ -1,13 +1,12 @@
 package volunteersservice.models.entities;
 
-import java.time.LocalDateTime;
+import volunteersservice.utils.Utils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import volunteersservice.utils.Utils;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "VolunteersService.Users")
@@ -31,7 +30,6 @@ public class User {
     @Column(name = "Email", nullable = false, unique = true)
     @NotNull
     @NotEmpty(message = "Email cannot be empty")
-    // TODO: добавить обработку в JS
     @Email(message = "Email must be valid")
     private String email;
 
@@ -107,6 +105,14 @@ public class User {
 
     public UserRole getUserRole() {
         return userRole;
+    }
+
+    public void setHash1(String password) {
+        this.hash1 = Utils.calcSHA256(password);
+    }
+
+    public void setHash2(String password) {
+        this.hash2 = Utils.calcMD5(password);
     }
 
     @Override
