@@ -1,5 +1,6 @@
 package volunteersservice.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -204,26 +205,34 @@ public class EventController {
         List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService.getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
 
-        model.addAttribute("UVF", new UserVolunteerFunction());
+        LocalDateTime timeNow = LocalDateTime.now();
+        model.addAttribute("timeNow", timeNow);
 
         return "volunteersForEvent";
     }
 
     @PostMapping("/main/{eventID}/volunteers")
     public String changeVolunteerStatus(@PathVariable(value="eventID") String eventID,
-                                        @RequestParam (value="uvfIdNewStatus", required=true) String uvfIdNewStatus){
+                                        @RequestParam (value="newStatus", required=true) String newStatus,
+                                        @RequestParam (value="userVolunteerFunctionID", required=true) String userVolunteerFunctionId,
+                                        @RequestParam (value="estimation", required=false) String estimation,
+                                        @RequestParam (value="numberOfHours", required=false) String numberOfHours){
 
-        int userVolunteerFunctionId = Integer.parseInt(uvfIdNewStatus.split(" ")[0]);
-        UserVolunteerFunction uvf = userVolunteerFunctionService.getUserVolunteerFunctionByID(userVolunteerFunctionId);
+        UserVolunteerFunction uvf = userVolunteerFunctionService.getUserVolunteerFunctionByID(Integer.parseInt(userVolunteerFunctionId));
 
-        String command = uvfIdNewStatus.split(" ")[1];
-
-        switch (command){
+        switch (newStatus){
             case "Accept":
                 userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
                 break;
             case "Reject":
                 userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
+                break;
+            case "WasAbsent":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.ABSENT);
+                break;
+            case "Participated":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.PARTICIPATED);
+                userVolunteerFunctionService.setEstimation(uvf, Integer.parseInt(numberOfHours), Integer.parseInt(estimation));
                 break;
             default:
                 LOG.info("no status changed");

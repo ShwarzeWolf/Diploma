@@ -35,6 +35,12 @@ public class UserVolunteerFunction {
     @JoinColumn(name = "StatusID", nullable = false)
     UserVolunteerFunctionStatus status;
 
+    @Column(name = "NumberOfHours")
+    int numberOfHours;
+
+    @Column(name="Estimation")
+    int estimation;
+
     public UserVolunteerFunction() {
     }
 
@@ -43,6 +49,8 @@ public class UserVolunteerFunction {
         this.user = other.user;
         this.volunteerFunction = other.volunteerFunction;
         this.status = other.status;
+        this.estimation = other.estimation;
+        this.numberOfHours = other.numberOfHours;
     }
 
     public UserVolunteerFunction(User user, VolunteerFunction volunteerFunction) {
@@ -50,6 +58,8 @@ public class UserVolunteerFunction {
         this.volunteerFunction = volunteerFunction;
         UserVolunteerFunctionStatusRepository volunteerFunctionStatusRepository = RepositoryFactory.getUserVolunteerFunctionStatusRepository();
         this.status = volunteerFunctionStatusRepository.getStatusByEnum(UserVolunteerFunctionStatusEnum.UNCHECKED);
+        this.estimation = 0;
+        this.numberOfHours = 0;
     }
 
     public User getUser() {
@@ -66,6 +76,19 @@ public class UserVolunteerFunction {
 
     public void setStatus(UserVolunteerFunctionStatus status) {
         this.status = status;
+    }
+
+    public int getEstimation(){
+        return this.estimation;
+    }
+
+    public int getNumberOfHours(){
+        return this.numberOfHours;
+    }
+
+    public void setEstimation(int numberOfHours, int estimation){
+        this.numberOfHours = numberOfHours;
+        this.estimation = estimation;
     }
 
     public int getUserVolunteerFunctionID(){

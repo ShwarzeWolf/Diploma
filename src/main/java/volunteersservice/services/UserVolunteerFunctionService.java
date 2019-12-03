@@ -21,6 +21,8 @@ public interface UserVolunteerFunctionService {
 
 	public void setStatus(UserVolunteerFunction userVolunteerFunction, UserVolunteerFunctionStatusEnum status);
 
+	public void setEstimation(UserVolunteerFunction userVolunteerFunction, int numberOfHours, int estimation);
+
 	public List<User> getAllVolunteersOfFunction(VolunteerFunction volunteerFunction);
 
 	public List<User> getVoluteersOfFunction(VolunteerFunction volunteerFunction, UserVolunteerFunctionStatusEnum status);
