@@ -53,7 +53,7 @@ public class EventController {
         return "redirect:/main";
     }
 
-    @GetMapping({ "/main", "" })
+    @GetMapping({ "/main", "/" })
     public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
         List<Event> eventsList = eventService.getEventsForVolunteers();
         model.addAttribute("events", eventsList);

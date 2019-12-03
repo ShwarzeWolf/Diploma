@@ -13,7 +13,7 @@ CREATE ROLE java WITH LOGIN PASSWORD '123654';
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
---SET client_encoding = 'UTF8';
+-- SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
@@ -364,6 +364,7 @@ COPY volunteersservice.eventstatus (statusid, name) FROM stdin;
 2	APPROVED
 3	COORDINATED
 4	PUBLISHED
+6	REJECTED
 \.
 
 
@@ -443,7 +444,7 @@ SELECT pg_catalog.setval('volunteersservice.events_eventid_seq', 2, true);
 -- Name: eventstatus_statusid_seq; Type: SEQUENCE SET; Schema: volunteersservice; Owner: java
 --
 
-SELECT pg_catalog.setval('volunteersservice.eventstatus_statusid_seq', 5, true);
+SELECT pg_catalog.setval('volunteersservice.eventstatus_statusid_seq', 6, true);
 
 
 --
