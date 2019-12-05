@@ -25,41 +25,41 @@
     </div>
 </nav>
 
-    <div class="container">
-        <div class="row justify-content-center align-items-center text-center" style="padding: 10%">
-            <div class="col-5">
-                <form th:action="@{/login}" method="post">
+<div class="container">
+    <div class="row justify-content-center align-items-center text-center" style="padding: 10%">
+        <div class="col-5">
+            <form th:action="@{/login}" method="post">
                 <h1 class="h3 font-weight-normal">Please sign in</h1>
 
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="Login">Login</span>
-                        </div>
-                        <input type="text" name="login" autofocus="autofocus" id="inputLogin" class="form-control" placeholder="Login">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="Login">Login</span>
                     </div>
+                    <input type="text" name="login" autofocus="autofocus" id="inputLogin" class="form-control" placeholder="Login">
+                </div>
 
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="Password">Password</span>
-                        </div>
-                        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="Password">Password</span>
                     </div>
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                </div>
 
                 <div><input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In"/></div>
             </form>
 
-                <div th:if="${loginError}">
-                    <div class="alert alert-danger" role="alert">
-                       Wrong user or password
-                    </div>
+            <div th:if="${loginError}">
+                <div class="alert alert-danger" role="alert">
+                    Wrong user or password
                 </div>
-
-                <p class="register-here">
-                    Did not register yet? Follow to <a th:href="@{/registration}">Registration page</a>
-                </p>
             </div>
+
+            <p class="register-here">
+                Did not register yet? Follow to <a th:href="@{/registration}">Registration page</a>
+            </p>
         </div>
     </div>
+</div>
 
 
 
