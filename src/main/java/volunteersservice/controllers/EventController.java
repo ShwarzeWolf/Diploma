@@ -187,8 +187,7 @@ public class EventController {
 
         if (event == null) {
             return "Event does not exist";
-        }
-        ;
+        };
 
         volunteerFunctionService.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
                 numberOfVolunteers);
