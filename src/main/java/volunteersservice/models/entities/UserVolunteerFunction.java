@@ -23,15 +23,15 @@ public class UserVolunteerFunction {
     @Column(name = "UserVolunteerFunctionID")
     int userVolunteerFunctionID;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "UserID", nullable = false)
     User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "VolunteerFunctionID", nullable = false)
     VolunteerFunction volunteerFunction;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "StatusID", nullable = false)
     UserVolunteerFunctionStatus status;
 
@@ -84,6 +84,11 @@ public class UserVolunteerFunction {
 
     public int getNumberOfHours(){
         return this.numberOfHours;
+    }
+
+    public void setEstimation(int numberOfHours, int estimation){
+        this.numberOfHours = numberOfHours;
+        this.estimation = estimation;
     }
 
     public int getUserVolunteerFunctionID(){

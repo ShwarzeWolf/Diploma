@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import sun.rmi.runtime.Log;
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
@@ -47,6 +48,11 @@ public class UserVolunteerFunctionServiceDefault implements UserVolunteerFunctio
 	public void setStatus(UserVolunteerFunction userVolunteerFunction, UserVolunteerFunctionStatusEnum statusEnum) {
 		UserVolunteerFunctionStatusRepository volunteerFunctionStatusRepository = RepositoryFactory.getUserVolunteerFunctionStatusRepository();
 		userVolunteerFunction.setStatus(volunteerFunctionStatusRepository.getStatusByEnum(statusEnum));
+		userVolunteerFunctions.update(userVolunteerFunction);
+	}
+
+	public void setEstimation(UserVolunteerFunction userVolunteerFunction, int numberOfHours, int estimation){
+		userVolunteerFunction.setEstimation(numberOfHours, estimation);
 		userVolunteerFunctions.update(userVolunteerFunction);
 	}
 

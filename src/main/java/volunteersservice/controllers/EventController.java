@@ -1,5 +1,6 @@
 package volunteersservice.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +20,10 @@ import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
+import volunteersservice.services.*;
+import volunteersservice.models.entities.*;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.EventService;
-import volunteersservice.services.UserVolunteerFunctionService;
-import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
 
@@ -186,14 +187,14 @@ public class EventController {
 
         if (event == null) {
             return "Event does not exist";
-        }
-        ;
+        };
 
         volunteerFunctionService.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
                 numberOfVolunteers);
 
         return "redirect:/main/" + eventID;
     }
+
 
     @GetMapping("/main/{eventID}/volunteers")
     public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
@@ -203,30 +204,38 @@ public class EventController {
                 .getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
 
-        model.addAttribute("UVF", new UserVolunteerFunction());
+        LocalDateTime timeNow = LocalDateTime.now();
+        model.addAttribute("timeNow", timeNow);
 
         return "volunteersForEvent";
     }
 
     @PostMapping("/main/{eventID}/volunteers")
-    public String changeVolunteerStatus(@PathVariable(value = "eventID") String eventID,
-            @RequestParam(value = "uvfIdNewStatus", required = true) String uvfIdNewStatus) {
+    public String changeVolunteerStatus(@PathVariable(value="eventID") String eventID,
+                                        @RequestParam (value="newStatus", required=true) String newStatus,
+                                        @RequestParam (value="userVolunteerFunctionID", required=true) String userVolunteerFunctionId,
+                                        @RequestParam (value="estimation", required=false) String estimation,
+                                        @RequestParam (value="numberOfHours", required=false) String numberOfHours){
 
-        int userVolunteerFunctionId = Integer.parseInt(uvfIdNewStatus.split(" ")[0]);
-        UserVolunteerFunction uvf = userVolunteerFunctionService.getUserVolunteerFunctionByID(userVolunteerFunctionId);
+        UserVolunteerFunction uvf = userVolunteerFunctionService.getUserVolunteerFunctionByID(Integer.parseInt(userVolunteerFunctionId));
 
-        String command = uvfIdNewStatus.split(" ")[1];
-
-        switch (command) {
-        case "Accept":
-            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
-            break;
-        case "Reject":
-            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
-            break;
-        default:
-            LOG.info("no status changed");
-            break;
+        switch (newStatus){
+            case "Accept":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
+                break;
+            case "Reject":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
+                break;
+            case "WasAbsent":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.ABSENT);
+                break;
+            case "Participated":
+                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.PARTICIPATED);
+                userVolunteerFunctionService.setEstimation(uvf, Integer.parseInt(numberOfHours), Integer.parseInt(estimation));
+                break;
+            default:
+                LOG.info("no status changed");
+                break;
         }
 
         return "redirect:/main/" + eventID + "/volunteers";
