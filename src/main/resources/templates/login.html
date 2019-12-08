@@ -1,70 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <link th:href="@{/css/style.css}" rel="stylesheet" />
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
-    <div class="collapse navbar-collapse">
-        <div class="navbar-nav">
-            <a class="nav-link" th:href="@{/main}">Главная</a>
-        </div>
-    </div>
-
-    <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-        <!-- The "sign out" block must be the last among the elements of the current block -->
-        <div class="nav-item" sec:authorize="isAuthenticated()">
-            <form class="nav-item" th:action="@{/logout}" method="post">
-                <input class="btn btn-secondary" type="submit" value="Sign Out" />
-            </form>
-        </div>
-    </div>
-</nav>
-
-<div class="container">
-    <div class="row justify-content-center align-items-center text-center" style="padding: 10%">
-        <div class="col-5">
-            <form th:action="@{/login}" method="post">
-                <h1 class="h3 font-weight-normal">Please sign in</h1>
-
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="Login">Login</span>
-                    </div>
-                    <input type="text" name="login" autofocus="autofocus" id="inputLogin" class="form-control" placeholder="Login">
-                </div>
-
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="Password">Password</span>
-                    </div>
-                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-                </div>
-
-                <div><input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In"/></div>
-            </form>
-
-            <div th:if="${loginError}">
-                <div class="alert alert-danger" role="alert">
-                    Wrong user or password
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+        <div class="collapse navbar-collapse">
+            <div class="navbar-nav">
+                <a class="nav-link" th:href="@{/main}">Главная</a>
             </div>
+        </div>
 
-            <p class="register-here">
-                Did not register yet? Follow to <a th:href="@{/registration}">Registration page</a>
-            </p>
+        <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <!-- The "sign out" block must be the last among the elements of the current block -->
+            <div class="nav-item" sec:authorize="isAuthenticated()">
+                <form class="nav-item" th:action="@{/logout}" method="post">
+                    <input class="btn btn-secondary" type="submit" value="Sign Out" />
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center text-center" style="padding: 10%">
+            <div class="col-5">
+                <form th:action="@{/login}" method="post">
+                    <h1 class="h3 font-weight-normal">Please sign in</h1>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="Login">Login</span>
+                        </div>
+                        <input type="text" name="login" autofocus="autofocus" id="inputLogin" class="form-control"
+                            placeholder="Login">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="Password">Password</span>
+                        </div>
+                        <input type="password" name="password" id="inputPassword" class="form-control"
+                            placeholder="Password" required="">
+                    </div>
+
+                    <div><input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In" /></div>
+                </form>
+
+                <div th:if="${loginError}">
+                    <div class="alert alert-danger" role="alert">
+                        Wrong user or password
+                    </div>
+                </div>
+
+                <p class="register-here">
+                    Did not register yet? Follow to <a th:href="@{/registration}">Registration page</a>
+                </p>
+            </div>
         </div>
     </div>
-</div>
 
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>

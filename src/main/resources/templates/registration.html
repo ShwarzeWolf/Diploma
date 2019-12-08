@@ -1,12 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
 <head>
     <title>Registration</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
         <div class="collapse navbar-collapse">
@@ -40,19 +43,19 @@
                     </div>
 
                     <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="Login">Login</span>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="Login">Login</span>
+                        </div>
+                        <input type="text" name="login" class="form-control" placeholder="Login">
                     </div>
-                    <input type="text" name="login" class="form-control" placeholder="Login">
-                </div>
 
                     <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="Email">E-mail</span>
-                    </div>
-                    <input type="text" name="email" class="form-control" placeholder="Example@mail.ru">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="Email">E-mail</span>
+                        </div>
+                        <input type="text" name="email" class="form-control" placeholder="Example@mail.ru">
 
-                </div>
+                    </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -63,36 +66,40 @@
 
 
                     <div class="row text-left">
-                <legend class="col-form-label col-sm-2 pt-0">Roles</legend>
-                <div class="col-sm-10">
-                    <div class="form-check">
-                        <input id="volunteer" class="form-check-input" type="radio" name="userRole" value="VOLUNTEER" checked>
-                        <label class="form-check-label" for="volunteer">
-                            Volunteer
-                        </label>
+                        <legend class="col-form-label col-sm-2 pt-0">Roles</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input id="volunteer" class="form-check-input" type="radio" name="userRole"
+                                    value="VOLUNTEER" checked>
+                                <label class="form-check-label" for="volunteer">
+                                    Volunteer
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input id="organiser" class="form-check-input" type="radio" name="userRole"
+                                    value="ORGANISER" checked>
+                                <label class="form-check-label" for="organiser">
+                                    Organizer
+                                </label>
+                            </div>
+                            <div th:if="${roleName != null && roleName.equals('ADMIN')}" class="form-check">
+                                <input id="manager" class="form-check-input" type="radio" name="userRole"
+                                    value="MANAGER" checked>
+                                <label class="form-check-label" for="manager">
+                                    Manager
+                                </label>
+                            </div>
+                            <div th:if="${roleName != null && roleName.equals('ADMIN')}" class="form-check">
+                                <input id="coordinator" class="form-check-input" type="radio" name="userRole"
+                                    value="COORDINATOR" checked>
+                                <label class="form-check-label" for="coordinator">
+                                    Coordinator
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input id="organiser" class="form-check-input" type="radio" name="userRole" value="ORGANISER" checked>
-                        <label class="form-check-label" for="organiser">
-                            Organizer
-                        </label>
-                    </div>
-                    <div th:if="${roleName != null && roleName.equals('ADMIN')}" class="form-check">
-                        <input id="manager" class="form-check-input" type="radio" name="userRole" value="MANAGER" checked>
-                        <label class="form-check-label" for="manager">
-                            Manager
-                        </label>
-                    </div>
-                    <div th:if="${roleName != null && roleName.equals('ADMIN')}" class="form-check">
-                        <input id="coordinator" class="form-check-input" type="radio" name="userRole" value="COORDINATOR" checked>
-                        <label class="form-check-label" for="coordinator">
-                            Coordinator
-                        </label>
-                    </div>
-                </div>
-            </div>
 
-                    <div><input type="submit" class="btn btn-lg btn-primary btn-block" value="Register"/></div>
+                    <div><input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" /></div>
                 </form>
 
                 <p class="login-here" style="padding: 5%">
@@ -102,9 +109,16 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
 </body>
+
 </html>
