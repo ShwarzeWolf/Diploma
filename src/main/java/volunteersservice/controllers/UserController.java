@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.services.UserService;
@@ -44,7 +45,7 @@ public class UserController {
         return "registration";
     }
 
-    @GetMapping("/personal_account")
+    @GetMapping({"/personal_account"})
     public String getPersonalAccount(Model model) {
         User user = Utils.getUserFromContext();
         model.addAttribute("person", user);
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @PostMapping("/changePassword")
-    public String changePassword(Model model,
+    public String changePassword(Model model, RedirectAttributes redirectAttributes,
                                  @RequestParam String oldPassword,
                                  @RequestParam String newPassword1,
                                  @RequestParam String newPassword2){
@@ -63,7 +64,7 @@ public class UserController {
         else
             answer = "Password has not been changed";
         model.addAttribute("person", user);
-        model.addAttribute("password_change_status", answer);
-        return "personal_account";
+        redirectAttributes.addFlashAttribute("password_change_status", answer);
+        return "redirect:/personal_account";
     }
 }

@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().addHeaderWriter(new HeaderWriterImpl());
         http.authorizeRequests()
                 .antMatchers("/", "/registration", "/main/**").permitAll()
-                .antMatchers("/css/**").permitAll()
+                .antMatchers("/resources/static/**").permitAll()
 //                TODO fix security
                 .antMatchers(HttpMethod.POST, "/main/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/main*").permitAll()
@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("login")
                 .failureUrl("/login-error")
                 .passwordParameter("password")
+                .defaultSuccessUrl("/main", true)
                 .permitAll()
             .and()
                 .logout()

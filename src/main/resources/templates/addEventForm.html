@@ -66,22 +66,7 @@
             </div>
         </div>
     </nav>
-    <div id="header">
-        <div class="head_line">
-            <div class="head_line_block_left">
-                <a th:href="@{/main}">Главная</a>
-            </div>
 
-            <div class="head_line_block_right">
-                <!--                The "sign out" block must be the last among the elements of the current block-->
-                <div class="head_one_element" sec:authorize="isAuthenticated()">
-                    <form th:action="@{/logout}" method="post">
-                        <input type="submit" value="Sign Out" />
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div id="addEvent_form">
         <form method="post" th:action="@{/addEvent}">

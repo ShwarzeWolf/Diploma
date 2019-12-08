@@ -60,7 +60,7 @@ public class UserServiceDefault implements UserService {
 			User logging = userRepository.getUserByLogin(login);
 			logging.setHash1(newPassword1);
 			logging.setHash2(newPassword1);
-			return userRepository.update(logging) ? true : false;
+			return userRepository.update(logging);
 		}
 		else
 			return false;
