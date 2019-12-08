@@ -20,10 +20,10 @@ import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.services.*;
-import volunteersservice.models.entities.*;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.EventService;
+import volunteersservice.services.UserVolunteerFunctionService;
+import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
 

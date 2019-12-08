@@ -1,13 +1,5 @@
 .classpath
-.gradle
 .project
-build
-bin
+target
 .vscode
-.settings
-gradlew
-gradlew.bat
-settings.gradle
-gradle/
-out/
-log_file.log
+*.log
