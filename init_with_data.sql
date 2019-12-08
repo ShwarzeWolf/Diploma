@@ -412,7 +412,7 @@ COPY volunteersservice.usersvolunteerfunctions (uservolunteerfunctionid, userid,
 COPY volunteersservice.uservolunteerfunctionstatus (statusid, name) FROM stdin;
 1	UNCHECKED
 2	DENIED
-3	APPRIVED
+3	APPROVED
 4	RECALLED
 5	PARTICIPATED
 6	ABSENT

@@ -100,7 +100,7 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 	@Override
 	public List<UserVolunteerFunction> getAllVolunteersOfEvent(int eventId){
 		return (List<UserVolunteerFunction>) HibernateUtil.getSession().createQuery(
-				"select new UserVolunteerFunction(uvf) from UserVolunteerFunction as uvf inner join VolunteerFunction as vf on uvf.volunteerFunction.volunteerFunctionID = vf.volunteerFunctionID where vf.event.eventID = :eventId")
+				"select new UserVolunteerFunction(uvf) from UserVolunteerFunction as uvf inner join VolunteerFunction as vf on uvf.volunteerFunction.volunteerFunctionID = vf.volunteerFunctionID where vf.event.eventID = :eventId order by uvf.id")
 				.setParameter("eventId", eventId).list();
 
 	}

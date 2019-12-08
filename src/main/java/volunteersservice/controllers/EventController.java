@@ -20,10 +20,10 @@ import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.services.*;
-import volunteersservice.models.entities.*;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.EventService;
+import volunteersservice.services.UserVolunteerFunctionService;
+import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
 
@@ -32,13 +32,11 @@ public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
     private EventService eventService;
-    private VolunteerFunctionService volunteerFunctionService;
     private UserVolunteerFunctionService userVolunteerFunctionService;
 
     public EventController() {
         LOG.info("EventController is alive");
         eventService = ServiceFactory.getEventService();
-        volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
         userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
     }
 
@@ -172,29 +170,6 @@ public class EventController {
                 vfService.getVolunteerFunctionByID(volunteerFunctionID));
         return "redirect:/main/" + uvf.getVolunteerFunction().getEvent().getEventID();
     }
-
-    @GetMapping("/main/{eventID}/addVolunteerFunction")
-    public String addVolunteerFunctionPage(@PathVariable(value = "eventID") String eventID) {
-        return "addVolunteerFunctionForm";
-    }
-
-    @PostMapping("/main/{eventID}/addVolunteerFunction")
-    public String addVolunteerFunction(@PathVariable(value = "eventID") String eventID, @RequestParam String name,
-            @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
-            @RequestParam String timeFinish, @RequestParam int numberOfVolunteers) {
-
-        Event event = eventService.getEventByID(Integer.parseInt(eventID));
-
-        if (event == null) {
-            return "Event does not exist";
-        };
-
-        volunteerFunctionService.addVolunteerFunction(event, name, description, requirements, timeStart, timeFinish,
-                numberOfVolunteers);
-
-        return "redirect:/main/" + eventID;
-    }
-
 
     @GetMapping("/main/{eventID}/volunteers")
     public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
