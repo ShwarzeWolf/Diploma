@@ -148,17 +148,8 @@
                         <td>No actions availiable</td>
                     </div>
                     <div th:case="'PARTICIPATED'">
-                        <div>
-                            <td>
-                                <div th:text="Часы:"></div>
-                                <div th:text="${users.getNumberOfHours()}"></div>
-                            </td>
-                        </div>
-
-                        <td>
-                            <div th:text="Оценка:"></div>
-                            <div th:text="${users.getEstimation()}"></div>
-                        </td>
+                        <td th:text="${users.getNumberOfHours()}"></td>
+                        <td th:text="${users.getEstimation()}"></td>
                     </div>
                 </th:block>
             </tr>

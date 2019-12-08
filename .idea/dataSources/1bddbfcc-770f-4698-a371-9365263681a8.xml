@@ -12,17 +12,17 @@
       <IntrospectionStateNumber>487</IntrospectionStateNumber>
       <Current>1</Current>
       <Visible>1</Visible>
-      <Relations>sequence|table|26453|26455|1
-sequence|table|26461|26463|1
-sequence|table|26469|26471|1
-sequence|table|16769|16771|1
+      <Relations>sequence|table|16769|16771|1
 sequence|table|16777|16779|1
 sequence|table|16790|16792|1
 sequence|table|16803|16805|1
-sequence|table|26477|26479|1
 sequence|table|26494|26496|1
 sequence|table|26521|26523|1
 sequence|table|26535|26537|1
+sequence|table|26453|26455|1
+sequence|table|26461|26463|1
+sequence|table|26469|26471|1
+sequence|table|26477|26479|1
 </Relations>
     </database>
     <role id="3" parent="1" name="java">
