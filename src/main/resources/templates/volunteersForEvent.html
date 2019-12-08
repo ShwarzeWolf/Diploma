@@ -27,7 +27,7 @@
                 <div th:case="'UNCHECKED'">
                     <td>
                         <div class="button-group">
-                            <form action="#" th:action="@{volunteers}" method="post">
+                            <form action="#" method="post">
                                 <input type="hidden" name="userVolunteerFunctionID" th:value="${users.getUserVolunteerFunctionID()}">
                                 <button type="submit" name="newStatus" th:value="Accept" class="btn btn-success">Принять</button>
                                 <button type="submit" name="newStatus" th:value="Reject" class="btn btn-secondary">Отклонить</button>

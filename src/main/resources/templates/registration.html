@@ -95,9 +95,9 @@
                     <div><input type="submit" class="btn btn-lg btn-primary btn-block" value="Register"/></div>
                 </form>
 
-                <p class="login-here" style="padding: 5%">
+                <div th:if="${roleName == null}" class="login-here" style="padding: 5%">
                     Already have an account? <a th:href="@{/login}">Login here</a>
-                </p>
+                </div>
             </div>
         </div>
     </div>
