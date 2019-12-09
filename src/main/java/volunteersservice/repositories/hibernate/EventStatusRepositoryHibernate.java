@@ -15,7 +15,7 @@ public class EventStatusRepositoryHibernate implements EventStatusRepository {
     @Override
     public EventStatus getStatusByName(String statusName) {
         EventStatus res = (EventStatus) HibernateUtil.getSession().createQuery(
-                "select new EventStatus(eventStatus) from EventStatus as eventStatus where eventStatus.name = :name")
+                "from EventStatus as eventStatus where eventStatus.name = :name")
                 .setParameter("name", statusName).uniqueResult();
         return res;
     }
@@ -23,7 +23,7 @@ public class EventStatusRepositoryHibernate implements EventStatusRepository {
     @Override
     public EventStatus getStatusByEnum(EventStatusEnum statusEnum) {
         EventStatus res = (EventStatus) HibernateUtil.getSession().createQuery(
-                "select new EventStatus(eventStatus) from EventStatus as eventStatus where eventStatus.name = :name")
+                "from EventStatus as eventStatus where eventStatus.name = :name")
                 .setParameter("name", statusEnum.name()).uniqueResult();
         return res;
     }

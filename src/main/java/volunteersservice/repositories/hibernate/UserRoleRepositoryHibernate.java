@@ -14,14 +14,14 @@ public class UserRoleRepositoryHibernate implements UserRoleRepository {
     @Override
     public UserRole getRoleByName(String typeName) {
         return (UserRole) HibernateUtil.getSession()
-                .createQuery("select new UserRole(userRole) from UserRole as userRole where userRole.name = :name")
+                .createQuery("from UserRole as userRole where userRole.name = :name")
                 .setParameter("name", typeName).uniqueResult();
     }
 
     @Override
     public UserRole getRoleByEnum(UserRoleEnum roleEnum) {
         return (UserRole) HibernateUtil.getSession()
-                .createQuery("select new UserRole(userRole) from UserRole as userRole where userRole.name = :name")
+                .createQuery("from UserRole as userRole where userRole.name = :name")
                 .setParameter("name", roleEnum.name()).uniqueResult();
     }
 }

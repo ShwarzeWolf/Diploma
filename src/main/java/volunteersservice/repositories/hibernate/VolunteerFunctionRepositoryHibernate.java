@@ -18,7 +18,7 @@ public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRe
 
     @Override
     public boolean save(VolunteerFunction VolunteerFunction) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSession();
         Transaction tx = session.beginTransaction();
         try {
             session.save(VolunteerFunction);
@@ -41,7 +41,7 @@ public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRe
     @Override
     public List<VolunteerFunction> getVolunteerFunctions(Event event) {
         return (List<VolunteerFunction>) HibernateUtil.getSession().createQuery(
-                "Select new VolunteerFunction(volunteerFunction) From VolunteerFunction as volunteerFunction inner join Event as event on event.eventID = volunteerFunction.event.eventID where event.eventID = :eventID")
+                "select volunteerFunction From VolunteerFunction as volunteerFunction inner join Event as event on event.eventID = volunteerFunction.event.eventID where event.eventID = :eventID")
                 .setParameter("eventID", event.getEventID()).list();
     }
 }
