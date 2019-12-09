@@ -69,40 +69,47 @@
 
     <h2><span th:text="${event.getName()}"></span></h2>
 
-    <table>
+    <table class="table table-bordered">
         <tr>
-            <td>Description: </td>
+            <th scope="row">Description</th>
+            <!--            <td>Description: </td>-->
             <td th:text="${event.getDescription()}" />
         </tr>
         <tr>
-            <td>Place: </td>
+            <th scope="row">Place</th>
+            <!--            <td>Place: </td>-->
             <td th:text="${event.getPlace()}" />
         </tr>
         <tr>
-            <td>Time: </td>
+            <th scope="row">Time</th>
+            <!--            <td>Time: </td>-->
             <td><span th:text="${event.getDateStart()}" /> - <span th:text="${event.getDateFinish()}" /></td>
         </tr>
         <tr>
-            <td>Organised by:</td>
+            <th scope="row">Organised by</th>
+            <!--            <td>Organised by:</td>-->
             <td th:text="${event.getOrganiser().getName()}" />
         </tr>
         <tr th:if="${event.getCoordinator() != null}">
-            <td>Coordinated by:</td>
+            <th scope="row">Coordinated by</th>
+            <!--            <td>Coordinated by:</td>-->
             <td th:text="${event.getCoordinator().getName()}" />
         </tr>
     </table>
 
     <div th:if="${not #lists.isEmpty(volunteerFunctions)}">
-        <h2>volunteerFunctions</h2>
-        <table>
-            <tr>
-                <td th:text="Name" />
-                <td th:text="Description" />
-                <td th:text="Requirements" />
-                <td th:text="Time" />
-                <td th:text="NumberOfVolunteers" />
-                <td th:text="Link" />
-            </tr>
+        <h2>Volunteer functions</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Requirements</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">NumberOfVolunteers</th>
+                    <th scope="col">Link</th>
+                </tr>
+            </thead>
             <tr th:each="volunteerFunction : ${volunteerFunctions}">
                 <td th:text="${volunteerFunction.getName()}" />
                 <td th:text="${volunteerFunction.getDescription()}" />
