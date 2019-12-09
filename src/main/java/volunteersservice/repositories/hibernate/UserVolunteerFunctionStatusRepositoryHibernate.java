@@ -14,7 +14,7 @@ public class UserVolunteerFunctionStatusRepositoryHibernate implements UserVolun
     @Override
     public UserVolunteerFunctionStatus getStatusByName(String statusName) {
         UserVolunteerFunctionStatus res = (UserVolunteerFunctionStatus) HibernateUtil.getSession().createQuery(
-                "select new UserVolunteerFunctionStatus(status) from UserVolunteerFunctionStatus as status where status.name = :name")
+                "select status from UserVolunteerFunctionStatus as status where status.name = :name")
                 .setParameter("name", statusName).uniqueResult();
         return res;
     }
@@ -22,7 +22,7 @@ public class UserVolunteerFunctionStatusRepositoryHibernate implements UserVolun
     @Override
     public UserVolunteerFunctionStatus getStatusByEnum(UserVolunteerFunctionStatusEnum statusEnum) {
         UserVolunteerFunctionStatus res = (UserVolunteerFunctionStatus) HibernateUtil.getSession().createQuery(
-                "select new UserVolunteerFunctionStatus(status) from UserVolunteerFunctionStatus as status where status.name = :name")
+                "select status from UserVolunteerFunctionStatus as status where status.name = :name")
                 .setParameter("name", statusEnum.name()).uniqueResult();
         return res;
     }

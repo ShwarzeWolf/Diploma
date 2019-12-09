@@ -26,7 +26,7 @@ public class EventRepositoryHibernate implements EventRepository {
 
     @Override
     public boolean save(Event event) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSession();
         Transaction tx = session.beginTransaction();
         try {
             session.save(event);
@@ -36,13 +36,12 @@ public class EventRepositoryHibernate implements EventRepository {
             LOG.error(ex);
             return false;
         } finally {
-            session.close();
         }
     }
 
     @Override
     public boolean delete(Event event) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSession();
         Transaction tx = session.beginTransaction();
         try {
             session.delete(event);
@@ -51,13 +50,12 @@ public class EventRepositoryHibernate implements EventRepository {
         } catch (Exception ex) {
             return false;
         } finally {
-            session.close();
         }
     }
 
     @Override
     public boolean update(Event event) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSession();
         Transaction tx = session.beginTransaction();
         try {
             session.update(event);
@@ -66,7 +64,6 @@ public class EventRepositoryHibernate implements EventRepository {
         } catch (Exception ex) {
             return false;
         } finally {
-            session.close();
         }
     }
 
@@ -116,7 +113,7 @@ public class EventRepositoryHibernate implements EventRepository {
     @Override
     public List<Event> getEventsWithVolunteer(User volunteer, boolean active) {
         return (List<Event>) HibernateUtil.getSession()
-                .createQuery("select new Event(event) from Event as event inner join VolunteerFunction as vf on "
+                .createQuery("select event from Event as event inner join VolunteerFunction as vf on "
                         + "vf.event.eventID = event.eventID inner join UserVolunteerFunction as uvf "
                         + "on uvf.volunteerFunction.volunteerFunctionID = vf.volunteerFunctionID inner join User as user on "
                         + "user.userID = uvf.user.userID where user.userID = :volunteerID and event.dateFinish "

@@ -1,5 +1,13 @@
+.gradle/
+gradle/
+.settings
+
 .classpath
 .project
-target
 .vscode
 *.log
+
+target/
+build/
+out/
+bin/

@@ -36,7 +36,7 @@ public class UserRepositoryHibernate implements UserRepository {
 
 	@Override
 	public boolean save(User user) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		Transaction tx = session.beginTransaction();
 		LOG.info("Trying to save user: " + user);
 		try {
@@ -53,7 +53,7 @@ public class UserRepositoryHibernate implements UserRepository {
 
 	@Override
 	public boolean update(User user) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.update(user);
@@ -68,7 +68,7 @@ public class UserRepositoryHibernate implements UserRepository {
 
 	@Override
 	public boolean delete(User user) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSession();
 		Transaction tx = session.beginTransaction();
 		try {
 			session.delete(user);

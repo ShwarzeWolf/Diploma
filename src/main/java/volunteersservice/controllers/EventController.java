@@ -113,6 +113,7 @@ public class EventController {
     @PostMapping("/main/{eventID}/setEventStatus")
     public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus, @RequestParam(required = false) String message) {
         @NotNull Event event = eventService.getEventByID(eventID);
+        LOG.info("Changing event status: " + event + ", " + changeStatus);
         eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
         if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
             eventService.setMessage(event, message);
