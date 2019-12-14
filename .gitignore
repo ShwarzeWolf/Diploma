@@ -2,6 +2,9 @@
 gradle/
 .settings
 
+gradlew
+gradlew.bat
+
 .classpath
 .project
 .vscode

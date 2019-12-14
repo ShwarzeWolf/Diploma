@@ -72,6 +72,7 @@
         <thead>
             <tr>
                 <th scope="col">User Name</th>
+                <th scope="col">View volunteer</th>
                 <th scope="col">User Function</th>
                 <th scope="col">Function Time</th>
                 <th scope="col">Function status</th>
@@ -81,6 +82,7 @@
         <tbody>
             <tr th:each="users : ${registeredUsers}">
                 <td th:text="${users.getUser().getName()}"></td>
+                <td><a th:href="@{'/volunteers/' + ${users.getUser().getUserID()}}">View</a></td>
                 <td th:text="${users.getVolunteerFunction().getName()}"></td>
                 <td
                     th:text="${users.getVolunteerFunction().getTimeStart().toString()} + ' ' + ${users.getVolunteerFunction().getTimeFinish().toString()}">

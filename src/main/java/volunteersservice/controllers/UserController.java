@@ -4,11 +4,13 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.enums.UserRoleEnum;
+import volunteersservice.services.EventService;
 import volunteersservice.services.UserService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
@@ -66,5 +68,28 @@ public class UserController {
         model.addAttribute("person", user);
         redirectAttributes.addFlashAttribute("password_change_status", answer);
         return "redirect:/personal_account";
+    }
+
+    @GetMapping("/volunteers/{volunteerId}")
+    public String myEventPool(Model model,
+                              @PathVariable int volunteerId) {
+        EventService eventService = ServiceFactory.getEventService();
+        UserService userService = ServiceFactory.getUserService();
+
+        User currentVolunteer = userService.getUserByID(volunteerId);
+
+        User user = Utils.getUserFromContext();
+
+        model.addAttribute("volunteer", currentVolunteer);
+        model.addAttribute("events", eventService.getExpiredEventsWithVolunteer(currentVolunteer));
+
+        model.addAttribute("user", user);
+
+        int hours = 0;
+        model.addAttribute("hours", hours);
+
+        double avgRating = 0.0;
+        model.addAttribute("avgRating", avgRating);
+        return "volunteersInfo";
     }
 }
