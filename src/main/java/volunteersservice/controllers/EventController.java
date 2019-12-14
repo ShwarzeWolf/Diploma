@@ -1,11 +1,5 @@
 package volunteersservice.controllers;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
@@ -26,6 +19,11 @@ import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 public class EventController {
@@ -100,6 +98,8 @@ public class EventController {
     @GetMapping("/main/{eventID}")
     public String getEventByID(@PathVariable int eventID, Model model) {
         Event currentEvent = eventService.getEventByID(eventID);
+        User user = Utils.getUserFromContext();
+        model.addAttribute("roleName", user != null ? user.getUserRole().getName() : "ROLE_ANONYMOUS");
         model.addAttribute("event", currentEvent);
         model.addAttribute("user", Utils.getUserFromContext());
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
@@ -175,7 +175,6 @@ public class EventController {
     @GetMapping("/main/{eventID}/volunteers")
     public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
         Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
-
         List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService
                 .getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
