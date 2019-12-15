@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import volunteersservice.models.entities.User;
-import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.services.EventService;
 import volunteersservice.services.UserService;
@@ -72,7 +72,7 @@ public class UserController {
         return "redirect:/personal_account";
     }
 
-    @GetMapping("/volunteers/{volunteerId}")
+    @GetMapping("/user/{volunteerId}")
     public String myEventPool(Model model,
                               @PathVariable int volunteerId) {
         EventService eventService = ServiceFactory.getEventService();
@@ -93,6 +93,6 @@ public class UserController {
 
         double avgRating = userVolunteerFunctionService.getAVGRating(currentVolunteer);
         model.addAttribute("avgRating", avgRating);
-        return "volunteersInfo";
+        return "userInfo";
     }
 }

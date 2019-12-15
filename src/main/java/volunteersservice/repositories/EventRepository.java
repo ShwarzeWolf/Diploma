@@ -1,5 +1,6 @@
 package volunteersservice.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -29,7 +30,9 @@ public interface EventRepository {
     public List<Event> getEventsCoordinatedBy(User coordinator, boolean active);
 
     public List<Event> getEventsWithVolunteer(User volunteer, boolean active);
-
+    
+    public List<Event> getEventsWithVolunteer(User volunteer, LocalDate dateStart, LocalDate dateFinish);
+    
     public List<Event> getEventsOfOrganiser(User organiser, boolean active);
 
 }

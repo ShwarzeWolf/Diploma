@@ -14,17 +14,17 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
 		<div class="collapse navbar-collapse">
 			<div class="navbar-nav">
-				<!-- The "Вход" block must be the first among the elements of the current block -->
+				<!-- The "Sign In" block must be the first among the elements of the current block -->
 				<a class="nav-item" sec:authorize="!isAuthenticated()">
-					<a class="nav-link" th:href="@{/login}">Вход</a>
+					<a class="nav-link" th:href="@{/login}">Sign In</a>
 				</a>
 
 				<a class="nav-item" sec:authorize="!isAuthenticated()">
-					<a class="nav-link" th:href="@{/registration}">Регистрация</a>
+					<a class="nav-link" th:href="@{/registration}">Register</a>
 				</a>
 
 				<a class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Главная</a>
+                    <a class="nav-link" th:href="@{/}">Main page</a>
                 </a>
 
 				<a class="nav-item" th:if="${roleName != null && roleName == 'ADMIN'}">
@@ -95,15 +95,15 @@
 		<tr th:each="uvf : ${userVolunteerFunctions}">
 			<td><span th:text="${uvf.user.getName()}" /></td>
 			<td><span th:text="${uvf.getStatus().getName()}" /></td>
-			<td th:if="${volunteerFunction.getEvent().getOrganiser().getLogin() == user.getLogin()}">(Here will be
-				status changing button)</td>
+			<td th:if="${volunteerFunction.getEvent().getOrganiser().getLogin() == user.getLogin()}"></td>
 		</tr>
 	</table>
 
-	<div th:if="${user != null && user.getUserRole().getName().equals('VOLUNTEER')}">
+	<div th:if="${showButton != 'none'}">
 		<form method="POST">
 			<input type="hidden" name="volunteerFunctionID" value="${volunteerFunction.getVolunteerFunctionID()}">
-			<button type="submit">Sign me up!</button>
+			<button type="submit" th:if="${showButton == 'signup'}" name="action" value="signup" class="btn">Sign me up!</button>
+			<button type="submit" th:if="${showButton == 'abandon'}" name="action" value="abandon" class="btn">Abandon the function</button>
 		</form>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

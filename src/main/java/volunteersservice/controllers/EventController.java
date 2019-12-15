@@ -14,6 +14,7 @@ import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
+import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.EventService;
 import volunteersservice.services.UserVolunteerFunctionService;
@@ -30,14 +31,8 @@ import java.util.List;
 public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
-    private EventService eventService;
-    private UserVolunteerFunctionService userVolunteerFunctionService;
-
-    public EventController() {
-        LOG.info("EventController is alive");
-        eventService = ServiceFactory.getEventService();
-        userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
-    }
+    private EventService eventService = ServiceFactory.getEventService();
+    private UserVolunteerFunctionService userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
 
 
     @PreAuthorize("hasAuthority('ORGANISER')")
@@ -72,26 +67,31 @@ public class EventController {
     @PreAuthorize("hasAnyAuthority('COORDINATOR','VOLUNTEER', 'ORGANISER')")
     @GetMapping("/listOfMyEvents")
     public String myEventPool(Model model) {
-        EventService eventService = ServiceFactory.getEventService();
         User user = Utils.getUserFromContext();
-        model.addAttribute("advanced", true);
         if (user.getUserRole().getName().equals("COORDINATOR")) {
             model.addAttribute("currentEvents", eventService.getActiveEventsCoordinatedBy(user));
             model.addAttribute("expiredEvents", eventService.getExpiredEventsCoordinatedBy(user));
+            model.addAttribute("advanced", true);
         } else if (user.getUserRole().getName().equals("VOLUNTEER")) {
             model.addAttribute("currentEvents", eventService.getActiveEventsWithVolunteer(user));
             model.addAttribute("expiredEvents", eventService.getExpiredEventsWithVolunteer(user));
         } else if (user.getUserRole().getName().equals("ORGANISER")) {
             model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
             model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
+            model.addAttribute("advanced", true);
         }
         return "myEventPool";
+    }
+
+    @GetMapping("/listOfMyEvents/search")
+    public String myEventPoolSearch(Model model, @RequestParam String dateStart, @RequestParam String dateFinish) {
+        model.addAttribute("events", eventService.getEventsWithVolunteer(Utils.getUserFromContext(), dateStart, dateFinish));
+        return "myEventPoolSearch";
     }
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR','MANAGER', 'ADMIN')")
     @GetMapping("/listOfEventsToManage")
     public String poolEventsToManage(Model model) {
-        EventService eventService = ServiceFactory.getEventService();
         User user = Utils.getUserFromContext();
         model.addAttribute("advanced", true);
         if (user.getUserRole().getName().equals("COORDINATOR"))
@@ -166,29 +166,47 @@ public class EventController {
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
         UserVolunteerFunctionService uvfs = ServiceFactory.getUserVolunteerFunctionService();
         VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
+        User user = Utils.getUserFromContext();
         model.addAttribute("volunteerFunction", volunteerFunction);
         model.addAttribute("userVolunteerFunctions",
                 uvfs.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction));
         model.addAttribute("user", Utils.getUserFromContext());
+        if (user != null && user.getUserRole().getEnum().equals(UserRoleEnum.VOLUNTEER))
+            if (uvfs.alreadySignedUp(user, volunteerFunction))
+                model.addAttribute("showButton", "abandon");
+            else
+                model.addAttribute("showButton", "signup");
+        else
+            model.addAttribute("showButton", "none");
         return "currentVolunteerFunction";
     }
 
     @PostMapping("/volunteerFunction/{volunteerFunctionID}")
-    public String signUpOnVolunteerFunction(@PathVariable int volunteerFunctionID) {
+    public String changeStatusOfUserVolunteerFunction(@PathVariable int volunteerFunctionID, @RequestParam String action) {
         UserVolunteerFunctionService uvfService = ServiceFactory.getUserVolunteerFunctionService();
         VolunteerFunctionService vfService = ServiceFactory.getVolunteerFunctionService();
-        UserVolunteerFunction uvf = uvfService.addUserVolunteerFunction(Utils.getUserFromContext(),
-                vfService.getVolunteerFunctionByID(volunteerFunctionID));
-        return "redirect:/main/" + uvf.getVolunteerFunction().getEvent().getEventID();
+        VolunteerFunction vf = vfService.getVolunteerFunctionByID(volunteerFunctionID);
+        if (action.equals("signup")) {
+            uvfService.addUserVolunteerFunction(Utils.getUserFromContext(), vf);
+        } else {
+            UserVolunteerFunction uvf = uvfService.getUserVolunteerFunction(Utils.getUserFromContext(), vf);
+            uvfService.deleteUserVolunteerFunction(uvf);
+        }
+        return "redirect:/main/" + vf.getEvent().getEventID();
     }
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
     @GetMapping("/main/{eventID}/volunteers")
     public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
         Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
+        User user = Utils.getUserFromContext();
         List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService
                 .getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
+        if (user != null && currentEvent.getCoordinator() != null)
+            model.addAttribute("showButtons", user.getLogin().equals(currentEvent.getCoordinator().getLogin()));
+        else
+            model.addAttribute("showButtons", false);
 
         LocalDateTime timeNow = LocalDateTime.now();
         model.addAttribute("timeNow", timeNow);

@@ -14,17 +14,17 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
         <div class="collapse navbar-collapse">
             <div class="navbar-nav">
-                <!-- The "Вход" block must be the first among the elements of the current block -->
+                <!-- The "Sign In" block must be the first among the elements of the current block -->
                 <a class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/login}">Вход</a>
+                    <a class="nav-link" th:href="@{/login}">Sign In</a>
                 </a>
 
                 <a class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/registration}">Регистрация</a>
+                    <a class="nav-link" th:href="@{/registration}">Register</a>
                 </a>
                 
                 <a class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Главная</a>
+                    <a class="nav-link" th:href="@{/}">Main page</a>
                 </a>
 
                 <a class="nav-item" th:if="${roleName != null && roleName == 'ADMIN'}">
@@ -92,7 +92,7 @@
                     <td><input type="datetime-local" name="dateFinish" value="" /></td>
                 </tr>
                 <tr>
-                    <td><input type="submit" name="addEvent" value="Add Event" style="font-size:18px; " /></td>
+                    <td><button type="submit" class="btn">Add event</button></td>
                 </tr>
             </table>
         </form>

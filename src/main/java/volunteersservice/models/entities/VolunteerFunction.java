@@ -62,13 +62,13 @@ public class VolunteerFunction {
 
     private void init(Event event, String name, String description, String requirements, LocalDateTime timeStart,
             LocalDateTime timeFinish, int numberNeeded) {
-       /* if (event != null) {
+        if (event != null) {
             if (timeStart.isAfter(timeFinish))
                 throw new VolunteerFunctionCreationException("VolunteerFunction timeStart > timeFinish");
-            if (event.getDateStart().isAfter(timeStart) || event.getDateFinish().isBefore(timeFinish))
+            if (event.getDateStart().isAfter(timeStart.plusDays(2)) || event.getDateFinish().isBefore(timeFinish.minusDays(2)))
                 throw new VolunteerFunctionCreationException(
-                        "VolunteerFunction (timeStart, timeFinish) is not inside event(dateStart, dateFinish)");
-        }*/
+                        "VolunteerFunction (timeStart, timeFinish) is not inside event(dateStart - 2 days, dateFinish + 2 days)");
+        }
         this.event = event;
         this.name = name;
         this.description = description;
