@@ -39,6 +39,11 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
+    public void updateEventInformation(Event event) {
+        eventRepository.update(event);
+    }
+
+    @Override
     public List<Event> getAllEvents() {
         return eventRepository.getAllEvents();
     }

@@ -1,6 +1,7 @@
 package volunteersservice.models.entities;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -106,37 +107,69 @@ public class Event {
         return coordinator;
     }
 
+    public void setCoordinator(User coordinator) {
+        this.coordinator = coordinator;
+    }
+
     public String getName() {
         return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getPlace() {
         return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public LocalDateTime getDateStart() {
         return dateStart;
     }
 
+    public void setDateStart(LocalDateTime dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = LocalDateTime.parse(dateStart, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+    }
+    
     public LocalDateTime getDateFinish() {
         return dateFinish;
+    }
+    
+    public void setDateFinish(LocalDateTime dateFinish) {
+        this.dateFinish = dateFinish;
+    }
+    
+    public void setDateFinish(String dateFinish) {
+        this.dateFinish = LocalDateTime.parse(dateFinish, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
     }
 
     public EventStatus getStatus() {
         return status;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
     public void setStatus(EventStatusEnum statusEnum) {
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
         this.status = eventStatusRepository.getStatusByEnum(statusEnum);
+    }
+    
+    public String getMessage() {
+        return message;
     }
 
     public void setMessage(String message) {
@@ -145,10 +178,6 @@ public class Event {
 
     public void addToMessage(String messageAddition) {
         this.message += "\n" + messageAddition;
-    }
-
-    public void setCoordinator(User coordinator) {
-        this.coordinator = coordinator;
     }
 
     @Override
