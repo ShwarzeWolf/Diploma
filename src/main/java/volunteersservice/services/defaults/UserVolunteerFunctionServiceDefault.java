@@ -44,6 +44,16 @@ public class UserVolunteerFunctionServiceDefault implements UserVolunteerFunctio
 	}
 
 	@Override
+	public boolean alreadySignedUp(User user, VolunteerFunction volunteerFunction) {
+		return userVolunteerFunctions.alreadySignedUp(user.getUserID(), volunteerFunction.getVolunteerFunctionID());
+	}
+
+	@Override
+	public void deleteUserVolunteerFunction(UserVolunteerFunction userVolunteerFunction) {
+		userVolunteerFunctions.delete(userVolunteerFunction);
+	}
+
+	@Override
 	public void setStatus(UserVolunteerFunction userVolunteerFunction, UserVolunteerFunctionStatusEnum statusEnum) {
 		UserVolunteerFunctionStatusRepository volunteerFunctionStatusRepository = RepositoryFactory.getUserVolunteerFunctionStatusRepository();
 		userVolunteerFunction.setStatus(volunteerFunctionStatusRepository.getStatusByEnum(statusEnum));

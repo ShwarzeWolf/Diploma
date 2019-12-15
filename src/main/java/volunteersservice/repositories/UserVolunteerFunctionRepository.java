@@ -15,9 +15,11 @@ public interface UserVolunteerFunctionRepository {
 
     public UserVolunteerFunction getUserVolunteerFunction(int userID, int volunteerFunctionID);
 
-    public boolean save(UserVolunteerFunction userVolunteerFunction);
+    public void save(UserVolunteerFunction userVolunteerFunction);
 
-    public boolean update(UserVolunteerFunction userVolunteerFunction);
+    public void update(UserVolunteerFunction userVolunteerFunction);
+
+    public void delete(UserVolunteerFunction userVolunteerFunction);
 
     public List<User> getAllVolunteersOfFunction(VolunteerFunction volunteerFunction);
 
