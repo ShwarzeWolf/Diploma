@@ -144,14 +144,14 @@
         </form>
     </div>
 
-    <div th:if="${user != null && event.getOrganiser().getLogin() == user.getLogin()}">
+    <div th:if="${user != null && (event.getOrganiser().getLogin() == user.getLogin() || (event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin())) }">
         <script>
             function showSearch() {
                 document.getElementById("addVolunteerFunctionForm").style.display = "block"
                 document.getElementById("addVolunteerFunctionButton").style.display = "none"
             }
         </script>
-        <p>You are the organiser of this event. You can add another VolunteerFunction:</p>
+        <p>You can add another VolunteerFunction:</p>
         <button id="addVolunteerFunctionButton" onclick="showSearch()" class="btn">Add volunteer function</button>
         <form method="post" id="addVolunteerFunctionForm" style="display: none;">
             <table>

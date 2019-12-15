@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.VolunteerFunction;

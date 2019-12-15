@@ -1,16 +1,14 @@
 package volunteersservice.security;
 
+import org.apache.log4j.Logger;
+import org.springframework.security.core.userdetails.UserDetails;
+import volunteersservice.models.entities.User;
+import volunteersservice.models.enums.UserRoleEnum;
+
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.apache.log4j.Logger;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import volunteersservice.models.enums.UserRoleEnum;
-import volunteersservice.models.entities.User;
 
 public class UserDetailsImpl implements UserDetails {
 
