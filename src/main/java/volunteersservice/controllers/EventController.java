@@ -1,6 +1,7 @@
 package volunteersservice.controllers;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,17 +39,22 @@ public class EventController {
         userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
     }
 
+
+    @PreAuthorize("hasAuthority('ORGANISER')")
     @GetMapping("/addEvent")
     public String addEventPage(Model model) {
         return "addEventForm";
     }
 
+
+    @PreAuthorize("hasAuthority('ORGANISER')")
     @PostMapping("/addEvent")
     public String addEvent(@RequestParam String name, @RequestParam String place, @RequestParam String description,
             @RequestParam String dateStart, @RequestParam String dateFinish) {
         eventService.addEvent(name, Utils.getUserFromContext(), description, place, dateStart, dateFinish);
         return "redirect:/main";
     }
+
 
     @GetMapping({ "/main", "/" })
     public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
@@ -63,6 +69,7 @@ public class EventController {
         return "main";
     }
 
+    @PreAuthorize("hasAnyAuthority('COORDINATOR','VOLUNTEER', 'ORGANISER')")
     @GetMapping("/listOfMyEvents")
     public String myEventPool(Model model) {
         EventService eventService = ServiceFactory.getEventService();
@@ -81,6 +88,7 @@ public class EventController {
         return "myEventPool";
     }
 
+    @PreAuthorize("hasAnyAuthority('COORDINATOR','MANAGER', 'ADMIN')")
     @GetMapping("/listOfEventsToManage")
     public String poolEventsToManage(Model model) {
         EventService eventService = ServiceFactory.getEventService();
@@ -110,6 +118,7 @@ public class EventController {
     // TODO "APROVED"/"REJECTED" are only avaliable for MANAGER role and only for UNCHECKED events
     // "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's COORDINATED
     // "COORDINATED" is only avaliable for COORDINATOR of the event when it's PUBLISHED
+    @PreAuthorize("hasAnyAuthority('COORDINATOR','MANAGER')")
     @PostMapping("/main/{eventID}/setEventStatus")
     public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus, @RequestParam(required = false) String message) {
         @NotNull Event event = eventService.getEventByID(eventID);
@@ -123,6 +132,7 @@ public class EventController {
     // TODO "coordinate" is only avaliable for COORDINATOR role and only for APROVED
     // events
     // and "coordinate drop" is only avaliable for COORDINATOR of this event
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     @PostMapping("/main/{eventID}/coordinate")
     public String coordinateEvent(@PathVariable int eventID,
             @RequestParam(required = false, defaultValue = "false") boolean drop) {
@@ -172,6 +182,7 @@ public class EventController {
         return "redirect:/main/" + uvf.getVolunteerFunction().getEvent().getEventID();
     }
 
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     @GetMapping("/main/{eventID}/volunteers")
     public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
         Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
@@ -185,6 +196,7 @@ public class EventController {
         return "volunteersForEvent";
     }
 
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     @PostMapping("/main/{eventID}/volunteers")
     public String changeVolunteerStatus(@PathVariable(value="eventID") String eventID,
                                         @RequestParam (value="newStatus", required=true) String newStatus,

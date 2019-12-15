@@ -4,9 +4,8 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import volunteersservice.services.UserService;
 import volunteersservice.models.entities.User;
+import volunteersservice.services.UserService;
 import volunteersservice.utils.ServiceFactory;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
