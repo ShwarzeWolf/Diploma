@@ -30,4 +30,8 @@ public interface UserVolunteerFunctionService {
 	public List<UserVolunteerFunction> getUserVolunteerFunctionsOfVolunteerFunction(VolunteerFunction volunteerFunction);
 
 	public List<UserVolunteerFunction> getAllVolunteersOfEvent(Event event);
+
+	public Long getHoursOfVolunteer(User currentVolunteer);
+
+	public double getAVGRating(User currentVolunteer);
 }

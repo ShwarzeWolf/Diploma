@@ -104,4 +104,27 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 				.setParameter("eventId", eventId).list();
 
 	}
+
+	@Override
+	public Long getHoursOfVolunteer(int userId){
+		return ((Long) HibernateUtil.getSession().createQuery(
+				"select sum(numberOfHours) from UserVolunteerFunction as uvf where uvf.user.userID = :userID")
+				.setParameter("userID", userId).getSingleResult());
+	}
+
+	@Override
+	public double getAVGRating(int userId){
+		Long sum = ((Long) HibernateUtil.getSession().createQuery(
+				"select sum(estimation) from UserVolunteerFunction as uvf where uvf.user.userID = :userID")
+				.setParameter("userID", userId).getSingleResult());
+
+		Long numOfEvents = ((Long) HibernateUtil.getSession().createQuery(
+				"select count(*) from UserVolunteerFunction as uvf where uvf.user.userID = :userID and uvf.status.statusID = :statusID")
+				.setParameter("userID", userId).setParameter("statusID", 5).getSingleResult());
+
+		if (numOfEvents == 0)
+			return 0;
+
+		return (double)sum / numOfEvents;
+	}
 }

@@ -66,8 +66,8 @@ CREATE TABLE VolunteersService.UsersVolunteerFunctions (
     UserID                    INTEGER NOT NULL REFERENCES VolunteersService.Users(UserID)                           ON DELETE SET DEFAULT,
     VolunteerFunctionID       INTEGER NOT NULL REFERENCES VolunteersService.VolunteerFunctions(VolunteerFunctionID) ON DELETE CASCADE,
     StatusID                  INTEGER NOT NULL REFERENCES VolunteersService.UserVolunteerFunctionStatus(StatusID),
-    NumberOfHours             INTEGER NOT NULL DEFAULT 0,
-    Estimation                INTEGER NOT NULL DEFAULT 0
+    NumberOfHours             INTEGER,
+    Estimation                INTEGER
 );
 
 ALTER TABLE VolunteersService.EventStatus                 OWNER TO java;

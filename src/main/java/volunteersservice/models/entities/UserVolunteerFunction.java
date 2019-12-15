@@ -58,8 +58,6 @@ public class UserVolunteerFunction {
         this.volunteerFunction = volunteerFunction;
         UserVolunteerFunctionStatusRepository volunteerFunctionStatusRepository = RepositoryFactory.getUserVolunteerFunctionStatusRepository();
         this.status = volunteerFunctionStatusRepository.getStatusByEnum(UserVolunteerFunctionStatusEnum.UNCHECKED);
-        this.estimation = 0;
-        this.numberOfHours = 0;
     }
 
     public User getUser() {

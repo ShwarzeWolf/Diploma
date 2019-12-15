@@ -75,4 +75,13 @@ public class UserVolunteerFunctionServiceDefault implements UserVolunteerFunctio
 		return userVolunteerFunctions.getAllVolunteersOfEvent(event.getEventID());
 	}
 
+	@Override
+	public Long getHoursOfVolunteer(User currentVolunteer){
+		return userVolunteerFunctions.getHoursOfVolunteer(currentVolunteer.getUserID());
+	}
+
+	@Override
+	public double getAVGRating(User currentVolunteer){
+		return userVolunteerFunctions.getAVGRating(currentVolunteer.getUserID());
+	}
 }

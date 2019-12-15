@@ -28,4 +28,10 @@ public interface UserVolunteerFunctionRepository {
     public boolean alreadySignedUp(int userID, int volunteerFunctionID);
 
     public List<UserVolunteerFunction> getAllVolunteersOfEvent(int eventId);
+
+
+    public Long getHoursOfVolunteer(int userId);
+
+    public double getAVGRating(int userId);
+
 }
