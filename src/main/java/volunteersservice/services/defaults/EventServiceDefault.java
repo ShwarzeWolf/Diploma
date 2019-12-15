@@ -1,5 +1,6 @@
 package volunteersservice.services.defaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -91,6 +92,26 @@ public class EventServiceDefault implements EventService {
     @Override
     public List<Event> getExpiredEventsWithVolunteer(User volunteer) {
         return eventRepository.getEventsWithVolunteer(volunteer, false);
+    }
+
+    @Override
+    public List<Event> getEventsWithVolunteer(User volunteer, LocalDate dateStart, LocalDate dateFinish) {
+        return eventRepository.getEventsWithVolunteer(volunteer, dateStart, dateFinish);
+    }
+
+    @Override
+    public List<Event> getEventsWithVolunteer(User volunteer, String dateStart, String dateFinish) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate start = null, finish = null;
+        try {
+            start = LocalDate.parse(dateStart, formatter);
+        } catch (Exception ex) {
+        }
+        try {
+            finish = LocalDate.parse(dateFinish, formatter);
+        } catch (Exception ex) {
+        }
+        return eventRepository.getEventsWithVolunteer(volunteer, start, finish);
     }
 
     @Override

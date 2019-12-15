@@ -102,8 +102,8 @@
 	<div th:if="${showButton != 'none'}">
 		<form method="POST">
 			<input type="hidden" name="volunteerFunctionID" value="${volunteerFunction.getVolunteerFunctionID()}">
-			<button type="submit" th:if="${showButton == 'signup'}" name="action" value="signup">Sign me up!</button>
-			<button type="submit" th:if="${showButton == 'abandon'}" name="action" value="abandon">Abandon the function</button>
+			<button type="submit" th:if="${showButton == 'signup'}" name="action" value="signup" class="btn">Sign me up!</button>
+			<button type="submit" th:if="${showButton == 'abandon'}" name="action" value="abandon" class="btn">Abandon the function</button>
 		</form>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

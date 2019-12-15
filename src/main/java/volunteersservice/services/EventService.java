@@ -1,5 +1,6 @@
 package volunteersservice.services;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public interface EventService {
 	public List<Event> getActiveEventsWithVolunteer(User volunteer);
 
 	public List<Event> getExpiredEventsWithVolunteer(User volunteer);
+	
+	public List<Event> getEventsWithVolunteer(User volunteer, LocalDate dateStart, LocalDate dateFinish);
+	
+	public List<Event> getEventsWithVolunteer(User volunteer, String dateStart, String dateFinish);
 	
 	public List<Event> getActiveEventsOfOrganiser(User organiser);
 	

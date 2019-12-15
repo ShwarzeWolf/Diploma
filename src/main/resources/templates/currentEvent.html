@@ -48,7 +48,8 @@
 
     <h2><span th:text="${event.getName()}"></span></h2>
 
-    <a th:if="${roleName != null && roleName == 'COORDINATOR'}" th:href="@{'/main/' + ${(event.getEventID())} + '/volunteers/'}">
+    <a th:if="${roleName != null && roleName == 'COORDINATOR'}"
+        th:href="@{'/main/' + ${(event.getEventID())} + '/volunteers/'}">
         <button>Manage volunteers</button>
     </a>
 
@@ -97,8 +98,7 @@
                 <td th:text="${volunteerFunction.getName()}" />
                 <td th:text="${volunteerFunction.getDescription()}" />
                 <td th:text="${volunteerFunction.getRequirements()}" />
-                <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span
-                        th:text="${volunteerFunction.getTimeFinish()}" /></td>
+                <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span th:text="${volunteerFunction.getTimeFinish()}" /></td>
                 <td th:text="${volunteerFunction.getNumberNeeded()}" />
                 <td><a th:href="@{'/volunteerFunction/' + ${(volunteerFunction.getVolunteerFunctionID())}}">View
                         Volunteer Function</a></td>
@@ -120,7 +120,7 @@
     <div th:if="${user != null && user.getUserRole().getName() == 'COORDINATOR' && event.getCoordinator() == null}">
         You are coordinator and this event is not coordinated yet.
         <form th:action="${'./' + event.getEventID() + '/coordinate'}" method="post">
-            <button type="submit">I will be coordinating this</button>
+            <button type="submit">I will coordinate this</button>
         </form>
     </div>
 
@@ -145,8 +145,15 @@
     </div>
 
     <div th:if="${user != null && event.getOrganiser().getLogin() == user.getLogin()}">
+        <script>
+            function showSearch() {
+                document.getElementById("addVolunteerFunctionForm").style.display = "block"
+                document.getElementById("addVolunteerFunctionButton").style.display = "none"
+            }
+        </script>
         <p>You are the organiser of this event. You can add another VolunteerFunction:</p>
-        <form method="post">
+        <button id="addVolunteerFunctionButton" onclick="showSearch()" class="btn">Add volunteer function</button>
+        <form method="post" id="addVolunteerFunctionForm" style="display: none;">
             <table>
                 <tr>
                     <td>Function name :</td>
@@ -173,7 +180,7 @@
                     <td><input type="number" name="numberNeeded" value="" /></td>
                 </tr>
                 <tr>
-                    <td><input type="submit" value="Add Volunteer function" style="font-size:18px; " /></td>
+                    <td><button type="submit" class="btn">Add Volunteer function</button></td>
                 </tr>
             </table>
         </form>
