@@ -22,4 +22,6 @@ public interface VolunteerFunctionService {
 			String timeStart, String timeFinish, int numberNeeded);
 
 	public List<VolunteerFunction> getVolunteerFunctions(Event event);
+
+	public void updateVolunteerFunctionInformation(VolunteerFunction volunteerFunction);
 }

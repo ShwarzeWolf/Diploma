@@ -24,8 +24,8 @@
 				</a>
 
 				<a class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Main page</a>
-                </a>
+					<a class="nav-link" th:href="@{/}">Main page</a>
+				</a>
 
 				<a class="nav-item" th:if="${roleName != null && roleName == 'ADMIN'}">
 					<a class="nav-link" th:href="@{/registration}">Register person</a>
@@ -69,41 +69,102 @@
 
 	<h2 th:text="${volunteerFunction.getName()}" />
 
-	<table>
+	<table class="table table-bordered">
 		<tr>
-			<td th:text="Name" />
-			<td th:text="Description" />
-			<td th:text="Requirements" />
-			<td th:text="Time" />
-			<td th:text="NumberOfVolunteers" />
+			<th scope="row">Name</th>
+			<td th:text="${volunteerFunction.getName()}" />
 		</tr>
-		<td th:text="${volunteerFunction.getName()}" />
-		<td th:text="${volunteerFunction.getDescription()}" />
-		<td th:text="${volunteerFunction.getRequirements()}" />
-		<td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span
-				th:text="${volunteerFunction.getTimeFinish()}" /></td>
-		<td th:text="${volunteerFunction.getNumberNeeded()}" />
+		<tr>
+			<th scope="row">Description</th>
+			<td th:text="${volunteerFunction.getDescription()}" />
+		</tr>
+		<tr>
+			<th scope="row">Requirements</th>
+			<td th:text="${volunteerFunction.getRequirements()}" />
+		</tr>
+		<tr>
+			<th scope="row">Time</th>
+			<td>
+				<span th:text="${volunteerFunction.getTimeStart()}" /> -
+				<span th:text="${volunteerFunction.getTimeFinish()}" />
+			</td>
+		</tr>
+		<tr>
+			<th scope="row">Number needed</th>
+			<td th:text="${volunteerFunction.getNumberNeeded()}" />
 		</tr>
 	</table>
 
 	<h2>Candidates:</h2>
-	<table>
+	<table class="table table-striped">
 		<tr>
-			<td>Name</td>
-			<td>Status</td>
+			<td scope="col">Name</td>
+			<td scope="col">Status</td>
 		</tr>
 		<tr th:each="uvf : ${userVolunteerFunctions}">
-			<td><span th:text="${uvf.user.getName()}" /></td>
-			<td><span th:text="${uvf.getStatus().getName()}" /></td>
-			<td th:if="${volunteerFunction.getEvent().getOrganiser().getLogin() == user.getLogin()}"></td>
+			<td th:text="${uvf.user.getName()}" />
+			<td th:text="${uvf.getStatus().getName()}" />
 		</tr>
 	</table>
 
 	<div th:if="${showButton != 'none'}">
 		<form method="POST">
 			<input type="hidden" name="volunteerFunctionID" value="${volunteerFunction.getVolunteerFunctionID()}">
-			<button type="submit" th:if="${showButton == 'signup'}" name="action" value="signup" class="btn">Sign me up!</button>
-			<button type="submit" th:if="${showButton == 'abandon'}" name="action" value="abandon" class="btn">Abandon the function</button>
+			<button type="submit" th:if="${showButton == 'signup'}" name="action" value="signup" class="btn">Sign me
+				up!</button>
+			<button type="submit" th:if="${showButton == 'abandon'}" name="action" value="abandon" class="btn">Abandon
+				the function</button>
+		</form>
+	</div>
+	<div
+		th:if="${user != null && ((volunteerFunction.getEvent().getOrganiser().getLogin() == user.getLogin() && volunteerFunction.getEvent().getStatus().getName() == 'UNCHECKED') || (volunteerFunction.getEvent().getCoordinator() != null && volunteerFunction.getEvent().getCoordinator().getLogin() == user.getLogin()))}">
+		<script>
+			function showEdit() {
+				document.getElementById("editVolunteerFunctionForm").style.display = "block"
+				document.getElementById("editVolunteerFunctionButton").style.display = "none"
+			}
+		</script>
+		<button id="editVolunteerFunctionButton" onclick="showEdit()" class="btn">Edit function information</button>
+		<form method="post" th:action="${volunteerFunction.getVolunteerFunctionID() + '/edit'}" style="display: none;"
+			id="editVolunteerFunctionForm">
+			<table class="table table-bordered">
+				<tr>
+					<th scope="row">Name</th>
+					<td>
+						<input name="name" th:value="${volunteerFunction.getName()}">
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Description</th>
+					<td>
+						<input name="description" th:value="${volunteerFunction.getDescription()}">
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Requirements</th>
+					<td>
+						<input name="requirements" th:value="${volunteerFunction.getRequirements()}">
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Time</th>
+					<td>
+						<input name="timeStart" th:value="${volunteerFunction.getTimeStart()}"> -
+						<input name="timeFinish" th:value="${volunteerFunction.getTimeFinish()}">
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">Number needed</th>
+					<td>
+						<input name="numberNeeded" th:value="${volunteerFunction.getNumberNeeded()}">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<button type="submit" class="btn-primary">Submit changes</button>
+					</td>
+				</tr>
+			</table>
 		</form>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

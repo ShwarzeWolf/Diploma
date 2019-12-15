@@ -22,7 +22,7 @@
                 <a class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" th:href="@{/registration}">Register</a>
                 </a>
-                
+
                 <a class="nav-item">
                     <a class="nav-link" th:href="@{/}">Main page</a>
                 </a>
@@ -68,28 +68,28 @@
     </nav>
 
 
-    <div id="addEvent_form">
-        <form method="post" th:action="@{/addEvent}">
-            <table>
+    <div>
+        <form method="post">
+            <table class="table table-bordered">
                 <tr>
-                    <td>Event name :</td>
+                    <th scope="row">Event name</td>
                     <td><input type="text" name="name" value="" maxlength="50" /> </td>
                 </tr>
                 <tr>
-                    <td>Event Description :</td>
+                    <th scope="row">Event Description</td>
                     <td><input type="text" name="description" value="" maxlength="300" /></td>
                 </tr>
                 <tr>
-                    <td>Event Place :</td>
+                    <th scope="row">Event Place</td>
                     <td><input type="text" name="place" value="" maxlength="120" /></td>
                 </tr>
                 <tr>
-                    <td>Start date :</td>
+                    <th scope="row">Start date</td>
                     <td><input type="datetime-local" name="dateStart" value="" /></td>
                 </tr>
                 <tr>
-                    <td>End date :</td>
-                    <td><input type="datetime-local" name="dateFinish" value="" /></td>
+                    <th scope="row">End date</td>
+                    <th scope="row"><input type="datetime-local" name="dateFinish" value="" /></td>
                 </tr>
                 <tr>
                     <td><button type="submit" class="btn">Add event</button></td>

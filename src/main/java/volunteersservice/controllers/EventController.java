@@ -32,15 +32,14 @@ public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
     private EventService eventService = ServiceFactory.getEventService();
-    private UserVolunteerFunctionService userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
-
+    private UserVolunteerFunctionService userVolunteerFunctionService = ServiceFactory
+            .getUserVolunteerFunctionService();
 
     @PreAuthorize("hasAuthority('ORGANISER')")
     @GetMapping("/addEvent")
     public String addEventPage(Model model) {
         return "addEventForm";
     }
-
 
     @PreAuthorize("hasAuthority('ORGANISER')")
     @PostMapping("/addEvent")
@@ -49,7 +48,6 @@ public class EventController {
         eventService.addEvent(name, Utils.getUserFromContext(), description, place, dateStart, dateFinish);
         return "redirect:/main";
     }
-
 
     @GetMapping({ "/main", "/" })
     public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
@@ -85,7 +83,8 @@ public class EventController {
 
     @GetMapping("/listOfMyEvents/search")
     public String myEventPoolSearch(Model model, @RequestParam String dateStart, @RequestParam String dateFinish) {
-        model.addAttribute("events", eventService.getEventsWithVolunteer(Utils.getUserFromContext(), dateStart, dateFinish));
+        model.addAttribute("events",
+                eventService.getEventsWithVolunteer(Utils.getUserFromContext(), dateStart, dateFinish));
         return "myEventPoolSearch";
     }
 
@@ -115,13 +114,18 @@ public class EventController {
         return "currentEvent";
     }
 
-    // TODO "APROVED"/"REJECTED" are only avaliable for MANAGER role and only for UNCHECKED events
-    // "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's COORDINATED
-    // "COORDINATED" is only avaliable for COORDINATOR of the event when it's PUBLISHED
+    // TODO "APROVED"/"REJECTED" are only avaliable for MANAGER role and only for
+    // UNCHECKED events
+    // "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's
+    // COORDINATED
+    // "COORDINATED" is only avaliable for COORDINATOR of the event when it's
+    // PUBLISHED
     @PreAuthorize("hasAnyAuthority('COORDINATOR','MANAGER')")
     @PostMapping("/main/{eventID}/setEventStatus")
-    public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus, @RequestParam(required = false) String message) {
-        @NotNull Event event = eventService.getEventByID(eventID);
+    public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus,
+            @RequestParam(required = false) String message) {
+        @NotNull
+        Event event = eventService.getEventByID(eventID);
         LOG.info("Changing event status: " + event + ", " + changeStatus);
         eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
         if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
@@ -147,6 +151,20 @@ public class EventController {
             eventService.setCoordinator(event, null);
             eventService.setStatus(event, EventStatusEnum.APPROVED);
         }
+        return "redirect:/main/" + eventID;
+    }
+
+    @PostMapping("/main/{eventID}/edit")
+    public String editEvent(@PathVariable int eventID, Model model, @RequestParam String name,
+            @RequestParam String description, @RequestParam String place, @RequestParam String dateStart,
+            @RequestParam String dateFinish) {
+        Event event = eventService.getEventByID(eventID);
+        event.setName(name);
+        event.setDescription(description);
+        event.setPlace(place);
+        event.setDateStart(dateStart);
+        event.setDateFinish(dateFinish);
+        eventService.updateEventInformation(event);
         return "redirect:/main/" + eventID;
     }
 
@@ -182,7 +200,8 @@ public class EventController {
     }
 
     @PostMapping("/volunteerFunction/{volunteerFunctionID}")
-    public String changeStatusOfUserVolunteerFunction(@PathVariable int volunteerFunctionID, @RequestParam String action) {
+    public String changeStatusOfUserVolunteerFunction(@PathVariable int volunteerFunctionID,
+            @RequestParam String action) {
         UserVolunteerFunctionService uvfService = ServiceFactory.getUserVolunteerFunctionService();
         VolunteerFunctionService vfService = ServiceFactory.getVolunteerFunctionService();
         VolunteerFunction vf = vfService.getVolunteerFunctionByID(volunteerFunctionID);
@@ -193,6 +212,22 @@ public class EventController {
             uvfService.deleteUserVolunteerFunction(uvf);
         }
         return "redirect:/main/" + vf.getEvent().getEventID();
+    }
+
+    @PostMapping("/volunteerFunction/{volunteerFunctionID}/edit")
+    public String editVolunteerFunction(@PathVariable int volunteerFunctionID, Model model, @RequestParam String name,
+            @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
+            @RequestParam String timeFinish, @RequestParam int numberNeeded) {
+        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
+        VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
+        volunteerFunction.setName(name);
+        volunteerFunction.setDescription(description);
+        volunteerFunction.setRequirements(requirements);
+        volunteerFunction.setTimeStart(timeStart);
+        volunteerFunction.setTimeFinish(timeFinish);
+        volunteerFunction.setNumberNeeded(numberNeeded);
+        vfs.updateVolunteerFunctionInformation(volunteerFunction);
+        return "redirect:/volunteerFunction/" + volunteerFunctionID;
     }
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
@@ -216,31 +251,33 @@ public class EventController {
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
     @PostMapping("/main/{eventID}/volunteers")
-    public String changeVolunteerStatus(@PathVariable(value="eventID") String eventID,
-                                        @RequestParam (value="newStatus", required=true) String newStatus,
-                                        @RequestParam (value="userVolunteerFunctionID", required=true) String userVolunteerFunctionId,
-                                        @RequestParam (value="estimation", required=false) String estimation,
-                                        @RequestParam (value="numberOfHours", required=false) String numberOfHours){
+    public String changeVolunteerStatus(@PathVariable(value = "eventID") String eventID,
+            @RequestParam(value = "newStatus", required = true) String newStatus,
+            @RequestParam(value = "userVolunteerFunctionID", required = true) String userVolunteerFunctionId,
+            @RequestParam(value = "estimation", required = false) String estimation,
+            @RequestParam(value = "numberOfHours", required = false) String numberOfHours) {
 
-        UserVolunteerFunction uvf = userVolunteerFunctionService.getUserVolunteerFunctionByID(Integer.parseInt(userVolunteerFunctionId));
+        UserVolunteerFunction uvf = userVolunteerFunctionService
+                .getUserVolunteerFunctionByID(Integer.parseInt(userVolunteerFunctionId));
 
-        switch (newStatus){
-            case "Accept":
-                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
-                break;
-            case "Reject":
-                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
-                break;
-            case "WasAbsent":
-                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.ABSENT);
-                break;
-            case "Participated":
-                userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.PARTICIPATED);
-                userVolunteerFunctionService.setEstimation(uvf, Integer.parseInt(numberOfHours), Integer.parseInt(estimation));
-                break;
-            default:
-                LOG.info("no status changed");
-                break;
+        switch (newStatus) {
+        case "Accept":
+            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
+            break;
+        case "Reject":
+            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
+            break;
+        case "WasAbsent":
+            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.ABSENT);
+            break;
+        case "Participated":
+            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.PARTICIPATED);
+            userVolunteerFunctionService.setEstimation(uvf, Integer.parseInt(numberOfHours),
+                    Integer.parseInt(estimation));
+            break;
+        default:
+            LOG.info("no status changed");
+            break;
         }
 
         return "redirect:/main/" + eventID + "/volunteers";

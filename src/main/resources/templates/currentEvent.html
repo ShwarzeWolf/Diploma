@@ -46,37 +46,31 @@
         </div>
     </nav>
 
-    <h2><span th:text="${event.getName()}"></span></h2>
-
+    <h2 th:text="${event.getName()}"></h2>
     <a th:if="${roleName != null && roleName == 'COORDINATOR'}"
         th:href="@{'/main/' + ${(event.getEventID())} + '/volunteers/'}">
-        <button>Manage volunteers</button>
+        <button class="btn btn-primary">Manage volunteers</button>
     </a>
 
     <table class="table table-bordered">
         <tr>
             <th scope="row">Description</th>
-            <!--            <td>Description: </td>-->
             <td th:text="${event.getDescription()}" />
         </tr>
         <tr>
             <th scope="row">Place</th>
-            <!--            <td>Place: </td>-->
             <td th:text="${event.getPlace()}" />
         </tr>
         <tr>
             <th scope="row">Time</th>
-            <!--            <td>Time: </td>-->
             <td><span th:text="${event.getDateStart()}" /> - <span th:text="${event.getDateFinish()}" /></td>
         </tr>
         <tr>
             <th scope="row">Organised by</th>
-            <!--            <td>Organised by:</td>-->
             <td th:text="${event.getOrganiser().getName()}" />
         </tr>
         <tr th:if="${event.getCoordinator() != null}">
             <th scope="row">Coordinated by</th>
-            <!--            <td>Coordinated by:</td>-->
             <td th:text="${event.getCoordinator().getName()}" />
         </tr>
     </table>
@@ -98,7 +92,8 @@
                 <td th:text="${volunteerFunction.getName()}" />
                 <td th:text="${volunteerFunction.getDescription()}" />
                 <td th:text="${volunteerFunction.getRequirements()}" />
-                <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span th:text="${volunteerFunction.getTimeFinish()}" /></td>
+                <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span
+                        th:text="${volunteerFunction.getTimeFinish()}" /></td>
                 <td th:text="${volunteerFunction.getNumberNeeded()}" />
                 <td><a th:href="@{'/volunteerFunction/' + ${(volunteerFunction.getVolunteerFunctionID())}}">View
                         Volunteer Function</a></td>
@@ -110,17 +105,17 @@
         th:if="${event.getStatus().getName() == 'UNCHECKED' && user != null && user.getUserRole().getName() == 'MANAGER'}">
         You are manager. You can change status of this event:
         <!-- Need some fix for look of link below and similar ones -->
-        <form th:action="${'./' + event.getEventID() + '/setEventStatus'}" method="post">
+        <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
             Optional message: <input type="text" maxlength="300" name="message" />
-            <button type="submit" name="changeStatus" value="APPROVED">Approve</button>
-            <button type="submit" name="changeStatus" value="REJECTED">Reject</button>
+            <button type="submit" name="changeStatus" value="APPROVED" class="btn-primary">Approve</button>
+            <button type="submit" name="changeStatus" value="REJECTED" class="btn">Reject</button>
         </form>
     </div>
 
     <div th:if="${user != null && user.getUserRole().getName() == 'COORDINATOR' && event.getCoordinator() == null}">
         You are coordinator and this event is not coordinated yet.
-        <form th:action="${'./' + event.getEventID() + '/coordinate'}" method="post">
-            <button type="submit">I will coordinate this</button>
+        <form th:action="${event.getEventID() + '/coordinate'}" method="post">
+            <button type="submit" class="btn">I will coordinate this</button>
         </form>
     </div>
 
@@ -128,59 +123,99 @@
         th:if="${user != null && event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin()}">
         <div th:if="${event.getStatus().getName() == 'COORDINATED'}">
             You coordinate this event, you can publish it for volunteers when it's ready.
-            <form th:action="${'./' + event.getEventID() + '/setEventStatus'}" method="post">
-                <button type="submit" name="changeStatus" value="PUBLISHED">Publish event</button>
+            <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
+                <button type="submit" name="changeStatus" value="PUBLISHED" class="btn">Publish event</button>
             </form>
         </div>
         <div th:if="${event.getStatus().getName() == 'PUBLISHED'}">
             You coordinate this event, you can re-edit it if you found something wrong.
-            <form th:action="${'./' + event.getEventID() + '/setEventStatus'}" method="post">
-                <button type="submit" name="changeStatus" value="COORDINATED">Un-publish event</button>
+            <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
+                <button type="submit" name="changeStatus" value="COORDINATED" class="btn">Un-publish event</button>
             </form>
         </div>
-        If you cannot longer coordinate this event, you can drop it
-        <form th:action="${'./' + event.getEventID() + '/coordinate'}" method="post">
-            <button type="submit" name="drop" value="true">I can't coordinate this now</button>
+        <form th:action="${event.getEventID() + '/coordinate'}" method="post">
+            If you cannot longer coordinate this event, you can abandon it
+            <button type="submit" name="drop" value="true" class="btn">I can't coordinate this now</button>
         </form>
     </div>
 
-    <div th:if="${user != null && (event.getOrganiser().getLogin() == user.getLogin() || (event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin())) }">
+    <div
+        th:if="${user != null && ((event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'UNCHECKED') || (event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin()))}">
         <script>
-            function showSearch() {
-                document.getElementById("addVolunteerFunctionForm").style.display = "block"
-                document.getElementById("addVolunteerFunctionButton").style.display = "none"
+            function showEdit() {
+                document.getElementById("editEventForm").style.display = "block"
+                document.getElementById("editEventButton").style.display = "none"
             }
         </script>
-        <p>You can add another VolunteerFunction:</p>
         <button id="addVolunteerFunctionButton" onclick="showSearch()" class="btn">Add volunteer function</button>
         <form method="post" id="addVolunteerFunctionForm" style="display: none;">
-            <table>
+            <table class="table table-bordered">
                 <tr>
-                    <td>Function name :</td>
-                    <td><input type="text" name="name" value="" /></td>
+                    <th scope="row">Function name</td>
+                    <td><input type="text" name="name" /></td>
                 </tr>
                 <tr>
-                    <td>Function description :</td>
-                    <td><input type="text" name="description" value="" /></td>
+                    <th scope="row">Function description</td>
+                    <td><input type="text" name="description" /></td>
                 </tr>
                 <tr>
-                    <td>Function requirements :</td>
-                    <td><input type="text" name="requirements" value="" /></td>
+                    <th scope="row">Function requirements</td>
+                    <td><input type="text" name="requirements" /></td>
                 </tr>
                 <tr>
-                    <td>Start time :</td>
-                    <td><input type="datetime-local" name="timeStart" value="" /></td>
+                    <th scope="row">Start time</td>
+                    <td><input type="datetime-local" name="timeStart" th:value="${event.getDateStart()}" /></td>
                 </tr>
                 <tr>
-                    <td>End time :</td>
-                    <td><input type="datetime-local" name="timeFinish" value="" /></td>
+                    <th scope="row">End time</td>
+                    <td><input type="datetime-local" name="timeFinish" th:value="${event.getDateFinish()}" /></td>
                 </tr>
                 <tr>
-                    <td>Number of volunteers needed :</td>
-                    <td><input type="number" name="numberNeeded" value="" /></td>
+                    <th scope="row">Number of volunteers needed</td>
+                    <td>
+                        <input type="number" name="numberNeeded" />
+                    </td>
                 </tr>
                 <tr>
-                    <td><button type="submit" class="btn">Add Volunteer function</button></td>
+                    <td>
+                        <button type="submit" class="btn-primary">Add Volunteer function</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <br>
+        <button id="editEventButton" onclick="showEdit()" class="btn">Edit event information</button>
+        <form method="post" th:action="${event.getEventID() + '/edit'}" style="display: none;" id="editEventForm">
+            <table class="table table-bordered">
+                <tr>
+                    <th scope="row">Name</th>
+                    <td>
+                        <input name="name" th:value="${event.getName()}">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Description</th>
+                    <td>
+                        <input name="description" th:value="${event.getDescription()}">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Place</th>
+                    <td>
+                        <input name="place" th:value="${event.getPlace()}">
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Time</th>
+                    <td>
+                        <input name="dateStart" th:value="${event.getDateStart()}"> - <input name="dateFinish"
+                            th:value="${event.getDateFinish()}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit" class="btn-primary">Submit changes</button>
+                    </td>
                 </tr>
             </table>
         </form>

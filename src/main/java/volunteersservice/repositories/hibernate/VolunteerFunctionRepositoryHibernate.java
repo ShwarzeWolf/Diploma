@@ -17,18 +17,28 @@ public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRe
     private final Logger LOG = Logger.getLogger(VolunteerFunctionRepositoryHibernate.class);
 
     @Override
-    public boolean save(VolunteerFunction VolunteerFunction) {
+    public void save(VolunteerFunction VolunteerFunction) {
         Session session = HibernateUtil.getSession();
         Transaction tx = session.beginTransaction();
         try {
             session.save(VolunteerFunction);
             tx.commit();
-            return true;
         } catch (Exception ex) {
             LOG.error(ex);
-            return false;
         } finally {
-            session.close();
+        }
+    }
+
+    @Override
+    public void update(VolunteerFunction VolunteerFunction) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            session.update(VolunteerFunction);
+            tx.commit();
+        } catch (Exception ex) {
+            LOG.error(ex);
+        } finally {
         }
     }
 
