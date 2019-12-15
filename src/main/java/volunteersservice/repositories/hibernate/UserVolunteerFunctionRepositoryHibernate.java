@@ -2,7 +2,6 @@ package volunteersservice.repositories.hibernate;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -17,7 +16,7 @@ import volunteersservice.utils.HibernateUtil;
 @Repository
 public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFunctionRepository {
 
-	private static Logger LOG = Logger.getLogger(UserRepositoryHibernate.class);
+	// private static Logger LOG = Logger.getLogger(UserRepositoryHibernate.class);
 
 	@Override
 	public UserVolunteerFunction getUserVolunteerFunctionByID(int id) {
@@ -27,39 +26,32 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 	@Override
 	public UserVolunteerFunction getUserVolunteerFunction(int userID, int volunteerFunctionID) {
 		return (UserVolunteerFunction) HibernateUtil.getSession().createQuery(
-				"select userfunc from UserVolunteerFucntion userfunc where userfunc.user.userID = :userID and userfunc.volunteerFunction.volunteerFunctionID = :vfID")
+				"select userfunc from UserVolunteerFunction as userfunc where userfunc.user.userID = :userID and userfunc.volunteerFunction.volunteerFunctionID = :vfID")
 				.setParameter("userID", userID).setParameter("vfID", volunteerFunctionID).uniqueResult();
 	}
 
 	@Override
-	public boolean save(UserVolunteerFunction userVolunteerFunction) {
+	public void save(UserVolunteerFunction userVolunteerFunction) {
 		Session session = HibernateUtil.getSession();
 		Transaction tx = session.beginTransaction();
-		try {
-			session.save(userVolunteerFunction);
-			tx.commit();
-			return true;
-		} catch (Exception ex) {
-			LOG.error(ex);
-			return false;
-		} finally {
-			session.close();
-		}
+		session.save(userVolunteerFunction);
+		tx.commit();
 	}
 
 	@Override
-	public boolean update(UserVolunteerFunction userVolunteerFunction) {
+	public void update(UserVolunteerFunction userVolunteerFunction) {
 		Session session = HibernateUtil.getSession();
 		Transaction tx = session.beginTransaction();
-		try {
-			session.update(userVolunteerFunction);
-			tx.commit();
-			return true;
-		} catch (Exception ex) {
-			return false;
-		} finally {
-			session.close();
-		}
+		session.update(userVolunteerFunction);
+		tx.commit();
+	}
+
+	@Override
+	public void delete(UserVolunteerFunction userVolunteerFunction) {
+		Session session = HibernateUtil.getSession();
+		Transaction tx = session.beginTransaction();
+		session.delete(userVolunteerFunction);
+		tx.commit();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -94,7 +86,6 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 				"select count(*) from UserVolunteerFunction as uvf where uvf.user.userID = :userID and uvf.volunteerFunction.volunteerFunctionID = :vfID")
 				.setParameter("userID", userID).setParameter("vfID", volunteerFunctionID).uniqueResult()) > 0;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override

@@ -19,6 +19,10 @@ public interface UserVolunteerFunctionService {
 
 	public UserVolunteerFunction addUserVolunteerFunction(User user, VolunteerFunction volunteerFunction);
 
+	public boolean alreadySignedUp(User user, VolunteerFunction volunteerFunction);
+
+	public void deleteUserVolunteerFunction(UserVolunteerFunction userVolunteerFunction);
+
 	public void setStatus(UserVolunteerFunction userVolunteerFunction, UserVolunteerFunctionStatusEnum status);
 
 	public void setEstimation(UserVolunteerFunction userVolunteerFunction, int numberOfHours, int estimation);

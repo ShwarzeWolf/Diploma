@@ -14,17 +14,17 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
         <div class="collapse navbar-collapse">
             <div class="navbar-nav">
-                <!-- The "Вход" block must be the first among the elements of the current block -->
+                <!-- The "Sign In" block must be the first among the elements of the current block -->
                 <a class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/login}">Вход</a>
+                    <a class="nav-link" th:href="@{/login}">Sign In</a>
                 </a>
 
                 <a class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/registration}">Регистрация</a>
+                    <a class="nav-link" th:href="@{/registration}">Register</a>
                 </a>
 
                 <a class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Главная</a>
+                    <a class="nav-link" th:href="@{/}">Main page</a>
                 </a>
             </div>
         </div>
@@ -54,30 +54,30 @@
                 <th scope="col">User Function</th>
                 <th scope="col">Function Time</th>
                 <th scope="col">Function status</th>
-                <th scope="col">Action</th>
+                <th scope="col" th:if="${showButtons}">Action</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="users : ${registeredUsers}">
                 <td th:text="${users.getUser().getName()}"></td>
-                <td><a th:href="@{'/volunteers/' + ${users.getUser().getUserID()}}">View</a></td>
+                <td><a th:href="@{'/user/' + ${users.getUser().getUserID()}}">View</a></td>
                 <td th:text="${users.getVolunteerFunction().getName()}"></td>
                 <td
                     th:text="${users.getVolunteerFunction().getTimeStart().toString()} + ' ' + ${users.getVolunteerFunction().getTimeFinish().toString()}">
                 </td>
                 <td th:text="${users.getStatus().getName()}"></td>
                 <!--- drawing logic starts here--->
-                <th:block th:switch="${users.getStatus().getName()}">
+                <th:block th:if="${showButtons}" th:switch="${users.getStatus().getName()}">
                     <div th:case="'UNCHECKED'">
                         <td>
                             <div class="button-group">
-                                <form action="#" th:action="@{volunteers}" method="post">
+                                <form method="post">
                                     <input type="hidden" name="userVolunteerFunctionID"
                                         th:value="${users.getUserVolunteerFunctionID()}">
                                     <button type="submit" name="newStatus" th:value="Accept"
-                                        class="btn btn-success">Принять</button>
+                                        class="btn btn-success">Accept</button>
                                     <button type="submit" name="newStatus" th:value="Reject"
-                                        class="btn btn-secondary">Отклонить</button>
+                                        class="btn btn-secondary">Reject</button>
                                 </form>
                             </div>
                         </td>
@@ -85,11 +85,11 @@
                     <div th:case="'DENIED'">
                         <td>
                             <div class="button-group">
-                                <form action="#" th:action="@{volunteers}" method="post">
+                                <form method="post">
                                     <input type="hidden" name="userVolunteerFunctionID"
                                         th:value="${users.getUserVolunteerFunctionID()}">
                                     <button type="submit" name="newStatus" th:value="Accept"
-                                        class="btn btn-outline-success">Принять</button>
+                                        class="btn btn-outline-success">Accept</button>
                                 </form>
                             </div>
                         </td>
@@ -98,15 +98,15 @@
                         <div th:if="${timeNow.isAfter(users.volunteerFunction.getTimeFinish())}">
                             <td>
                                 <div class="button-group">
-                                    <form action="#" th:action="@{volunteers}" method="post">
+                                    <form method="post">
                                         <input type="hidden" name="userVolunteerFunctionID"
                                             th:value="${users.getUserVolunteerFunctionID()}">
                                         <button type="submit" name="newStatus" th:value="WasAbsent"
-                                            class="btn">Отсутствовал</button>
-                                        <input type="text" name="numberOfHours" size="5" placeholder="время">
-                                        <input type="text" name="estimation" size="5" placeholder="оценка">
+                                            class="btn">Was absent</button>
+                                        <input type="text" name="numberOfHours" size="5" placeholder="time">
+                                        <input type="text" name="estimation" size="5" placeholder="estimation">
                                         <button type="submit" name="newStatus" th:value="Participated"
-                                            class="btn">Оценить</button>
+                                            class="btn">Estimate</button>
                                     </form>
                                 </div>
                             </td>
@@ -114,11 +114,11 @@
                         <div th:unless="${timeNow.isAfter(users.volunteerFunction.getTimeFinish())}">
                             <td>
                                 <div class="button-group">
-                                    <form action="#" th:action="@{volunteers}" method="post">
+                                    <form method="post">
                                         <input type="hidden" name="userVolunteerFunctionID"
                                             th:value="${users.getUserVolunteerFunctionID()}">
                                         <button type="submit" name="newStatus" th:value="Reject"
-                                            class="btn btn-outline-danger">Отклонить</button>
+                                            class="btn btn-outline-danger">Reject</button>
                                     </form>
                                 </div>
                             </td>
@@ -130,13 +130,13 @@
                     <div th:case="'PARTICIPATED'">
                         <div>
                             <td>
-                                <div th:text="Часы"></div>
+                                <div th:text="Time"></div>
                                 <div th:text="${users.getNumberOfHours()}"></div>
                             </td>
                         </div>
 
                         <td>
-                            <div th:text="Оценка"></div>
+                            <div th:text="Estimation"></div>
                             <div th:text="${users.getEstimation()}"></div>
                         </td>
                     </div>

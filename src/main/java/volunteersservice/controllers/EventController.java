@@ -14,6 +14,7 @@ import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
+import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.EventService;
 import volunteersservice.services.UserVolunteerFunctionService;
@@ -166,29 +167,47 @@ public class EventController {
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
         UserVolunteerFunctionService uvfs = ServiceFactory.getUserVolunteerFunctionService();
         VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
+        User user = Utils.getUserFromContext();
         model.addAttribute("volunteerFunction", volunteerFunction);
         model.addAttribute("userVolunteerFunctions",
                 uvfs.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction));
         model.addAttribute("user", Utils.getUserFromContext());
+        if (user != null && user.getUserRole().getEnum().equals(UserRoleEnum.VOLUNTEER))
+            if (uvfs.alreadySignedUp(user, volunteerFunction))
+                model.addAttribute("showButton", "abandon");
+            else
+                model.addAttribute("showButton", "signup");
+        else
+            model.addAttribute("showButton", "none");
         return "currentVolunteerFunction";
     }
 
     @PostMapping("/volunteerFunction/{volunteerFunctionID}")
-    public String signUpOnVolunteerFunction(@PathVariable int volunteerFunctionID) {
+    public String changeStatusOfUserVolunteerFunction(@PathVariable int volunteerFunctionID, @RequestParam String action) {
         UserVolunteerFunctionService uvfService = ServiceFactory.getUserVolunteerFunctionService();
         VolunteerFunctionService vfService = ServiceFactory.getVolunteerFunctionService();
-        UserVolunteerFunction uvf = uvfService.addUserVolunteerFunction(Utils.getUserFromContext(),
-                vfService.getVolunteerFunctionByID(volunteerFunctionID));
-        return "redirect:/main/" + uvf.getVolunteerFunction().getEvent().getEventID();
+        VolunteerFunction vf = vfService.getVolunteerFunctionByID(volunteerFunctionID);
+        if (action.equals("signup")) {
+            uvfService.addUserVolunteerFunction(Utils.getUserFromContext(), vf);
+        } else {
+            UserVolunteerFunction uvf = uvfService.getUserVolunteerFunction(Utils.getUserFromContext(), vf);
+            uvfService.deleteUserVolunteerFunction(uvf);
+        }
+        return "redirect:/main/" + vf.getEvent().getEventID();
     }
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
     @GetMapping("/main/{eventID}/volunteers")
     public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
         Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
+        User user = Utils.getUserFromContext();
         List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService
                 .getAllVolunteersOfEvent(currentEvent);
         model.addAttribute("registeredUsers", registeredUsers);
+        if (user != null && currentEvent.getCoordinator() != null)
+            model.addAttribute("showButtons", user.getLogin().equals(currentEvent.getCoordinator().getLogin()));
+        else
+            model.addAttribute("showButtons", false);
 
         LocalDateTime timeNow = LocalDateTime.now();
         model.addAttribute("timeNow", timeNow);
