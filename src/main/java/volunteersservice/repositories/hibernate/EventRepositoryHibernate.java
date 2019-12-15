@@ -1,11 +1,14 @@
 package volunteersservice.repositories.hibernate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import volunteersservice.models.entities.Event;
@@ -123,11 +126,32 @@ public class EventRepositoryHibernate implements EventRepository {
 
     @SuppressWarnings("unchecked")
     @Override
+    public List<Event> getEventsWithVolunteer(User volunteer, LocalDate dateStart, LocalDate dateFinish) {
+        Query<Event> query = HibernateUtil.getSession()
+                .createQuery("select event from Event as event inner join VolunteerFunction as vf on "
+                        + "vf.event.eventID = event.eventID inner join UserVolunteerFunction as uvf "
+                        + "on uvf.volunteerFunction.volunteerFunctionID = vf.volunteerFunctionID inner join User as user on "
+                        + "user.userID = uvf.user.userID where user.userID = :volunteerID"
+                        + (dateStart != null || dateFinish != null ? " and " : "")
+                        + (dateStart != null ? "event.dateFinish >= :dateStart " : "")
+                        + (dateStart != null && dateFinish != null ? "and " : "")
+                        + (dateFinish != null ? "event.dateStart <= :dateFinish " : ""))
+                .setParameter("volunteerID", volunteer.getUserID());
+        if (dateStart != null)
+            query.setParameter("dateStart", dateStart != null ? LocalDateTime.of(dateStart, LocalTime.of(0, 0)) : null);
+        if (dateFinish != null)
+            query.setParameter("dateFinish",
+                    dateFinish != null ? LocalDateTime.of(dateFinish, LocalTime.of(23, 59)) : null);
+        return (List<Event>) query.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
     public List<Event> getEventsOfOrganiser(User organiser, boolean active) {
         return (List<Event>) HibernateUtil.getSession()
                 .createQuery("from Event as event where event.organiser.userID = :organiserID and (event.dateFinish "
-                        + (active ? ">" : "<") + ":dateNow " + (active ? "and not" : "or") + " event.status.name = 'REJECTED'"
-                        + ") order by event.dateStart")
+                        + (active ? ">" : "<") + ":dateNow " + (active ? "and not" : "or")
+                        + " event.status.name = 'REJECTED'" + ") order by event.dateStart")
                 .setParameter("organiserID", organiser.getUserID()).setParameter("dateNow", LocalDateTime.now()).list();
     }
 }

@@ -31,14 +31,8 @@ import java.util.List;
 public class EventController {
     private static Logger LOG = Logger.getLogger(EventController.class);
 
-    private EventService eventService;
-    private UserVolunteerFunctionService userVolunteerFunctionService;
-
-    public EventController() {
-        LOG.info("EventController is alive");
-        eventService = ServiceFactory.getEventService();
-        userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
-    }
+    private EventService eventService = ServiceFactory.getEventService();
+    private UserVolunteerFunctionService userVolunteerFunctionService = ServiceFactory.getUserVolunteerFunctionService();
 
 
     @PreAuthorize("hasAuthority('ORGANISER')")
@@ -73,26 +67,31 @@ public class EventController {
     @PreAuthorize("hasAnyAuthority('COORDINATOR','VOLUNTEER', 'ORGANISER')")
     @GetMapping("/listOfMyEvents")
     public String myEventPool(Model model) {
-        EventService eventService = ServiceFactory.getEventService();
         User user = Utils.getUserFromContext();
-        model.addAttribute("advanced", true);
         if (user.getUserRole().getName().equals("COORDINATOR")) {
             model.addAttribute("currentEvents", eventService.getActiveEventsCoordinatedBy(user));
             model.addAttribute("expiredEvents", eventService.getExpiredEventsCoordinatedBy(user));
+            model.addAttribute("advanced", true);
         } else if (user.getUserRole().getName().equals("VOLUNTEER")) {
             model.addAttribute("currentEvents", eventService.getActiveEventsWithVolunteer(user));
             model.addAttribute("expiredEvents", eventService.getExpiredEventsWithVolunteer(user));
         } else if (user.getUserRole().getName().equals("ORGANISER")) {
             model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
             model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
+            model.addAttribute("advanced", true);
         }
         return "myEventPool";
+    }
+
+    @GetMapping("/listOfMyEvents/search")
+    public String myEventPoolSearch(Model model, @RequestParam String dateStart, @RequestParam String dateFinish) {
+        model.addAttribute("events", eventService.getEventsWithVolunteer(Utils.getUserFromContext(), dateStart, dateFinish));
+        return "myEventPoolSearch";
     }
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR','MANAGER', 'ADMIN')")
     @GetMapping("/listOfEventsToManage")
     public String poolEventsToManage(Model model) {
-        EventService eventService = ServiceFactory.getEventService();
         User user = Utils.getUserFromContext();
         model.addAttribute("advanced", true);
         if (user.getUserRole().getName().equals("COORDINATOR"))
