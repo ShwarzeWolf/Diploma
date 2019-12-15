@@ -18,6 +18,8 @@ public interface EventService {
 
 	public void deleteEvent(Event event);
 
+	public void updateEventInformation(Event event);
+
 	public List<Event> getAllEvents();
 
 	public List<Event> getActiveEvents();

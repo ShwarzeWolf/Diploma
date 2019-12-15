@@ -115,32 +115,64 @@ public class VolunteerFunction {
         return event;
     }
 
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getRequirements() {
         return requirements;
+    }
+
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
     }
 
     public LocalDateTime getTimeStart() {
         return timeStart;
     }
 
+    public void setTimeStart(LocalDateTime timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        this.timeStart = LocalDateTime.parse(timeStart, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+    }
+
     public LocalDateTime getTimeFinish() {
         return timeFinish;
+    }
+
+    public void setTimeFinish(LocalDateTime timeFinish) {
+        this.timeFinish = timeFinish;
+    }
+
+    public void setTimeFinish(String timeFinish) {
+        this.timeFinish = LocalDateTime.parse(timeFinish, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
     }
 
     public int getNumberNeeded() {
         return numberNeeded;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setNumberNeeded(int numberNeeded) {
+        this.numberNeeded = numberNeeded;
     }
 
     @Override

@@ -62,4 +62,9 @@ public class VolunteerFunctionServiceDefault implements VolunteerFunctionService
     public List<VolunteerFunction> getVolunteerFunctions(Event event) {
         return volunteerFunctionRepository.getVolunteerFunctions(event);
     }
+
+    @Override
+    public void updateVolunteerFunctionInformation(VolunteerFunction volunteerFunction) {
+        volunteerFunctionRepository.update(volunteerFunction);
+    }
 }
