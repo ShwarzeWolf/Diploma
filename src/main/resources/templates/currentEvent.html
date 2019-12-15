@@ -48,7 +48,7 @@
 
     <h2><span th:text="${event.getName()}"></span></h2>
 
-    <a th:if="${roleName != null && roleName == 'COORDINATOR'}" th:href="@{'/main/' + ${(event.getEventID())} + '/volunteers/'}">
+    <a th:if="${roleName != null && roleName == 'COORDINATOR'}" th:href="@{'/main/' + ${(event.getEventID())} + '/volunteers'}">
         <button>Manage volunteers</button>
     </a>
 
