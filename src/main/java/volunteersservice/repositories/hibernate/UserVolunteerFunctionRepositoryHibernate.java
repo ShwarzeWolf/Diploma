@@ -1,17 +1,16 @@
 package volunteersservice.repositories.hibernate;
 
-import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
-
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.repositories.UserVolunteerFunctionRepository;
 import volunteersservice.utils.HibernateUtil;
+
+import java.util.List;
 
 @Repository
 public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFunctionRepository {
@@ -116,6 +115,6 @@ public class UserVolunteerFunctionRepositoryHibernate implements UserVolunteerFu
 		if (numOfEvents == 0)
 			return 0;
 
-		return (double)sum / numOfEvents;
+		return Math.round((double)sum / numOfEvents * 100.0) / 100.0;
 	}
 }

@@ -1,9 +1,6 @@
 package volunteersservice.services.defaults;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserVolunteerFunction;
@@ -14,6 +11,8 @@ import volunteersservice.repositories.UserVolunteerFunctionStatusRepository;
 import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.utils.RepositoryFactory;
 import volunteersservice.utils.exceptions.UserVolunteerFunctionCreationException;
+
+import java.util.List;
 
 @Service
 public class UserVolunteerFunctionServiceDefault implements UserVolunteerFunctionService {
