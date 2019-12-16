@@ -72,27 +72,36 @@
         </tr>
     </table>
 
-    <h4>Change password</h4>
-    <form th:action="@{/changePassword}" method="post" name="contact_form" onsubmit="return validate_form();">
-        <table>
-            <tr>
-                <td>Old password: </td>
-                <td><input type="password" name="oldPassword" maxlength="50" required/></td>
-                <td id="output1"></td>
-            </tr>
-            <tr>
-                <td>New password: </td>
-                <td><input type="password" id="pass1" name="newPassword1" maxlength="50" required /></td>
-                <td id="output2"></td>
-            </tr>
-            <tr>
-                <td>New password: </td>
-                <td><input type="password" id="pass2" name="newPassword2" maxlength="50" required /></td>
-                <td id="output3"></td>
-            </tr>
-        </table>
-        <button type="submit" class="btn btn-primary" >Change password</button>
-    </form>
+    <script>
+        function showChangePassword() {
+            document.getElementById("changePasswordForm").style.display = "block"
+            document.getElementById("changePasswordButton").style.display = "none"
+        }
+    </script>
+    <button id="changePasswordButton" onclick="showChangePassword()" class="btn">Change password</button>
+    <div id="changePasswordForm" style="display: none;">
+        <h4>Change password</h4>
+        <form th:action="@{/changePassword}" method="post" name="contact_form" onsubmit="return validate_form();">
+            <table>
+                <tr>
+                    <td>Old password: </td>
+                    <td><input type="password" name="oldPassword" maxlength="50" required/></td>
+                    <td id="output1"></td>
+                </tr>
+                <tr>
+                    <td>New password: </td>
+                    <td><input type="password" id="pass1" name="newPassword1" maxlength="50" required /></td>
+                    <td id="output2"></td>
+                </tr>
+                <tr>
+                    <td>New password: </td>
+                    <td><input type="password" id="pass2" name="newPassword2" maxlength="50" required /></td>
+                    <td id="output3"></td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary" >Change password</button>
+        </form>
+    </div>
 
     <div>
         <p th:text="${password_change_status}"></p>

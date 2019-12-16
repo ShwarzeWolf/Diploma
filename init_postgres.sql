@@ -3,9 +3,11 @@ BEGIN TRANSACTION;
 \! echo Deleting java role and schema
 
 DROP SCHEMA IF EXISTS VolunteersService CASCADE;
+DROP ROLE IF EXISTS java;
+
+CREATE ROLE java WITH LOGIN PASSWORD '123654';
 
 \! echo Creating role and schema
-
 
 CREATE SCHEMA VolunteersService AUTHORIZATION java;
 
@@ -30,7 +32,7 @@ CREATE TABLE VolunteersService.Users (
     UserID       SERIAL    PRIMARY KEY  NOT NULL,
     Login        VARCHAR(20)  UNIQUE    NOT NULL,
     Email        VARCHAR(40)  UNIQUE    NOT NULL,
-    Name         VARCHAR(40)            NOT NULL,
+    Name         VARCHAR(60)            NOT NULL,
     RegisterDate TIMESTAMPTZ            NOT NULL,
     PasswdHash1  VARCHAR(128)           NOT NULL,
     PasswdHash2  VARCHAR(128)           NOT NULL,
@@ -41,9 +43,9 @@ CREATE TABLE VolunteersService.Events (
     EventID       SERIAL    PRIMARY KEY  NOT NULL,
     OrganiserID   INTEGER                NOT NULL REFERENCES VolunteersService.Users(UserID),
     CoordinatorID INTEGER                         REFERENCES VolunteersService.Users(UserID),
-    Name          VARCHAR(50)            NOT NULL,
-    Description   VARCHAR(300)           NOT NULL,
-    Place         VARCHAR(120)           NOT NULL,
+    Name          VARCHAR(150)           NOT NULL,
+    Description   VARCHAR(2000)          NOT NULL,
+    Place         VARCHAR(300)           NOT NULL,
     DateStart     TIMESTAMPTZ            NOT NULL,
     DateFinish    TIMESTAMPTZ            NOT NULL,
     StatusID      INTEGER                NOT NULL REFERENCES VolunteersService.EventStatus(StatusID),
@@ -53,8 +55,8 @@ CREATE TABLE VolunteersService.Events (
 CREATE TABLE VolunteersService.VolunteerFunctions (
     VolunteerFunctionID       SERIAL    PRIMARY KEY  NOT NULL,
     EventID      INTEGER                NOT NULL REFERENCES VolunteersService.Events(EventID) ON DELETE CASCADE,
-    Name         VARCHAR(50)            NOT NULL,
-    Description  VARCHAR(200)           NOT NULL,
+    Name         VARCHAR(100)           NOT NULL,
+    Description  VARCHAR(500)           NOT NULL,
     Requirements VARCHAR(200)           NOT NULL DEFAULT '',
     TimeStart    TIMESTAMPTZ            NOT NULL,
     TimeFinish   TIMESTAMPTZ            NOT NULL,
@@ -80,8 +82,8 @@ ALTER TABLE VolunteersService.UsersVolunteerFunctions     OWNER TO java;
 
 \! echo Inserting data
 
-INSERT INTO VolunteersService.UserRole                    (Name) values ('ORGANISER'), ('MANAGER'), ('COORDINATOR'), ('VOLUNTEER'), ('ADMIN');
+INSERT INTO VolunteersService.UserRole                    (Name) values ('ORGANISER'), ('MANAGER') , ('COORDINATOR'), ('VOLUNTEER'), ('ADMIN');
 INSERT INTO VolunteersService.EventStatus                 (Name) values ('UNCHECKED'), ('APPROVED'), ('COORDINATED'), ('PUBLISHED'), ('REJECTED');
-INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'), ('APPROVED'), ('RECALLED'), ('PARTICIPATED'), ('ABSENT');
+INSERT INTO VolunteersService.UserVolunteerFunctionStatus (Name) values ('UNCHECKED'), ('DENIED'),   ('APPROVED'),    ('RECALLED'),  ('PARTICIPATED'), ('ABSENT');
 
 END TRANSACTION;
