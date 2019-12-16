@@ -1,6 +1,7 @@
 package volunteersservice.controllers;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,6 +72,7 @@ public class UserController {
         return "redirect:/personal_account";
     }
 
+    @PreAuthorize("hasAuthority('COORDINATOR')")
     @GetMapping("/user/{volunteerId}")
     public String myEventPool(Model model,
                               @PathVariable int volunteerId) {
