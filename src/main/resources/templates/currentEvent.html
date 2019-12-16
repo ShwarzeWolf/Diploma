@@ -48,7 +48,7 @@
 
     <h2 th:text="${event.getName()}"></h2>
 
-    <a th:if="${roleName != null && event.getCoordinator() != null && event.getCoordinator().getUserID() == user.getUserID()}"
+    <a th:if="${user != null && event.getCoordinator() != null && event.getCoordinator().getUserID() == user.getUserID()}"
        th:href="@{'/main/' + ${(event.getEventID())} + '/volunteers/'}">
         <button class="btn btn-primary">Manage volunteers</button>
     </a>
