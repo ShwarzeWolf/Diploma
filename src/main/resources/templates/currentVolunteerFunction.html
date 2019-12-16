@@ -27,22 +27,8 @@
 					<a class="nav-link" th:href="@{/}">Main page</a>
 				</a>
 
-				<a class="nav-item" th:if="${roleName != null && roleName == 'ADMIN'}">
-					<a class="nav-link" th:href="@{/registration}">Register person</a>
-				</a>
-
-				<a class="nav-item" th:if="${roleName != null && roleName == 'ORGANISER'}">
-					<a class="nav-link" th:href="@{/addEvent}">Add event</a>
-				</a>
-
-				<a class="nav-item"
-					th:if="${roleName != null && (roleName =='COORDINATOR' || roleName == 'VOLUNTEER' || roleName =='ORGANISER')}">
-					<a class="nav-link" th:href="@{/listOfMyEvents}">Pool of my events</a>
-				</a>
-
-				<a class="nav-item"
-					th:if="${roleName != null && (roleName =='COORDINATOR' || roleName == 'MANAGER' || roleName =='ADMIN')}">
-					<a class="nav-link" th:href="@{/listOfEventsToManage}">Pool events to manage</a>
+				<a class="nav-item">
+					<a class="nav-link" th:href="${'/main/' + volunteerFunction.getEvent().getEventID()}">Back to event</a>
 				</a>
 			</div>
 		</div>
@@ -76,11 +62,11 @@
 		</tr>
 		<tr>
 			<th scope="row">Description</th>
-			<td th:text="${volunteerFunction.getDescription()}" />
+			<td th:utext="${volunteerFunction.getDescription().replace('&#13', '<br>')}" />
 		</tr>
 		<tr>
 			<th scope="row">Requirements</th>
-			<td th:text="${volunteerFunction.getRequirements()}" />
+			<td th:utext="${volunteerFunction.getRequirements().replace('&#13', '<br>')}" />
 		</tr>
 		<tr>
 			<th scope="row">Time</th>
@@ -102,7 +88,7 @@
 			<td scope="col">Status</td>
 		</tr>
 		<tr th:each="uvf : ${userVolunteerFunctions}">
-			<td th:text="${uvf.user.getName()}" />
+			<td th:text="${uvf.getUser().getName()}" />
 			<td th:text="${uvf.getStatus().getName()}" />
 		</tr>
 	</table>
@@ -137,13 +123,13 @@
 				<tr>
 					<th scope="row">Description</th>
 					<td>
-						<input type="text" name="description" th:value="${volunteerFunction.getDescription()}" maxlength="500">
+						<textarea name="description" th:text="${volunteerFunction.getDescription()}" maxlength="500" cols="90"></textarea>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">Requirements</th>
 					<td>
-						<input type="text" name="requirements" th:value="${volunteerFunction.getRequirements()}" maxlength="200">
+						<textarea name="requirements" th:text="${volunteerFunction.getRequirements()}" maxlength="200" cols="90"></textarea>
 					</td>
 				</tr>
 				<tr>

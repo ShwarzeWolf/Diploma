@@ -56,7 +56,7 @@
     <table class="table table-bordered">
         <tr>
             <th scope="row">Description</th>
-            <td th:text="${event.getDescription()}" />
+            <td th:utext="${event.getDescription().replace('&#13', '<br>')}" />
         </tr>
         <tr>
             <th scope="row">Place</th>
@@ -91,8 +91,8 @@
             </thead>
             <tr th:each="volunteerFunction : ${volunteerFunctions}">
                 <td th:text="${volunteerFunction.getName()}" />
-                <td th:text="${volunteerFunction.getDescription()}" />
-                <td th:text="${volunteerFunction.getRequirements()}" />
+                <td th:utext="${volunteerFunction.getDescription().replace('&#13', '<br>')}" />
+                <td th:utext="${volunteerFunction.getRequirements().replace('&#13', '<br>')}" />
                 <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span
                         th:text="${volunteerFunction.getTimeFinish()}" /></td>
                 <td th:text="${volunteerFunction.getNumberNeeded()}" />
@@ -161,11 +161,11 @@
                 </tr>
                 <tr>
                     <th scope="row">Function description</td>
-                    <td><input type="text" name="description" maxlength="500"></td>
+                    <td><textarea name="description" maxlength="500" cols="90"></textarea></td>
                 </tr>
                 <tr>
                     <th scope="row">Function requirements</td>
-                    <td><input type="text" name="requirements" maxlength="200"></td>
+                    <td><textarea name="requirements" maxlength="200" cols="90"></textarea></td>
                 </tr>
                 <tr>
                     <th scope="row">Start time</td>
@@ -201,7 +201,7 @@
                 <tr>
                     <th scope="row">Description</th>
                     <td>
-                        <input type="text" name="description" th:value="${event.getDescription()}" maxlength="2000">
+                        <textarea name="description" th:text="${event.getDescription()}" maxlength="2000" cols="90"></textarea>
                     </td>
                 </tr>
                 <tr>
