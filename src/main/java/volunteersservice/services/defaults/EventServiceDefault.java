@@ -1,11 +1,5 @@
 package volunteersservice.services.defaults;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import volunteersservice.models.entities.Event;
@@ -18,6 +12,12 @@ import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.RepositoryFactory;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.exceptions.EventCreationException;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @Service
 public class EventServiceDefault implements EventService {

@@ -29,13 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/registration", "/main/**").permitAll()
                 .antMatchers("/resources/static/**").permitAll()
-//                TODO fix security
                 .antMatchers(HttpMethod.POST, "/main/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/main*").permitAll()
                 .anyRequest().authenticated()
             .and()
-                .csrf().disable() // FIXME maybe? This solves the problem of POST-requests sometimes
-            // .and()
+                .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
                 .usernameParameter("login")

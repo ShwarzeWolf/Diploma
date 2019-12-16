@@ -1,85 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="postgres@localhost">
-  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.14">
+  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.17">
     <root id="1">
       <ServerVersion>12.0</ServerVersion>
     </root>
     <database id="2" parent="1" name="postgres">
       <ObjectId>13318</ObjectId>
       <Comment>default administrative connection database</Comment>
-      <StateNumber>485</StateNumber>
       <Owner>postgres</Owner>
       <IntrospectionStateNumber>487</IntrospectionStateNumber>
       <Current>1</Current>
-      <Visible>1</Visible>
-      <Relations>sequence|table|16769|16771|1
-sequence|table|16777|16779|1
-sequence|table|16790|16792|1
-sequence|table|16803|16805|1
-sequence|table|26494|26496|1
+      <Relations>sequence|table|26535|26537|1
 sequence|table|26521|26523|1
-sequence|table|26535|26537|1
-sequence|table|26453|26455|1
+sequence|table|26494|26496|1
 sequence|table|26461|26463|1
 sequence|table|26469|26471|1
 sequence|table|26477|26479|1
+sequence|table|26453|26455|1
+sequence|table|16803|16805|1
+sequence|table|16769|16771|1
+sequence|table|16777|16779|1
+sequence|table|16790|16792|1
 </Relations>
     </database>
     <role id="3" parent="1" name="java">
       <ObjectId>16498</ObjectId>
-      <Inherit>1</Inherit>
       <CanLogin>1</CanLogin>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="4" parent="1" name="pg_execute_server_program">
       <ObjectId>4571</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="5" parent="1" name="pg_monitor">
       <ObjectId>3373</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="6" parent="1" name="pg_read_all_settings">
       <ObjectId>3374</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="7" parent="1" name="pg_read_all_stats">
       <ObjectId>3375</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="8" parent="1" name="pg_read_server_files">
       <ObjectId>4569</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="9" parent="1" name="pg_signal_backend">
       <ObjectId>4200</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="10" parent="1" name="pg_stat_scan_tables">
       <ObjectId>3377</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="11" parent="1" name="pg_write_server_files">
       <ObjectId>4570</ObjectId>
-      <Inherit>1</Inherit>
-      <ConnectionLimit>-1</ConnectionLimit>
     </role>
     <role id="12" parent="1" name="postgres">
       <ObjectId>10</ObjectId>
       <SuperRole>1</SuperRole>
-      <Inherit>1</Inherit>
       <CreateRole>1</CreateRole>
       <CreateDb>1</CreateDb>
       <CanLogin>1</CanLogin>
       <Replication>1</Replication>
-      <ConnectionLimit>-1</ConnectionLimit>
       <BypassRls>1</BypassRls>
     </role>
     <schema id="13" parent="2" name="information_schema">
@@ -120,7 +98,6 @@ sequence|table|26477|26479|1
       <StateNumber>276</StateNumber>
       <Owner>postgres</Owner>
       <Current>1</Current>
-      <Visible>1</Visible>
     </schema>
     <schema id="20" parent="2" name="volunteersservice">
       <ObjectId>26452</ObjectId>

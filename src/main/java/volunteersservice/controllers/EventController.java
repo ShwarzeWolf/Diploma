@@ -114,12 +114,6 @@ public class EventController {
         return "currentEvent";
     }
 
-    // TODO "APROVED"/"REJECTED" are only avaliable for MANAGER role and only for
-    // UNCHECKED events
-    // "PUBLISHED" is only avaliabe for COORDINATOR of the event when it's
-    // COORDINATED
-    // "COORDINATED" is only avaliable for COORDINATOR of the event when it's
-    // PUBLISHED
     @PreAuthorize("hasAnyAuthority('COORDINATOR','MANAGER')")
     @PostMapping("/main/{eventID}/setEventStatus")
     public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus,
@@ -133,9 +127,6 @@ public class EventController {
         return "redirect:/main/" + eventID;
     }
 
-    // TODO "coordinate" is only avaliable for COORDINATOR role and only for APROVED
-    // events
-    // and "coordinate drop" is only avaliable for COORDINATOR of this event
     @PreAuthorize("hasAuthority('COORDINATOR')")
     @PostMapping("/main/{eventID}/coordinate")
     public String coordinateEvent(@PathVariable int eventID,
@@ -154,6 +145,7 @@ public class EventController {
         return "redirect:/main/" + eventID;
     }
 
+    @PreAuthorize("hasAnyAuthority('COORDINATOR','ORGANISER')")
     @PostMapping("/main/{eventID}/edit")
     public String editEvent(@PathVariable int eventID, Model model, @RequestParam String name,
             @RequestParam String description, @RequestParam String place, @RequestParam String dateStart,
@@ -168,6 +160,7 @@ public class EventController {
         return "redirect:/main/" + eventID;
     }
 
+    @PreAuthorize("hasAnyAuthority('COORDINATOR','ORGANISER')")
     @PostMapping("/main/{eventID}")
     public String addVolunteerFunction(@PathVariable int eventID, @RequestParam String name,
             @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
@@ -279,7 +272,6 @@ public class EventController {
             LOG.info("no status changed");
             break;
         }
-
         return "redirect:/main/" + eventID + "/volunteers";
     }
 }
