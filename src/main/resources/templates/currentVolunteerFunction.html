@@ -131,32 +131,32 @@
 				<tr>
 					<th scope="row">Name</th>
 					<td>
-						<input name="name" th:value="${volunteerFunction.getName()}">
+						<input type="text" name="name" th:value="${volunteerFunction.getName()}" maxlength="100">
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">Description</th>
 					<td>
-						<input name="description" th:value="${volunteerFunction.getDescription()}">
+						<input type="text" name="description" th:value="${volunteerFunction.getDescription()}" maxlength="500">
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">Requirements</th>
 					<td>
-						<input name="requirements" th:value="${volunteerFunction.getRequirements()}">
+						<input type="text" name="requirements" th:value="${volunteerFunction.getRequirements()}" maxlength="200">
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">Time</th>
 					<td>
-						<input name="timeStart" th:value="${volunteerFunction.getTimeStart()}"> -
-						<input name="timeFinish" th:value="${volunteerFunction.getTimeFinish()}">
+						<input type="datetime-local" name="timeStart" th:value="${volunteerFunction.getTimeStart()}"> -
+						<input type="datetime-local" name="timeFinish" th:value="${volunteerFunction.getTimeFinish()}">
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">Number needed</th>
 					<td>
-						<input name="numberNeeded" th:value="${volunteerFunction.getNumberNeeded()}">
+						<input type="number" name="numberNeeded" th:value="${volunteerFunction.getNumberNeeded()}">
 					</td>
 				</tr>
 				<tr>
