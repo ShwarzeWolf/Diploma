@@ -225,8 +225,8 @@ public class EventController {
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
     @GetMapping("/main/{eventID}/volunteers")
-    public String getListOfVolunteers(@PathVariable(value = "eventID") String eventID, Model model) {
-        Event currentEvent = eventService.getEventByID(Integer.parseInt(eventID));
+    public String getListOfVolunteers(@PathVariable int eventID, Model model) {
+        Event currentEvent = eventService.getEventByID(eventID);
         User user = Utils.getUserFromContext();
         List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService
                 .getAllVolunteersOfEvent(currentEvent);
@@ -238,13 +238,14 @@ public class EventController {
 
         LocalDateTime timeNow = LocalDateTime.now();
         model.addAttribute("timeNow", timeNow);
+        model.addAttribute("eventLink", "/main/" + eventID);
 
         return "volunteersForEvent";
     }
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
     @PostMapping("/main/{eventID}/volunteers")
-    public String changeVolunteerStatus(@PathVariable(value = "eventID") String eventID,
+    public String changeVolunteerStatus(@PathVariable int eventID,
             @RequestParam(value = "newStatus", required = true) String newStatus,
             @RequestParam(value = "userVolunteerFunctionID", required = true) String userVolunteerFunctionId,
             @RequestParam(value = "estimation", required = false) String estimation,

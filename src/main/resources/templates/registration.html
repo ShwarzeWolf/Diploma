@@ -77,21 +77,21 @@
                             </div>
                             <div class="form-check">
                                 <input id="organiser" class="form-check-input" type="radio" name="userRole"
-                                    value="ORGANISER" checked>
+                                    value="ORGANISER">
                                 <label class="form-check-label" for="organiser">
                                     Organizer
                                 </label>
                             </div>
                             <div th:if="${roleName != null && roleName.equals('ADMIN')}" class="form-check">
                                 <input id="manager" class="form-check-input" type="radio" name="userRole"
-                                    value="MANAGER" checked>
+                                    value="MANAGER">
                                 <label class="form-check-label" for="manager">
                                     Manager
                                 </label>
                             </div>
                             <div th:if="${roleName != null && roleName.equals('ADMIN')}" class="form-check">
                                 <input id="coordinator" class="form-check-input" type="radio" name="userRole"
-                                    value="COORDINATOR" checked>
+                                    value="COORDINATOR">
                                 <label class="form-check-label" for="coordinator">
                                     Coordinator
                                 </label>
