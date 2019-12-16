@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import volunteersservice.models.entities.User;
 import volunteersservice.models.enums.UserRoleEnum;
 import volunteersservice.services.EventService;
@@ -45,7 +44,7 @@ public class UserController {
     public String registration(Model model) {
         LOG.info("User " + Utils.getUserFromContext() + " came to /register");
         model.addAttribute("roleName",
-                Utils.getUserFromContext() == null ? null : Utils.getUserFromContext().getUserRole().getName()); // fixme #userRole
+                Utils.getUserFromContext() == null ? null : Utils.getUserFromContext().getUserRole().getName());
         return "registration";
     }
 
