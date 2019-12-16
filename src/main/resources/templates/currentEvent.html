@@ -107,8 +107,8 @@
         <!-- Need some fix for look of link below and similar ones -->
         <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
             Optional message: <input type="text" maxlength="300" name="message" />
-            <button type="submit" name="changeStatus" value="APPROVED" class="btn-primary">Approve</button>
-            <button type="submit" name="changeStatus" value="REJECTED" class="btn">Reject</button>
+            <button type="submit" name="changeStatus" value="APPROVED" class="btn btn-outline-success">Approve</button>
+            <button type="submit" name="changeStatus" value="REJECTED" class="btn btn-outline-danger">Reject</button>
         </form>
     </div>
 
@@ -142,38 +142,42 @@
     <div
         th:if="${user != null && ((event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'UNCHECKED') || (event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin()))}">
         <script>
+            function showAdd() {
+                document.getElementById("addVolunteerFunctionForm").style.display = "block"
+                document.getElementById("addVolunteerFunctionButton").style.display = "none"
+            }
             function showEdit() {
                 document.getElementById("editEventForm").style.display = "block"
                 document.getElementById("editEventButton").style.display = "none"
             }
         </script>
-        <button id="addVolunteerFunctionButton" onclick="showSearch()" class="btn">Add volunteer function</button>
+        <button id="addVolunteerFunctionButton" onclick="showAdd()" class="btn">Add volunteer function</button>
         <form method="post" id="addVolunteerFunctionForm" style="display: none;">
             <table class="table table-bordered">
                 <tr>
                     <th scope="row">Function name</td>
-                    <td><input type="text" name="name" /></td>
+                    <td><input type="text" name="name" maxlength="100"></td>
                 </tr>
                 <tr>
                     <th scope="row">Function description</td>
-                    <td><input type="text" name="description" /></td>
+                    <td><input type="text" name="description" maxlength="500"></td>
                 </tr>
                 <tr>
                     <th scope="row">Function requirements</td>
-                    <td><input type="text" name="requirements" /></td>
+                    <td><input type="text" name="requirements" maxlength="200"></td>
                 </tr>
                 <tr>
                     <th scope="row">Start time</td>
-                    <td><input type="datetime-local" name="timeStart" th:value="${event.getDateStart()}" /></td>
+                    <td><input type="datetime-local" name="timeStart" th:value="${event.getDateStart()}"></td>
                 </tr>
                 <tr>
                     <th scope="row">End time</td>
-                    <td><input type="datetime-local" name="timeFinish" th:value="${event.getDateFinish()}" /></td>
+                    <td><input type="datetime-local" name="timeFinish" th:value="${event.getDateFinish()}"></td>
                 </tr>
                 <tr>
                     <th scope="row">Number of volunteers needed</td>
                     <td>
-                        <input type="number" name="numberNeeded" />
+                        <input type="number" name="numberNeeded">
                     </td>
                 </tr>
                 <tr>
@@ -190,26 +194,26 @@
                 <tr>
                     <th scope="row">Name</th>
                     <td>
-                        <input name="name" th:value="${event.getName()}">
+                        <input type="text" name="name" th:value="${event.getName()}" maxlength="150">
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">Description</th>
                     <td>
-                        <input name="description" th:value="${event.getDescription()}">
+                        <input type="text" name="description" th:value="${event.getDescription()}" maxlength="2000">
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">Place</th>
                     <td>
-                        <input name="place" th:value="${event.getPlace()}">
+                        <input type="text" name="place" th:value="${event.getPlace()}" maxlength="300">
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">Time</th>
                     <td>
-                        <input name="dateStart" th:value="${event.getDateStart()}"> - <input name="dateFinish"
-                            th:value="${event.getDateFinish()}">
+                        <input type="datetime-local" name="dateStart" th:value="${event.getDateStart()}"> -
+                        <input type="datetime-local" name="dateFinish" th:value="${event.getDateFinish()}">
                     </td>
                 </tr>
                 <tr>
