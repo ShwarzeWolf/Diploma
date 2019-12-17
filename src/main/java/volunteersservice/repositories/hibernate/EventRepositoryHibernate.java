@@ -116,7 +116,7 @@ public class EventRepositoryHibernate implements EventRepository {
     @Override
     public List<Event> getEventsWithVolunteer(User volunteer, boolean active) {
         return (List<Event>) HibernateUtil.getSession()
-                .createQuery("select event from Event as event inner join VolunteerFunction as vf on "
+                .createQuery("select distinct event from Event as event inner join VolunteerFunction as vf on "
                         + "vf.event.eventID = event.eventID inner join UserVolunteerFunction as uvf "
                         + "on uvf.volunteerFunction.volunteerFunctionID = vf.volunteerFunctionID inner join User as user on "
                         + "user.userID = uvf.user.userID where user.userID = :volunteerID and event.dateFinish "
@@ -128,7 +128,7 @@ public class EventRepositoryHibernate implements EventRepository {
     @Override
     public List<Event> getEventsWithVolunteer(User volunteer, LocalDate dateStart, LocalDate dateFinish) {
         Query<Event> query = HibernateUtil.getSession()
-                .createQuery("select event from Event as event inner join VolunteerFunction as vf on "
+                .createQuery("select distinct event from Event as event inner join VolunteerFunction as vf on "
                         + "vf.event.eventID = event.eventID inner join UserVolunteerFunction as uvf "
                         + "on uvf.volunteerFunction.volunteerFunctionID = vf.volunteerFunctionID inner join User as user on "
                         + "user.userID = uvf.user.userID where user.userID = :volunteerID"
