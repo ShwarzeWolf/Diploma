@@ -37,6 +37,6 @@ public class EventStatus {
 
     @Override
     public String toString() {
-        return String.format("(EventStatus) %d: %s", statusID, name);
+        return String.format("(EventStatus %d): %s", statusID, name);
     }
 }

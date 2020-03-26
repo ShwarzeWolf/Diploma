@@ -45,7 +45,7 @@ public class User {
     @NotNull
     private String hash2;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "RoleID", nullable = false)
     @NotNull
     UserRole userRole;
@@ -117,7 +117,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("(User) %d: %s; %s; %s; %s + %s; %s %s", userID, email, login, name, hash1, hash2,
+        return String.format("(User %d): %s; %s; %s; %s + %s; %s %s", userID, email, login, name, hash1, hash2,
                 registerDate, userRole);
     }
 }

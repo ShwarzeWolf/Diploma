@@ -177,7 +177,8 @@ public class VolunteerFunction {
 
     @Override
     public String toString() {
-        return String.format("(VolunteerFunction) %d: [%s]; %s; %s; %s; %s - %s; %d needed", volunteerFunctionID,
-                event.getEventID(), name, description, requirements, timeStart, timeFinish, numberNeeded);
+        return String.format("(VolunteerFunction %d): eventId [%s]; %s; %s; %s; %s - %s; %d needed",
+                volunteerFunctionID, event.getEventID(), name, description.replace("\r", "\\r").replace("\n", "\\n"),
+                requirements, timeStart, timeFinish, numberNeeded);
     }
 }

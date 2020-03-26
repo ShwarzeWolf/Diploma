@@ -55,33 +55,7 @@
             </div>
         </div>
     </nav>
-    <script>
-        function showSearch() {
-            document.getElementById("searchForm").style.display = "block"
-            document.getElementById("searchButton").style.display = "none"
-        }
-    </script>
-    <button sec:authorize="hasAuthority('VOLUNTEER')" id="searchButton" onclick="showSearch()" class="btn">Search in my
-        events</button>
-    <div id="searchForm" style="display: none;">
-        Range for search:<br>
-        <form method="get" action="/listOfMyEvents/search">
-            <table>
-                <tr>
-                    <td>Start:</td>
-                    <td><input type="date" name="dateStart"></td>
-                </tr>
-                <tr>
-                    <td>Finish:</td>
-                    <td><input type="date" name="dateFinish"></td>
-                </tr>
-                <tr>
-                    <td><button type="submit" class="btn">Search</button></td>
-                </tr>
-            </table>
-        </form>
-    </div>
-
+    
     <h2>Current events</h2>
     <div th:if="${currentEvents != null && currentEvents.size() > 0}" class="eventsList">
         <table class="table table-striped">
@@ -91,7 +65,7 @@
                     <th scope="col">Date start</th>
                     <th scope="col">Date finish</th>
                     <th scope="col">Status</th>
-                    <th scope="col" th:if="${advanced != null && advanced.equals(true)}">Message</th>
+                    <th scope="col">Message</th>
                     <th scope="col">View</th>
                 </tr>
             </thead>
@@ -102,7 +76,7 @@
                     <td th:text="${event.getDateStart()}" />
                     <td th:text="${event.getDateFinish()}" />
                     <td th:text="${event.getStatus().getName()}" />
-                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getMessage()}" />
+                    <td th:text="${event.getMessage()}" />
                     <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
                 </tr>
             </tbody>
@@ -121,7 +95,7 @@
                     <th scope="col">Date start</th>
                     <th scope="col">Date finish</th>
                     <th scope="col">Status</th>
-                    <th scope="col" th:if="${advanced != null && advanced.equals(true)}">Message</th>
+                    <th scope="col">Message</th>
                     <th scope="col">View</th>
                 </tr>
             </thead>
@@ -132,7 +106,7 @@
                     <td th:text="${event.getDateStart()}" />
                     <td th:text="${event.getDateFinish()}" />
                     <td th:text="${event.getStatus().getName()}" />
-                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getMessage()}" />
+                    <td th:text="${event.getMessage()}" />
                     <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
                 </tr>
             </tbody>

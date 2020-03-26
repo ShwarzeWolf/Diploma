@@ -63,7 +63,7 @@
                     <th scope="col">Date start</th>
                     <th scope="col">Date finish</th>
                     <th scope="col">Status</th>
-                    <th scope="col" th:if="${advanced != null && advanced.equals(true)}">Message</th>
+                    <th scope="col">Message</th>
                     <th scope="col">View</th>
                 </tr>
             </thead>
@@ -74,7 +74,7 @@
                     <td th:text="${event.getDateStart()}" />
                     <td th:text="${event.getDateFinish()}" />
                     <td th:text="${event.getStatus().getName()}" />
-                    <td th:if="${advanced != null && advanced.equals(true)}" th:text="${event.getMessage()}" />
+                    <td th:text="${event.getMessage()}" />
                     <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
                 </tr>
             </tbody>

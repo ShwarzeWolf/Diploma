@@ -1,7 +1,13 @@
 package volunteersservice.services.defaults;
 
-import org.apache.log4j.Logger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.VolunteerFunction;
@@ -13,16 +19,9 @@ import volunteersservice.utils.RepositoryFactory;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.exceptions.EventCreationException;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
-
 @Service
 public class EventServiceDefault implements EventService {
     private final EventRepository eventRepository;
-    private final static Logger LOG = Logger.getLogger(EventService.class.getName());
 
     public EventServiceDefault() {
         eventRepository = RepositoryFactory.getEventRepository();
@@ -138,7 +137,6 @@ public class EventServiceDefault implements EventService {
 
         Event event = new Event(name, organiser, description, place, dateStart, dateFinish);
         eventRepository.save(event);
-        LOG.info("Event is saved: [" + event.toString() + "]");
         if (volunteerFunctions != null) {
             VolunteerFunctionService volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
             for (VolunteerFunction r : volunteerFunctions) {

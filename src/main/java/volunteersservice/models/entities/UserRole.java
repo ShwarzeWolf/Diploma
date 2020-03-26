@@ -43,6 +43,6 @@ public class UserRole {
 
     @Override
     public String toString() {
-        return String.format("(UserRole) %d: %s", roleID, name);
+        return String.format("(UserRole %d): %s", roleID, name);
     }
 }
