@@ -1,6 +1,5 @@
 package volunteersservice.security;
 
-import org.apache.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.enums.UserRoleEnum;
@@ -11,8 +10,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
-
-	private final static Logger LOG = Logger.getLogger(UserDetailsImpl.class.getName());
 
 	private static final long serialVersionUID = -5604409417012553128L;
 	@NotNull
@@ -26,7 +23,6 @@ public class UserDetailsImpl implements UserDetails {
 	public Collection<UserRoleEnum> getAuthorities() {
 		List<UserRoleEnum> res = new ArrayList<>();
 		res.add(userModel.getUserRole().getEnum());
-		LOG.info("Get authorities: " + res);
 		return res;
 	}
 

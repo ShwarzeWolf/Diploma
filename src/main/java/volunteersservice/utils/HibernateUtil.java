@@ -10,8 +10,6 @@ import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.EventStatus;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.UserRole;
-import volunteersservice.models.entities.UserVolunteerFunction;
-import volunteersservice.models.entities.UserVolunteerFunctionStatus;
 import volunteersservice.models.entities.VolunteerFunction;
 
 public class HibernateUtil {
@@ -27,12 +25,10 @@ public class HibernateUtil {
             try {
                 Configuration configuration = new Configuration().configure();
                 configuration.addAnnotatedClass(EventStatus.class);
-                configuration.addAnnotatedClass(UserVolunteerFunctionStatus.class);
                 configuration.addAnnotatedClass(UserRole.class);
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Event.class);
                 configuration.addAnnotatedClass(VolunteerFunction.class);
-                configuration.addAnnotatedClass(UserVolunteerFunction.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());

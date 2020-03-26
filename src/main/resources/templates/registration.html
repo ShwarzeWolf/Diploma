@@ -66,20 +66,13 @@
 
 
                     <div class="row text-left">
-                        <legend class="col-form-label col-sm-2 pt-0">Roles</legend>
+                        <legend class="col-form-label col-sm-2 pt-0">Role</legend>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input id="volunteer" class="form-check-input" type="radio" name="userRole"
-                                    value="VOLUNTEER" checked>
-                                <label class="form-check-label" for="volunteer">
-                                    Volunteer
-                                </label>
-                            </div>
-                            <div class="form-check">
                                 <input id="organiser" class="form-check-input" type="radio" name="userRole"
-                                    value="ORGANISER">
+                                    value="ORGANISER" checked>
                                 <label class="form-check-label" for="organiser">
-                                    Organizer
+                                    Organiser
                                 </label>
                             </div>
                             <div th:if="${roleName != null && roleName.equals('ADMIN')}" class="form-check">

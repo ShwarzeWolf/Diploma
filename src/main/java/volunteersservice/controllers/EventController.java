@@ -1,5 +1,9 @@
 package volunteersservice.controllers;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -9,31 +13,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.User;
-import volunteersservice.models.entities.UserVolunteerFunction;
 import volunteersservice.models.entities.VolunteerFunction;
 import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.models.enums.UserRoleEnum;
-import volunteersservice.models.enums.UserVolunteerFunctionStatusEnum;
 import volunteersservice.services.EventService;
-import volunteersservice.services.UserVolunteerFunctionService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Controller
 public class EventController {
-    private static Logger LOG = Logger.getLogger(EventController.class);
+    private final static Logger LOG = Logger.getLogger(EventController.class);
 
-    private EventService eventService = ServiceFactory.getEventService();
-    private UserVolunteerFunctionService userVolunteerFunctionService = ServiceFactory
-            .getUserVolunteerFunctionService();
+    private final EventService eventService = ServiceFactory.getEventService();
 
     @PreAuthorize("hasAuthority('ORGANISER')")
     @GetMapping("/addEvent")
@@ -45,7 +39,8 @@ public class EventController {
     @PostMapping("/addEvent")
     public String addEvent(@RequestParam String name, @RequestParam String place, @RequestParam String description,
             @RequestParam String dateStart, @RequestParam String dateFinish) {
-        eventService.addEvent(name, Utils.getUserFromContext(), description, place, dateStart, dateFinish);
+        Event ev = eventService.addEvent(name, Utils.getUserFromContext(), description, place, dateStart, dateFinish);
+        LOG.info(String.format("User \"%s\" added event %s", Utils.getUserFromContext().getLogin(), ev));
         return "redirect:/main";
     }
 
@@ -62,7 +57,7 @@ public class EventController {
         return "main";
     }
 
-    @PreAuthorize("hasAnyAuthority('COORDINATOR','VOLUNTEER', 'ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'ORGANISER')")
     @GetMapping("/listOfMyEvents")
     public String myEventPool(Model model) {
         User user = Utils.getUserFromContext();
@@ -70,9 +65,6 @@ public class EventController {
             model.addAttribute("currentEvents", eventService.getActiveEventsCoordinatedBy(user));
             model.addAttribute("expiredEvents", eventService.getExpiredEventsCoordinatedBy(user));
             model.addAttribute("advanced", true);
-        } else if (user.getUserRole().getName().equals("VOLUNTEER")) {
-            model.addAttribute("currentEvents", eventService.getActiveEventsWithVolunteer(user));
-            model.addAttribute("expiredEvents", eventService.getExpiredEventsWithVolunteer(user));
         } else if (user.getUserRole().getName().equals("ORGANISER")) {
             model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
             model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
@@ -81,14 +73,7 @@ public class EventController {
         return "myEventPool";
     }
 
-    @GetMapping("/listOfMyEvents/search")
-    public String myEventPoolSearch(Model model, @RequestParam String dateStart, @RequestParam String dateFinish) {
-        model.addAttribute("events",
-                eventService.getEventsWithVolunteer(Utils.getUserFromContext(), dateStart, dateFinish));
-        return "myEventPoolSearch";
-    }
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR','MANAGER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER', 'ADMIN')")
     @GetMapping("/listOfEventsToManage")
     public String poolEventsToManage(Model model) {
         User user = Utils.getUserFromContext();
@@ -114,13 +99,12 @@ public class EventController {
         return "currentEvent";
     }
 
-    @PreAuthorize("hasAnyAuthority('COORDINATOR','MANAGER')")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER')")
     @PostMapping("/main/{eventID}/setEventStatus")
     public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus,
             @RequestParam(required = false) String message) {
-        @NotNull
         Event event = eventService.getEventByID(eventID);
-        LOG.info("Changing event status: " + event + ", " + changeStatus);
+        LOG.info(String.format("User \"%s\" changes event [%s] status: \"%s\" -> \"%s\"", Utils.getUserFromContext().getLogin(), event, event.getStatus().getName(), changeStatus));
         eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
         if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
             eventService.setMessage(event, message);
@@ -134,18 +118,18 @@ public class EventController {
         User user = Utils.getUserFromContext();
         Event event = eventService.getEventByID(eventID);
         if (!drop) {
-            LOG.info("Setting a coordinator for event " + eventID + ": " + user.getLogin());
+            LOG.info(String.format("Setting a coordinator for event [%s]: %s", event, user.getLogin()));
             eventService.setCoordinator(event, user);
             eventService.setStatus(event, EventStatusEnum.COORDINATED);
         } else {
-            LOG.info("Dropping a coordinator of event: " + eventID + ", decided by " + user.getLogin());
+            LOG.info(String.format("Dropping a coordinator of event [%s], decided by %s", event, user.getLogin()));
             eventService.setCoordinator(event, null);
             eventService.setStatus(event, EventStatusEnum.APPROVED);
         }
         return "redirect:/main/" + eventID;
     }
 
-    @PreAuthorize("hasAnyAuthority('COORDINATOR','ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'ORGANISER')")
     @PostMapping("/main/{eventID}/edit")
     public String editEvent(@PathVariable int eventID, Model model, @RequestParam String name,
             @RequestParam String description, @RequestParam String place, @RequestParam String dateStart,
@@ -157,54 +141,29 @@ public class EventController {
         event.setDateStart(dateStart);
         event.setDateFinish(dateFinish);
         eventService.updateEventInformation(event);
+        LOG.info(String.format("User \"%s\" edits information of the event [%s]", Utils.getUserFromContext().getLogin(), event));
         return "redirect:/main/" + eventID;
     }
 
-    @PreAuthorize("hasAnyAuthority('COORDINATOR','ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'ORGANISER')")
     @PostMapping("/main/{eventID}")
     public String addVolunteerFunction(@PathVariable int eventID, @RequestParam String name,
             @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
             @RequestParam String timeFinish, @RequestParam int numberNeeded) {
         Event currentEvent = eventService.getEventByID(eventID);
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
-        vfs.addVolunteerFunction(currentEvent, name, description, requirements, timeStart, timeFinish, numberNeeded);
+        VolunteerFunction vf = vfs.addVolunteerFunction(currentEvent, name, description, requirements, timeStart, timeFinish, numberNeeded);
+        LOG.info(String.format("User \"%s\" adds volunteer function [%s] for event [%s]", Utils.getUserFromContext().getLogin(), vf, currentEvent));
         return "redirect:/main/" + eventID;
     }
 
     @GetMapping("/volunteerFunction/{volunteerFunctionID}")
     public String getVolunteerFunction(@PathVariable int volunteerFunctionID, Model model) {
-        LOG.info("Getting VolunteerFunction with id = " + volunteerFunctionID);
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
-        UserVolunteerFunctionService uvfs = ServiceFactory.getUserVolunteerFunctionService();
         VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
-        User user = Utils.getUserFromContext();
         model.addAttribute("volunteerFunction", volunteerFunction);
-        model.addAttribute("userVolunteerFunctions",
-                uvfs.getUserVolunteerFunctionsOfVolunteerFunction(volunteerFunction));
         model.addAttribute("user", Utils.getUserFromContext());
-        if (user != null && user.getUserRole().getEnum().equals(UserRoleEnum.VOLUNTEER))
-            if (uvfs.alreadySignedUp(user, volunteerFunction))
-                model.addAttribute("showButton", "abandon");
-            else
-                model.addAttribute("showButton", "signup");
-        else
-            model.addAttribute("showButton", "none");
         return "currentVolunteerFunction";
-    }
-
-    @PostMapping("/volunteerFunction/{volunteerFunctionID}")
-    public String changeStatusOfUserVolunteerFunction(@PathVariable int volunteerFunctionID,
-            @RequestParam String action) {
-        UserVolunteerFunctionService uvfService = ServiceFactory.getUserVolunteerFunctionService();
-        VolunteerFunctionService vfService = ServiceFactory.getVolunteerFunctionService();
-        VolunteerFunction vf = vfService.getVolunteerFunctionByID(volunteerFunctionID);
-        if (action.equals("signup")) {
-            uvfService.addUserVolunteerFunction(Utils.getUserFromContext(), vf);
-        } else {
-            UserVolunteerFunction uvf = uvfService.getUserVolunteerFunction(Utils.getUserFromContext(), vf);
-            uvfService.deleteUserVolunteerFunction(uvf);
-        }
-        return "redirect:/main/" + vf.getEvent().getEventID();
     }
 
     @PostMapping("/volunteerFunction/{volunteerFunctionID}/edit")
@@ -220,59 +179,7 @@ public class EventController {
         volunteerFunction.setTimeFinish(timeFinish);
         volunteerFunction.setNumberNeeded(numberNeeded);
         vfs.updateVolunteerFunctionInformation(volunteerFunction);
+        LOG.info(String.format("User \"%s\" edits information of the volunteerFunction [%s]", Utils.getUserFromContext().getLogin(), volunteerFunction));
         return "redirect:/volunteerFunction/" + volunteerFunctionID;
-    }
-
-    @PreAuthorize("hasAuthority('COORDINATOR')")
-    @GetMapping("/main/{eventID}/volunteers")
-    public String getListOfVolunteers(@PathVariable int eventID, Model model) {
-        Event currentEvent = eventService.getEventByID(eventID);
-        User user = Utils.getUserFromContext();
-        List<UserVolunteerFunction> registeredUsers = userVolunteerFunctionService
-                .getAllVolunteersOfEvent(currentEvent);
-        model.addAttribute("registeredUsers", registeredUsers);
-        if (user != null && currentEvent.getCoordinator() != null)
-            model.addAttribute("showButtons", user.getLogin().equals(currentEvent.getCoordinator().getLogin()));
-        else
-            model.addAttribute("showButtons", false);
-
-        LocalDateTime timeNow = LocalDateTime.now();
-        model.addAttribute("timeNow", timeNow);
-        model.addAttribute("eventLink", "/main/" + eventID);
-
-        return "volunteersForEvent";
-    }
-
-    @PreAuthorize("hasAuthority('COORDINATOR')")
-    @PostMapping("/main/{eventID}/volunteers")
-    public String changeVolunteerStatus(@PathVariable int eventID,
-            @RequestParam(value = "newStatus", required = true) String newStatus,
-            @RequestParam(value = "userVolunteerFunctionID", required = true) String userVolunteerFunctionId,
-            @RequestParam(value = "estimation", required = false) String estimation,
-            @RequestParam(value = "numberOfHours", required = false) String numberOfHours) {
-
-        UserVolunteerFunction uvf = userVolunteerFunctionService
-                .getUserVolunteerFunctionByID(Integer.parseInt(userVolunteerFunctionId));
-
-        switch (newStatus) {
-        case "Accept":
-            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.APPROVED);
-            break;
-        case "Reject":
-            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.DENIED);
-            break;
-        case "WasAbsent":
-            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.ABSENT);
-            break;
-        case "Participated":
-            userVolunteerFunctionService.setStatus(uvf, UserVolunteerFunctionStatusEnum.PARTICIPATED);
-            userVolunteerFunctionService.setEstimation(uvf, Integer.parseInt(numberOfHours),
-                    Integer.parseInt(estimation));
-            break;
-        default:
-            LOG.info("no status changed");
-            break;
-        }
-        return "redirect:/main/" + eventID + "/volunteers";
     }
 }

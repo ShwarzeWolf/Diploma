@@ -137,15 +137,15 @@ public class Event {
     public void setDateStart(String dateStart) {
         this.dateStart = LocalDateTime.parse(dateStart, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
     }
-    
+
     public LocalDateTime getDateFinish() {
         return dateFinish;
     }
-    
+
     public void setDateFinish(LocalDateTime dateFinish) {
         this.dateFinish = dateFinish;
     }
-    
+
     public void setDateFinish(String dateFinish) {
         this.dateFinish = LocalDateTime.parse(dateFinish, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
     }
@@ -158,7 +158,7 @@ public class Event {
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
         this.status = eventStatusRepository.getStatusByEnum(statusEnum);
     }
-    
+
     public String getMessage() {
         return message;
     }
@@ -173,7 +173,9 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("(Event) %d: by [%s]%s; %s; %s - %s; %s; %s", eventID, organiser, name, description,
-                dateStart, dateFinish, status, message);
+        return String.format(
+                "(Event %d) \"%s\"; organised by \"%s\", coordinated by \"%s\"; %s; %s - %s; %s; message(%s)", eventID,
+                name, organiser.getLogin(), coordinator == null ? "null" : coordinator.getLogin(),
+                description.replace("\r", "\\r").replace("\n", "\\n"), dateStart, dateFinish, status, message);
     }
 }

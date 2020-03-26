@@ -81,27 +81,6 @@
 		</tr>
 	</table>
 
-	<h2>Candidates:</h2>
-	<table class="table table-striped">
-		<tr>
-			<td scope="col">Name</td>
-			<td scope="col">Status</td>
-		</tr>
-		<tr th:each="uvf : ${userVolunteerFunctions}">
-			<td th:text="${uvf.getUser().getName()}" />
-			<td th:text="${uvf.getStatus().getName()}" />
-		</tr>
-	</table>
-
-	<div th:if="${showButton != 'none'}">
-		<form method="POST">
-			<input type="hidden" name="volunteerFunctionID" value="${volunteerFunction.getVolunteerFunctionID()}">
-			<button type="submit" th:if="${showButton == 'signup'}" name="action" value="signup" class="btn">Sign me
-				up!</button>
-			<button type="submit" th:if="${showButton == 'abandon'}" name="action" value="abandon" class="btn">Abandon
-				the function</button>
-		</form>
-	</div>
 	<div
 		th:if="${user != null && ((volunteerFunction.getEvent().getOrganiser().getLogin() == user.getLogin() && volunteerFunction.getEvent().getStatus().getName() == 'UNCHECKED') || (volunteerFunction.getEvent().getCoordinator() != null && volunteerFunction.getEvent().getCoordinator().getLogin() == user.getLogin()))}">
 		<script>

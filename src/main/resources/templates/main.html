@@ -31,7 +31,7 @@
                     <a  class="nav-link" th:href="@{/addEvent}">Add event</a>
                 </a>
 
-                <a class="nav-item" th:if="${roleName != null && (roleName =='COORDINATOR' || roleName == 'VOLUNTEER' || roleName =='ORGANISER')}">
+                <a class="nav-item" th:if="${roleName != null && (roleName =='COORDINATOR' || roleName =='ORGANISER')}">
                     <a class="nav-link" th:href="@{/listOfMyEvents}" >Pool of my events</a>
                 </a>
 
@@ -63,7 +63,7 @@
     </nav>
 
 
-    <h2>List of events to sign up</h2>
+    <h2>List of currently uploaded events</h2>
     <div th:if="${events != null && events.size() > 0}" class="table">
         <table class="table">
             <thead>
