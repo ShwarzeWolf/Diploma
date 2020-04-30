@@ -44,34 +44,7 @@ public class EventController {
         return "redirect:/main";
     }
 
-    @GetMapping({ "/main", "/" })
-    public String eventsList(Authentication auth, HttpServletRequest request, Model model) {
-        List<Event> eventsList = eventService.getEventsForVolunteers();
-        model.addAttribute("events", eventsList);
-        User user = Utils.getUserFromContext();
-        model.addAttribute("roleName", user != null ? user.getUserRole().getName() : "ROLE_ANONYMOUS");
-        if (user != null) {
-            String str = new String(user.getName() + " : " + user.getUserRole().getName());
-            model.addAttribute("name_and_role", str);
-        }
-        return "main";
-    }
 
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'ORGANISER')")
-    @GetMapping("/listOfMyEvents")
-    public String myEventPool(Model model) {
-        User user = Utils.getUserFromContext();
-        if (user.getUserRole().getName().equals("COORDINATOR")) {
-            model.addAttribute("currentEvents", eventService.getActiveEventsCoordinatedBy(user));
-            model.addAttribute("expiredEvents", eventService.getExpiredEventsCoordinatedBy(user));
-            model.addAttribute("advanced", true);
-        } else if (user.getUserRole().getName().equals("ORGANISER")) {
-            model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
-            model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
-            model.addAttribute("advanced", true);
-        }
-        return "myEventPool";
-    }
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER', 'ADMIN')")
     @GetMapping("/listOfEventsToManage")

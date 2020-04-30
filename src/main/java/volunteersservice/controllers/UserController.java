@@ -20,13 +20,14 @@ public class UserController {
     private final UserService users = ServiceFactory.getUserService();
 
     @PostMapping("/registration")
-    public String addNewUser(@RequestParam String email,
-                             @RequestParam String name,
-                             @RequestParam String login,
-                             @RequestParam String password,
-                             @RequestParam String userRole) {
+    public String addNewOrganiser(@RequestParam String email,
+                                  @RequestParam String name,
+                                  @RequestParam String surname,
+                                  @RequestParam String login,
+                                  @RequestParam String password) {
         User currentUser = Utils.getUserFromContext();
-        if (users.addUser(email, login, name, password, UserRoleEnum.valueOf(userRole))) {
+
+        if (users.addUser(email, login, name, surname, password, UserRoleEnum.ORGANISER)) {
             LOG.info(String.format("User \"%s\" registered okay (user in context: %s)", login, currentUser == null ? "null" : currentUser.getLogin()));
             return "login";
         } else {
@@ -41,6 +42,18 @@ public class UserController {
         model.addAttribute("roleName",
                 Utils.getUserFromContext() == null ? null : Utils.getUserFromContext().getUserRole().getName());
         return "registration";
+    }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("loginError", false);
+        return "login";
+    }
+
+    @GetMapping("/login-error")
+    public String loginError(Model model) {
+        model.addAttribute("loginError", true);
+        return "login";
     }
 
     @GetMapping("/personal_account")

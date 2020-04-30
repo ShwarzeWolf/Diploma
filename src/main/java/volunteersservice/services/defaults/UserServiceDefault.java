@@ -44,10 +44,15 @@ public class UserServiceDefault implements UserService {
 	}
 
 	@Override
-	public boolean addUser(String email, String login, String userName, String password,
-			UserRoleEnum roleEnum) {
+	public boolean addUser(String email,
+						   String login,
+						   String userName,
+						   String surname,
+						   String password,
+						   UserRoleEnum roleEnum) {
+
 		UserRole userRole = ServiceFactory.getUserRoleService().getRoleByEnum(roleEnum);
-		return userRepository.save(new User(email, login, userName, LocalDateTime.now(), password, userRole));
+		return userRepository.save(new User(email, login, userName, surname, LocalDateTime.now(), password, userRole));
 	}
 
 	@Override

@@ -27,6 +27,11 @@ public class User {
     @NotEmpty(message = "Name cannot be empty")
     private String name;
 
+    @Column(name = "Surname", nullable = false)
+    @NotNull
+    @NotEmpty(message = "Surame cannot be empty")
+    private String surname;
+
     @Column(name = "Email", nullable = false, unique = true)
     @NotNull
     @NotEmpty(message = "Email cannot be empty")
@@ -57,6 +62,7 @@ public class User {
         this.userID = other.userID;
         this.login = other.login;
         this.name = other.name;
+        this.surname = other.surname;
         this.email = other.email;
         this.registerDate = other.registerDate;
         this.hash1 = other.hash1;
@@ -64,11 +70,12 @@ public class User {
         this.userRole = other.userRole;
     }
 
-    public User(String email, String login, String userName, LocalDateTime registerDate, String password,
+    public User(String email, String login, String userName, String surname, LocalDateTime registerDate, String password,
             UserRole userRole) {
         this.email = email;
         this.login = login;
         this.name = userName;
+        this.surname = surname;
         this.registerDate = registerDate;
         this.hash1 = Utils.calcSHA256(password);
         this.hash2 = Utils.calcMD5(password);
@@ -86,6 +93,8 @@ public class User {
     public String getName() {
         return name;
     }
+
+    public String getSurname() {return surname; }
 
     public String getEmail() {
         return email;
@@ -117,7 +126,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("(User %d): %s; %s; %s; %s + %s; %s %s", userID, email, login, name, hash1, hash2,
+        return String.format("(User %d): %s; %s; %s; %s; %s + %s; %s %s", userID, email, login, name, surname,  hash1, hash2,
                 registerDate, userRole);
     }
 }
