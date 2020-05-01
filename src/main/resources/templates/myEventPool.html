@@ -77,7 +77,7 @@
                     <td th:text="${event.getDateFinish()}" />
                     <td th:text="${event.getStatus().getName()}" />
                     <td th:text="${event.getMessage()}" />
-                    <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
+                    <td><a th:href="@{'/events/' + ${(event.getEventID())}}">view event</a></td>
                 </tr>
             </tbody>
         </table>

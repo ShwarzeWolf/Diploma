@@ -49,24 +49,82 @@ public class EventController {
                            @RequestParam String description,
                            @RequestParam String dateStart,
                            @RequestParam String dateFinish) {
+
         Event ev = eventService.addEvent(name, Utils.getUserFromContext(), description, place, dateStart, dateFinish);
         LOG.info(String.format("User \"%s\" added event %s", Utils.getUserFromContext().getLogin(), ev));
-
         return "redirect:/events/" + ev.getEventID();
     }
 
+    @PreAuthorize("hasAuthority('ORGANISER')")
     @GetMapping("/events/{eventID}")
     public String getEventByID(@PathVariable int eventID,
                                Model model) {
+
         Event currentEvent = eventService.getEventByID(eventID);
         User user = Utils.getUserFromContext();
-        model.addAttribute("roleName", user != null ? user.getUserRole().getName() : "ROLE_ANONYMOUS");
+
+        model.addAttribute("roleName", user.getUserRole().getName());
         model.addAttribute("event", currentEvent);
         model.addAttribute("user", Utils.getUserFromContext());
+
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
         model.addAttribute("volunteerFunctions", vfs.getVolunteerFunctions(currentEvent));
+
         return "currentEvent";
     }
+
+    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @GetMapping("/events/{eventID}/edit")
+    public String editEventPage(@PathVariable int eventID,
+                                Model model){
+
+        Event currentEvent = eventService.getEventByID(eventID);
+        User user = Utils.getUserFromContext();
+
+        model.addAttribute("roleName", user.getUserRole().getName());
+        model.addAttribute("event", currentEvent);
+        model.addAttribute("user", Utils.getUserFromContext());
+
+        return "editEvent";
+    };
+
+
+    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PostMapping("/events/{eventID}/edit")
+    public String editEvent(@PathVariable int eventID,
+                            Model model,
+                            @RequestParam String name,
+                            @RequestParam String description,
+                            @RequestParam String place,
+                            @RequestParam String dateStart,
+                            @RequestParam String dateFinish) {
+        Event event = eventService.getEventByID(eventID);
+
+        event.setName(name);
+        event.setDescription(description);
+        event.setPlace(place);
+        event.setDateStart(dateStart);
+        event.setDateFinish(dateFinish);
+
+        eventService.updateEventInformation(event);
+
+        LOG.info(String.format("User \"%s\" edits information of the event [%s]", Utils.getUserFromContext().getLogin(), event));
+        return "redirect:/events/" + eventID;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER')")
     @PostMapping("/main/{eventID}/setEventStatus")
@@ -99,23 +157,7 @@ public class EventController {
     }
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'ORGANISER')")
-    @PostMapping("/main/{eventID}/edit")
-    public String editEvent(@PathVariable int eventID, Model model, @RequestParam String name,
-            @RequestParam String description, @RequestParam String place, @RequestParam String dateStart,
-            @RequestParam String dateFinish) {
-        Event event = eventService.getEventByID(eventID);
-        event.setName(name);
-        event.setDescription(description);
-        event.setPlace(place);
-        event.setDateStart(dateStart);
-        event.setDateFinish(dateFinish);
-        eventService.updateEventInformation(event);
-        LOG.info(String.format("User \"%s\" edits information of the event [%s]", Utils.getUserFromContext().getLogin(), event));
-        return "redirect:/main/" + eventID;
-    }
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'ORGANISER')")
-    @PostMapping("/main/{eventID}")
+    @PostMapping("/events/{eventID}")
     public String addVolunteerFunction(@PathVariable int eventID, @RequestParam String name,
             @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
             @RequestParam String timeFinish, @RequestParam int numberNeeded) {
