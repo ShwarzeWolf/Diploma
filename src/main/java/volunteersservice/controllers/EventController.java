@@ -1,12 +1,7 @@
 package volunteersservice.controllers;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -113,7 +108,63 @@ public class EventController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PostMapping("/events/{eventID}")
+    public String addVolunteerFunction(@PathVariable int eventID,
+                                       @RequestParam String name,
+                                       @RequestParam String description,
+                                       @RequestParam String requirements,
+                                       @RequestParam String timeStart,
+                                       @RequestParam String timeFinish,
+                                       @RequestParam int numberNeeded) {
+        Event currentEvent = eventService.getEventByID(eventID);
 
+        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
+        VolunteerFunction vf = vfs.addVolunteerFunction(currentEvent, name, description, requirements, timeStart, timeFinish, numberNeeded);
+
+        LOG.info(String.format("User \"%s\" adds volunteer function [%s] for event [%s]", Utils.getUserFromContext().getLogin(), vf, currentEvent));
+        return "redirect:/events/" + eventID;
+    }
+
+
+    @GetMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
+    public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
+                                       @PathVariable int eventID,
+                                       Model model) {
+        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
+        VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
+
+        model.addAttribute("volunteerFunction", volunteerFunction);
+        model.addAttribute("user", Utils.getUserFromContext());
+
+        return "editVolunteerFunction";
+    }
+
+    @PostMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
+    public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
+                                        @PathVariable int eventID,
+                                        Model model,
+                                        @RequestParam String name,
+                                        @RequestParam String description,
+                                        @RequestParam String requirements,
+                                        @RequestParam String timeStart,
+                                        @RequestParam String timeFinish,
+                                        @RequestParam int numberNeeded) {
+        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
+        VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
+
+        volunteerFunction.setName(name);
+        volunteerFunction.setDescription(description);
+        volunteerFunction.setRequirements(requirements);
+        volunteerFunction.setTimeStart(timeStart);
+        volunteerFunction.setTimeFinish(timeFinish);
+        volunteerFunction.setNumberNeeded(numberNeeded);
+
+        vfs.updateVolunteerFunctionInformation(volunteerFunction);
+
+        LOG.info(String.format("User \"%s\" edits information of the volunteerFunction [%s]", Utils.getUserFromContext().getLogin(), volunteerFunction));
+        return "redirect:/events/" + eventID;
+    }
 
 
 
@@ -127,7 +178,7 @@ public class EventController {
 
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER')")
-    @PostMapping("/main/{eventID}/setEventStatus")
+    @PostMapping("/events/{eventID}/setEventStatus")
     public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus,
             @RequestParam(required = false) String message) {
         Event event = eventService.getEventByID(eventID);
@@ -139,7 +190,7 @@ public class EventController {
     }
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
-    @PostMapping("/main/{eventID}/coordinate")
+    @PostMapping("/events/{eventID}/coordinate")
     public String coordinateEvent(@PathVariable int eventID,
             @RequestParam(required = false, defaultValue = "false") boolean drop) {
         User user = Utils.getUserFromContext();
@@ -154,44 +205,6 @@ public class EventController {
             eventService.setStatus(event, EventStatusEnum.APPROVED);
         }
         return "redirect:/main/" + eventID;
-    }
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'ORGANISER')")
-    @PostMapping("/events/{eventID}")
-    public String addVolunteerFunction(@PathVariable int eventID, @RequestParam String name,
-            @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
-            @RequestParam String timeFinish, @RequestParam int numberNeeded) {
-        Event currentEvent = eventService.getEventByID(eventID);
-        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
-        VolunteerFunction vf = vfs.addVolunteerFunction(currentEvent, name, description, requirements, timeStart, timeFinish, numberNeeded);
-        LOG.info(String.format("User \"%s\" adds volunteer function [%s] for event [%s]", Utils.getUserFromContext().getLogin(), vf, currentEvent));
-        return "redirect:/main/" + eventID;
-    }
-
-    @GetMapping("/volunteerFunction/{volunteerFunctionID}")
-    public String getVolunteerFunction(@PathVariable int volunteerFunctionID, Model model) {
-        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
-        VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
-        model.addAttribute("volunteerFunction", volunteerFunction);
-        model.addAttribute("user", Utils.getUserFromContext());
-        return "currentVolunteerFunction";
-    }
-
-    @PostMapping("/volunteerFunction/{volunteerFunctionID}/edit")
-    public String editVolunteerFunction(@PathVariable int volunteerFunctionID, Model model, @RequestParam String name,
-            @RequestParam String description, @RequestParam String requirements, @RequestParam String timeStart,
-            @RequestParam String timeFinish, @RequestParam int numberNeeded) {
-        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
-        VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
-        volunteerFunction.setName(name);
-        volunteerFunction.setDescription(description);
-        volunteerFunction.setRequirements(requirements);
-        volunteerFunction.setTimeStart(timeStart);
-        volunteerFunction.setTimeFinish(timeFinish);
-        volunteerFunction.setNumberNeeded(numberNeeded);
-        vfs.updateVolunteerFunctionInformation(volunteerFunction);
-        LOG.info(String.format("User \"%s\" edits information of the volunteerFunction [%s]", Utils.getUserFromContext().getLogin(), volunteerFunction));
-        return "redirect:/volunteerFunction/" + volunteerFunctionID;
     }
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER', 'ADMIN')")
