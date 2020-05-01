@@ -11,16 +11,16 @@
       <Owner>postgres</Owner>
       <IntrospectionStateNumber>1563</IntrospectionStateNumber>
       <Current>1</Current>
-      <Relations>sequence|table|49908|49910|1
+      <Relations>sequence|table|16769|16771|1
+sequence|table|16803|16805|1
+sequence|table|16777|16779|1
+sequence|table|16790|16792|1
 sequence|table|41393|41395|1
 sequence|table|49848|49850|1
 sequence|table|49856|49858|1
+sequence|table|49908|49910|1
 sequence|table|49873|49875|1
 sequence|table|49881|49883|1
-sequence|table|16803|16805|1
-sequence|table|16769|16771|1
-sequence|table|16777|16779|1
-sequence|table|16790|16792|1
 </Relations>
     </database>
     <role id="3" parent="1" name="java">

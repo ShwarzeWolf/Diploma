@@ -32,36 +32,32 @@ public class EventController {
     @PreAuthorize("hasAuthority('ORGANISER')")
     @GetMapping("/addEvent")
     public String addEventPage(Model model) {
+        User user = Utils.getUserFromContext();
+
+        String name = user.getName().concat(" ").concat(user.getSurname());
+        String role = user.getUserRole().getName();
+
+        model.addAttribute("name_and_role", name.concat(":").concat(role));
+
         return "addEventForm";
     }
 
     @PreAuthorize("hasAuthority('ORGANISER')")
     @PostMapping("/addEvent")
-    public String addEvent(@RequestParam String name, @RequestParam String place, @RequestParam String description,
-            @RequestParam String dateStart, @RequestParam String dateFinish) {
+    public String addEvent(@RequestParam String name,
+                           @RequestParam String place,
+                           @RequestParam String description,
+                           @RequestParam String dateStart,
+                           @RequestParam String dateFinish) {
         Event ev = eventService.addEvent(name, Utils.getUserFromContext(), description, place, dateStart, dateFinish);
         LOG.info(String.format("User \"%s\" added event %s", Utils.getUserFromContext().getLogin(), ev));
-        return "redirect:/main";
+
+        return "redirect:/events/" + ev.getEventID();
     }
 
-
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER', 'ADMIN')")
-    @GetMapping("/listOfEventsToManage")
-    public String poolEventsToManage(Model model) {
-        User user = Utils.getUserFromContext();
-        model.addAttribute("advanced", true);
-        if (user.getUserRole().getName().equals("COORDINATOR"))
-            model.addAttribute("events", eventService.getEventsForCoordinators());
-        else if (user.getUserRole().getName().equals("MANAGER"))
-            model.addAttribute("events", eventService.getEventsForManagers());
-        else if (user.getUserRole().getName().equals("ADMIN"))
-            model.addAttribute("events", eventService.getAllEvents());
-        return "poolEventsToManage";
-    }
-
-    @GetMapping("/main/{eventID}")
-    public String getEventByID(@PathVariable int eventID, Model model) {
+    @GetMapping("/events/{eventID}")
+    public String getEventByID(@PathVariable int eventID,
+                               Model model) {
         Event currentEvent = eventService.getEventByID(eventID);
         User user = Utils.getUserFromContext();
         model.addAttribute("roleName", user != null ? user.getUserRole().getName() : "ROLE_ANONYMOUS");
@@ -154,5 +150,19 @@ public class EventController {
         vfs.updateVolunteerFunctionInformation(volunteerFunction);
         LOG.info(String.format("User \"%s\" edits information of the volunteerFunction [%s]", Utils.getUserFromContext().getLogin(), volunteerFunction));
         return "redirect:/volunteerFunction/" + volunteerFunctionID;
+    }
+
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER', 'ADMIN')")
+    @GetMapping("/listOfEventsToManage")
+    public String poolEventsToManage(Model model) {
+        User user = Utils.getUserFromContext();
+        model.addAttribute("advanced", true);
+        if (user.getUserRole().getName().equals("COORDINATOR"))
+            model.addAttribute("events", eventService.getEventsForCoordinators());
+        else if (user.getUserRole().getName().equals("MANAGER"))
+            model.addAttribute("events", eventService.getEventsForManagers());
+        else if (user.getUserRole().getName().equals("ADMIN"))
+            model.addAttribute("events", eventService.getAllEvents());
+        return "poolEventsToManage";
     }
 }

@@ -15,19 +15,18 @@ public class MainController {
     private final static Logger LOG = Logger.getLogger(EventController.class);
     private final EventService eventService = ServiceFactory.getEventService();
 
-    @GetMapping("/main")
+    @GetMapping({"/main", "/"})
     public String mainPage() {
         return "main";
     }
 
 
     @PreAuthorize("hasAnyAuthority('ORGANISER')")
-    @GetMapping({"/listOfMyEvents", "/"})
+    @GetMapping("/events")
     public String myEventPool(Model model) {
         User user = Utils.getUserFromContext();
 
-        String str = new String(user.getName() + " : " + user.getUserRole().getName());
-        model.addAttribute("name_and_role", str);
+        model.addAttribute("name", user.getName() + " " + user.getSurname());
 
         model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
         model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
