@@ -11,16 +11,14 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header" sec:authorize="isAuthenticated()">
         <div class="collapse navbar-collapse">
             <div class="navbar-nav">
-                <a class="nav-link" th:href="@{/main}">Main page</a>
+                <a class="nav-link" th:href="@{/events}">My events</a>
             </div>
         </div>
-
         <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-            <!-- The "sign out" block must be the last among the elements of the current block -->
-            <div class="nav-item" sec:authorize="isAuthenticated()">
+            <div class="nav-item">
                 <form class="nav-item" th:action="@{/logout}" method="post">
                     <input class="btn btn-secondary" type="submit" value="Sign Out" />
                 </form>
