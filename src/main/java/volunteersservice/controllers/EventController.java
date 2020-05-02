@@ -123,6 +123,7 @@ public class EventController {
         VolunteerFunction vf = vfs.addVolunteerFunction(currentEvent, name, description, requirements, timeStart, timeFinish, numberNeeded);
 
         LOG.info(String.format("User \"%s\" adds volunteer function [%s] for event [%s]", Utils.getUserFromContext().getLogin(), vf, currentEvent));
+
         return "redirect:/events/" + eventID;
     }
 
@@ -166,27 +167,19 @@ public class EventController {
         return "redirect:/events/" + eventID;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER')")
     @PostMapping("/events/{eventID}/setEventStatus")
-    public String setEventStatus(@PathVariable int eventID, @RequestParam String changeStatus,
-            @RequestParam(required = false) String message) {
+    public String setEventStatus(@PathVariable int eventID,
+                                 @RequestParam String changeStatus,
+                                 @RequestParam(required = false) String message) {
         Event event = eventService.getEventByID(eventID);
-        LOG.info(String.format("User \"%s\" changes event [%s] status: \"%s\" -> \"%s\"", Utils.getUserFromContext().getLogin(), event, event.getStatus().getName(), changeStatus));
         eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
-        if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
-            eventService.setMessage(event, message);
-        return "redirect:/main/" + eventID;
+
+      //  if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
+        //    eventService.setMessage(event, message);
+
+        LOG.info(String.format("User \"%s\" changes event [%s] status: \"%s\" -> \"%s\"", Utils.getUserFromContext().getLogin(), event, event.getStatus().getName(), changeStatus));
+        return "redirect:/events/";
     }
 
     @PreAuthorize("hasAuthority('COORDINATOR')")

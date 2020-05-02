@@ -65,8 +65,8 @@
                     <th scope="col">Date start</th>
                     <th scope="col">Date finish</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Message</th>
                     <th scope="col">View</th>
+                    <th scope="col">Available actions</th>
                 </tr>
             </thead>
 
@@ -76,8 +76,14 @@
                     <td th:text="${event.getDateStart()}" />
                     <td th:text="${event.getDateFinish()}" />
                     <td th:text="${event.getStatus().getName()}" />
-                    <td th:text="${event.getMessage()}" />
                     <td><a th:href="@{'/events/' + ${(event.getEventID())}}">view event</a></td>
+                    <td>
+                        <div th:if="${event.getStatus().getName() == 'CREATED'}">
+                            <form th:action="${'/events/' + event.getEventID() + '/setEventStatus'}" method="post">
+                                <button type="submit" name="changeStatus" value="UNCHECKED" class="btn btn-outline-success">Отправить заявку</button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -95,8 +101,8 @@
                     <th scope="col">Date start</th>
                     <th scope="col">Date finish</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Message</th>
                     <th scope="col">View</th>
+                    <th scope="col">Available Actions</th>
                 </tr>
             </thead>
 
