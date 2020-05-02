@@ -128,15 +128,22 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
-    public Event addEvent(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish,
-            List<VolunteerFunction> volunteerFunctions) {
+    public Event addEvent(String name,
+                          User organiser,
+                          String description,
+                          String place,
+                          LocalDateTime dateStart,
+                          LocalDateTime dateFinish,
+                          List<VolunteerFunction> volunteerFunctions) {
         if (dateStart.isAfter(dateFinish))
             throw new EventCreationException("Start date-time is after finish date-time");
+
         if (dateStart.isBefore(LocalDateTime.now().plusHours(24)))
             throw new EventCreationException("You cannot create event which starts in less than 24 hours");
 
         Event event = new Event(name, organiser, description, place, dateStart, dateFinish);
         eventRepository.save(event);
+
         if (volunteerFunctions != null) {
             VolunteerFunctionService volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
             for (VolunteerFunction r : volunteerFunctions) {
@@ -144,6 +151,7 @@ public class EventServiceDefault implements EventService {
                 volunteerFunctionService.addVolunteerFunction(r);
             }
         }
+
         return event;
     }
 
@@ -153,10 +161,16 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
-    public Event addEvent(String name, User organiser, String description, String place, String dateStart, String dateFinish,
-            List<VolunteerFunction> volunteerFunctions) {
+    public Event addEvent(String name,
+                          User organiser,
+                          String description,
+                          String place,
+                          String dateStart,
+                          String dateFinish,
+                          List<VolunteerFunction> volunteerFunctions) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime start, finish;
+
         try {
             start = LocalDateTime.parse(dateStart, formatter);
             finish = LocalDateTime.parse(dateFinish, formatter);

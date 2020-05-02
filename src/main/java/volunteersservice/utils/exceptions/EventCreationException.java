@@ -10,9 +10,11 @@ public class EventCreationException extends VolunteersServiceException {
 
 	public EventCreationException(Exception ex) {
 		super(ex);
+		initCause(ex);
 	}
 
 	public EventCreationException(String message, Exception ex) {
 		super(message, ex);
+		initCause(ex);
 	}
 }

@@ -82,7 +82,7 @@ public class Event {
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
-        this.status = eventStatusRepository.getStatusByEnum(EventStatusEnum.UNCHECKED);
+        this.status = eventStatusRepository.getStatusByEnum(EventStatusEnum.CREATED);
         this.message = "";
     }
 
