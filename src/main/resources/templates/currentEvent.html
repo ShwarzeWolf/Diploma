@@ -33,7 +33,9 @@
 
     <h2 th:text="${event.getName()}"></h2>
 
-    <button id="editEventButton" class="btn"> <a th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}">Edit main event info</a></button>
+    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED')}">
+        <button id="editEventButton" class="btn"> <a th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}">Edit main event info</a></button>
+    </div>
 
     <table class="table table-bordered">
         <tr>
@@ -68,7 +70,9 @@
                     <th scope="col">Requirements</th>
                     <th scope="col">Time</th>
                     <th scope="col">NumberOfVolunteers</th>
+                    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED')}">
                     <th scope="col">Link</th>
+                    </div>
                 </tr>
             </thead>
             <tr th:each="volunteerFunction : ${volunteerFunctions}">
@@ -78,22 +82,19 @@
                 <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span
                         th:text="${volunteerFunction.getTimeFinish()}" /></td>
                 <td th:text="${volunteerFunction.getNumberNeeded()}" />
+                <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED')}">
                 <td><a th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}">
                     Edit Volunteer Function</a></td>
+                </div>
             </tr>
         </table>
     </div>
 
-    <div
-            th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'UNCHECKED') || (event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin())}">
+    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED')}">
         <script>
             function showAdd() {
                 document.getElementById("addVolunteerFunctionForm").style.display = "block"
                 document.getElementById("addVolunteerFunctionButton").style.display = "none"
-            }
-            function showEdit() {
-                document.getElementById("editEventForm").style.display = "block"
-                document.getElementById("editEventButton").style.display = "none"
             }
         </script>
         <button id="addVolunteerFunctionButton" onclick="showAdd()" class="btn">Add volunteer function</button>
@@ -133,8 +134,10 @@
             </table>
         </form>
         <br>
-
     </div>
+
+
+
 
 
 

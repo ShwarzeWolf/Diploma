@@ -76,11 +76,15 @@ public class EventController {
         Event currentEvent = eventService.getEventByID(eventID);
         User user = Utils.getUserFromContext();
 
-        model.addAttribute("roleName", user.getUserRole().getName());
-        model.addAttribute("event", currentEvent);
-        model.addAttribute("user", Utils.getUserFromContext());
+        if (currentEvent.getOrganiser().getName().equals(user.getName()) && currentEvent.getStatus().getName().equals("CREATED")) {
+            model.addAttribute("roleName", user.getUserRole().getName());
+            model.addAttribute("event", currentEvent);
+            model.addAttribute("user", Utils.getUserFromContext());
 
-        return "editEvent";
+            return "editEvent";
+        }
+
+        return "403";
     };
 
 
@@ -132,13 +136,20 @@ public class EventController {
     public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
                                        @PathVariable int eventID,
                                        Model model) {
-        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
-        VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
+        Event currentEvent = eventService.getEventByID(eventID);
+        User user = Utils.getUserFromContext();
 
-        model.addAttribute("volunteerFunction", volunteerFunction);
-        model.addAttribute("user", Utils.getUserFromContext());
+        if (currentEvent.getOrganiser().getName().equals(user.getName()) && currentEvent.getStatus().getName().equals("CREATED")) {
+            VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
+            VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
 
-        return "editVolunteerFunction";
+            model.addAttribute("volunteerFunction", volunteerFunction);
+            model.addAttribute("user", Utils.getUserFromContext());
+
+            return "editVolunteerFunction";
+        }
+
+        return "403";
     }
 
     @PostMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
@@ -173,13 +184,14 @@ public class EventController {
                                  @RequestParam String changeStatus,
                                  @RequestParam(required = false) String message) {
         Event event = eventService.getEventByID(eventID);
-        eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
 
-      //  if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
+        eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
+        LOG.info(String.format("User \"%s\" changes event [%s] status: \"%s\" -> \"%s\"", Utils.getUserFromContext().getLogin(), event, event.getStatus().getName(), changeStatus));
+
+         //  if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
         //    eventService.setMessage(event, message);
 
-        LOG.info(String.format("User \"%s\" changes event [%s] status: \"%s\" -> \"%s\"", Utils.getUserFromContext().getLogin(), event, event.getStatus().getName(), changeStatus));
-        return "redirect:/events/";
+         return "redirect:/events/";
     }
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
