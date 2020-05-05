@@ -38,6 +38,10 @@ CREATE TABLE VolunteersService.Events (
     Place         VARCHAR(300)           NOT NULL,
     DateStart     TIMESTAMPTZ            NOT NULL,
     DateFinish    TIMESTAMPTZ            NOT NULL,
+    Requirements  VARCHAR(300)           NOT NULL DEFAULT '',
+    ClothesType   VARCHAR(300)           NOT NULL DEFAULT '',
+    Accommodation VARCHAR(300)           NOT NULL DEFAULT '',
+    Food          VARCHAR(300)           NOT NULL DEFAULT '',
     StatusID      INTEGER                NOT NULL REFERENCES VolunteersService.EventStatus(StatusID),
     Message       VARCHAR(100)           NOT NULL DEFAULT ''
 );

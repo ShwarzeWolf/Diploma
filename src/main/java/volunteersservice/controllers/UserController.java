@@ -64,7 +64,8 @@ public class UserController {
     }
 
     @PostMapping("/changePassword")
-    public String changePassword(Model model, RedirectAttributes redirectAttributes,
+    public String changePassword(Model model, 
+                                 RedirectAttributes redirectAttributes,
                                  @RequestParam String oldPassword,
                                  @RequestParam String newPassword1,
                                  @RequestParam String newPassword2) {

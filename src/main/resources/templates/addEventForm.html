@@ -37,15 +37,14 @@
     </nav>
 
     <div>
+        <div name="title">
+            <h2>Основаная информация о мероприятии</h2>
+        </div>
         <form method="post">
             <table class="table table-bordered">
                 <tr>
                     <th scope="row">Event name</td>
                     <td><input type="text" name="name" value="" maxlength="500"> </td>
-                </tr>
-                <tr>
-                    <th scope="row">Event Description</td>
-                    <td><textarea type="text" name="description" value="" maxlength="2000" cols="90"></textarea></td>
                 </tr>
                 <tr>
                     <th scope="row">Event Place</td>
@@ -58,6 +57,26 @@
                 <tr>
                     <th scope="row">End date</td>
                     <th scope="row"><input type="datetime-local" name="dateFinish" value=""></td>
+                </tr>
+                <tr>
+                    <th scope="row">Event Description</td>
+                    <td><textarea type="text" name="description" value="" maxlength="2000" cols="90"></textarea></td>
+                </tr>
+                <tr>
+                    <th scope="row">Clothes Type</td>
+                    <td><input type="text" name="clothesType" value="" maxlength="500"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Accommodation</td>
+                    <td><input type="text" name="accommodation" value="" maxlength="500"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Food</td>
+                    <td><input type="text" name="food" value="" maxlength="500"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Special requirements</td>
+                    <td><input type="text" name="requirements" value="" maxlength="500"></td>
                 </tr>
                 <tr>
                     <td><button type="submit" class="btn">Add event</button></td>

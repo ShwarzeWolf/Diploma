@@ -134,6 +134,10 @@ public class EventServiceDefault implements EventService {
                           String place,
                           LocalDateTime dateStart,
                           LocalDateTime dateFinish,
+                          String requirements,
+                          String clothesType,
+                          String accommodation,
+                          String food,
                           List<VolunteerFunction> volunteerFunctions) {
         if (dateStart.isAfter(dateFinish))
             throw new EventCreationException("Start date-time is after finish date-time");
@@ -141,7 +145,7 @@ public class EventServiceDefault implements EventService {
         if (dateStart.isBefore(LocalDateTime.now().plusHours(24)))
             throw new EventCreationException("You cannot create event which starts in less than 24 hours");
 
-        Event event = new Event(name, organiser, description, place, dateStart, dateFinish);
+        Event event = new Event(name, organiser, description, place, dateStart, dateFinish, requirements, clothesType, accommodation, food);
         eventRepository.save(event);
 
         if (volunteerFunctions != null) {
@@ -156,8 +160,17 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
-    public Event addEvent(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish) {
-        return addEvent(name, organiser, description, place, dateStart, dateFinish, null);
+    public Event addEvent(String name,
+                          User organiser,
+                          String description,
+                          String place,
+                          LocalDateTime dateStart,
+                          LocalDateTime dateFinish,
+                          String requirements,
+                          String clothesType,
+                          String accommodation,
+                          String food) {
+        return addEvent(name, organiser, description, place, dateStart, dateFinish, requirements, clothesType, accommodation, food, null);
     }
 
     @Override
@@ -167,6 +180,10 @@ public class EventServiceDefault implements EventService {
                           String place,
                           String dateStart,
                           String dateFinish,
+                          String requirements,
+                          String clothesType,
+                          String accommodation,
+                          String food,
                           List<VolunteerFunction> volunteerFunctions) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime start, finish;
@@ -178,12 +195,21 @@ public class EventServiceDefault implements EventService {
             throw new EventCreationException(ex);
         }
 
-        return addEvent(name, organiser, description, place, start, finish, volunteerFunctions);
+        return addEvent(name, organiser, description, place, start, finish, requirements, clothesType, accommodation, food, volunteerFunctions);
     }
 
     @Override
-    public Event addEvent(String name, User organiser, String description, String place, String dateStart, String dateFinish) {
-        return addEvent(name, organiser, description, place, dateStart, dateFinish, null);
+    public Event addEvent(String name,
+                          User organiser,
+                          String description,
+                          String place,
+                          String dateStart,
+                          String dateFinish,
+                          String requirements,
+                          String clothesType,
+                          String accommodation,
+                          String food) {
+        return addEvent(name, organiser, description, place, dateStart, dateFinish, requirements, clothesType, accommodation, food, null);
     }
 
     @Override

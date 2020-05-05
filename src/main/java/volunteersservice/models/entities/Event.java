@@ -51,6 +51,22 @@ public class Event {
     @NotNull
     private LocalDateTime dateFinish;
 
+    @Column(name = "Requirements", nullable = false)
+    @NotNull
+    private String requirements;
+
+    @Column(name = "ClothesType", nullable = false)
+    @NotNull
+    private String clothesType;
+
+    @Column(name = "Accommodation", nullable = false)
+    @NotNull
+    private String accommodation;
+
+    @Column(name = "Food", nullable = false)
+    @NotNull
+    private String food;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StatusID", nullable = false)
     private EventStatus status;
@@ -70,20 +86,38 @@ public class Event {
         this.place = other.place;
         this.dateStart = other.dateStart;
         this.dateFinish = other.dateFinish;
+        this.accommodation = other.accommodation;
+        this.clothesType = other.clothesType;
+        this.food = other.food;
+        this.requirements = other.requirements;
         this.status = other.status;
     }
 
-    public Event(String name, User organiser, String description, String place, LocalDateTime dateStart,
-            LocalDateTime dateFinish) {
+    public Event(String name,
+                 User organiser,
+                 String description,
+                 String place,
+                 LocalDateTime dateStart,
+                 LocalDateTime dateFinish,
+                 String requirements,
+                 String clothesType,
+                 String accommodation,
+                 String food) {
         this.name = name;
         this.organiser = organiser;
         this.description = description;
         this.place = place;
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
+        this.requirements = requirements;
+        this.clothesType = clothesType;
+        this.accommodation = accommodation;
+        this.food = food;
+        this.message = "";
+
         EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
         this.status = eventStatusRepository.getStatusByEnum(EventStatusEnum.CREATED);
-        this.message = "";
+
     }
 
     public int getEventID() {
@@ -148,6 +182,38 @@ public class Event {
 
     public void setDateFinish(String dateFinish) {
         this.dateFinish = LocalDateTime.parse(dateFinish, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+    }
+
+    public void setRequirements(String requirements){
+        this.requirements = requirements;
+    }
+
+    public String getRequirements(){
+        return this.requirements;
+    }
+
+    public void setAccommodation(String accommodation){
+        this.accommodation = accommodation;
+    }
+
+    public String getAccommodation(){
+        return this.accommodation;
+    }
+
+    public void setClothesType(String clothesType){
+        this.clothesType = clothesType;
+    }
+
+    public String getClothesType(){
+        return this.clothesType;
+    }
+
+    public void setFood(String food){
+        this.food = food;
+    }
+
+    public String getFood(){
+        return this.food;
     }
 
     public EventStatus getStatus() {

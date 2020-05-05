@@ -51,6 +51,22 @@
             <td><span th:text="${event.getDateStart()}" /> - <span th:text="${event.getDateFinish()}" /></td>
         </tr>
         <tr>
+            <th scope="row">Requirements</th>
+            <td th:text="${event.getRequirements()}" />
+        </tr>
+        <tr>
+            <th scope="row">Clothes</th>
+            <td th:text="${event.getClothesType()}" />
+        </tr>
+        <tr>
+            <th scope="row">Accommodation</th>
+            <td th:text="${event.getAccommodation()}" />
+        </tr>
+        <tr>
+            <th scope="row">Food</th>
+            <td th:text="${event.getFood()}" />
+        </tr>
+        <tr>
             <th scope="row">Organised by</th>
             <td th:text="${event.getOrganiser().getName()}" />
         </tr>

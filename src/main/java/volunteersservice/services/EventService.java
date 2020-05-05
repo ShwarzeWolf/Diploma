@@ -50,15 +50,51 @@ public interface EventService {
 	
 	public List<Event> getExpiredEventsOfOrganiser(User organiser);
 
-	public Event addEvent(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish,
-			List<VolunteerFunction> volunteerFunctions);
+	public Event addEvent(String name,
+						  User organiser,
+						  String description,
+						  String place,
+						  LocalDateTime dateStart,
+						  LocalDateTime dateFinish,
+						  String requirements,
+						  String clothesType,
+						  String accommodation,
+						  String food,
+						  List<VolunteerFunction> volunteerFunctions);
 
-	public Event addEvent(String name, User organiser, String description, String place, LocalDateTime dateStart, LocalDateTime dateFinish);
+	public Event addEvent(String name,
+						  User organiser,
+						  String description,
+						  String place,
+						  LocalDateTime dateStart,
+						  LocalDateTime dateFinish,
+						  String requirements,
+						  String clothesType,
+						  String accommodation,
+						  String food);
 
-	public Event addEvent(String name, User organiser, String description, String place, String dateStart, String dateFinish,
-			List<VolunteerFunction> volunteerFunctions);
+	public Event addEvent(String name,
+						  User organiser,
+						  String description,
+						  String place,
+						  String dateStart,
+						  String dateFinish,
+						  String requirements,
+						  String clothesType,
+						  String accommodation,
+						  String food,
+						  List<VolunteerFunction> volunteerFunctions);
 
-	public Event addEvent(String name, User organiser, String description, String place, String dateStart, String dateFinish);
+	public Event addEvent(String name,
+						  User organiser,
+						  String description,
+						  String place,
+						  String dateStart,
+						  String dateFinish,
+						  String requirements,
+						  String clothesType,
+						  String accommodation,
+						  String food);
 
 	public void setStatus(Event event, EventStatusEnum status);
 

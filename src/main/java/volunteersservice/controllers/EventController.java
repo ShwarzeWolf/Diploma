@@ -43,9 +43,14 @@ public class EventController {
                            @RequestParam String place,
                            @RequestParam String description,
                            @RequestParam String dateStart,
-                           @RequestParam String dateFinish) {
+                           @RequestParam String dateFinish,
+                           @RequestParam (defaultValue = "") String requirements,
+                           @RequestParam (defaultValue = "") String clothesType,
+                           @RequestParam (defaultValue = "") String accommodation,
+                           @RequestParam (defaultValue = "") String food) {
 
-        Event ev = eventService.addEvent(name, Utils.getUserFromContext(), description, place, dateStart, dateFinish);
+        Event ev = eventService.addEvent(name, Utils.getUserFromContext(), description, place, dateStart, dateFinish, requirements, clothesType, accommodation, food);
+
         LOG.info(String.format("User \"%s\" added event %s", Utils.getUserFromContext().getLogin(), ev));
         return "redirect:/events/" + ev.getEventID();
     }
