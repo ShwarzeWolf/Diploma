@@ -101,7 +101,11 @@ public class EventController {
                             @RequestParam String description,
                             @RequestParam String place,
                             @RequestParam String dateStart,
-                            @RequestParam String dateFinish) {
+                            @RequestParam String dateFinish,
+                            @RequestParam String requirements,
+                            @RequestParam String clothesType,
+                            @RequestParam String accommodation,
+                            @RequestParam String food) {
         Event event = eventService.getEventByID(eventID);
 
         event.setName(name);
@@ -109,6 +113,10 @@ public class EventController {
         event.setPlace(place);
         event.setDateStart(dateStart);
         event.setDateFinish(dateFinish);
+        event.setAccommodation(accommodation);
+        event.setClothesType(clothesType);
+        event.setRequirements(requirements);
+        event.setFood(food);
 
         eventService.updateEventInformation(event);
 

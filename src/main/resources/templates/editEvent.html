@@ -58,6 +58,23 @@
                 <th scope="row">End date</td>
                 <th scope="row"><input type="datetime-local" name="dateFinish" th:value="${event.getDateFinish()}"></td>
             </tr>
+
+            <tr>
+                <th scope="row">Special requirements</td>
+                <td><input type="text" name="requirements"  th:value="${event.getRequirements()}" maxlength="500"></td>
+            </tr>
+            <tr>
+                <th scope="row">Clothes Type</td>
+                <td><input type="text" name="clothesType" th:value="${event.getClothesType()}" maxlength="500"></td>
+            </tr>
+            <tr>
+                <th scope="row">Accommodation</td>
+                <td><input type="text" name="accommodation"  th:value="${event.getAccommodation()}" maxlength="500"></td>
+            </tr>
+            <tr>
+                <th scope="row">Food</td>
+                <td><input type="text" name="food"  th:value="${event.getFood()}" maxlength="500"></td>
+            </tr>
             <tr>
                 <td><button type="submit" class="btn">Submit changes</button></td>
             </tr>
