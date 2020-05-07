@@ -174,13 +174,13 @@ public class EventController {
     @PostMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
     public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
                                         @PathVariable int eventID,
-                                        Model model,
                                         @RequestParam String name,
                                         @RequestParam String description,
                                         @RequestParam String requirements,
                                         @RequestParam String timeStart,
                                         @RequestParam String timeFinish,
-                                        @RequestParam int numberNeeded) {
+                                        @RequestParam int numberNeeded,
+                                        Model model) {
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
         VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
 
@@ -213,30 +213,18 @@ public class EventController {
          return "redirect:/events/";
     }
 
-
-
-
-
-
-
-
-
     @PreAuthorize("hasAuthority('COORDINATOR')")
     @PostMapping("/events/{eventID}/coordinate")
-    public String coordinateEvent(@PathVariable int eventID,
-            @RequestParam(required = false, defaultValue = "false") boolean drop) {
+    public String coordinateEvent(@PathVariable int eventID) {
         User user = Utils.getUserFromContext();
         Event event = eventService.getEventByID(eventID);
-        if (!drop) {
-            LOG.info(String.format("Setting a coordinator for event [%s]: %s", event, user.getLogin()));
-            eventService.setCoordinator(event, user);
-            eventService.setStatus(event, EventStatusEnum.ASSIGNED);
-        } else {
-            LOG.info(String.format("Dropping a coordinator of event [%s], decided by %s", event, user.getLogin()));
-            eventService.setCoordinator(event, null);
-            eventService.setStatus(event, EventStatusEnum.APPROVED);
-        }
-        return "redirect:/main/" + eventID;
+
+        eventService.setCoordinator(event, user);
+        eventService.setStatus(event, EventStatusEnum.ASSIGNED);
+
+        LOG.info(String.format("Setting a coordinator for event [%s]: %s", event, user.getLogin()));
+
+        return "redirect:/events/" + eventID;
     }
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER', 'ADMIN')")

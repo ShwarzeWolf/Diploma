@@ -21,7 +21,6 @@ public class MainController {
         return "main";
     }
 
-
     @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR')")
     @GetMapping("/events")
     public String myEventPool(Model model) {
@@ -32,7 +31,6 @@ public class MainController {
             case "ORGANISER":
                 model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
                 model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
-                model.addAttribute("advanced", true);
 
                 return "OrganisersEventPool";
 

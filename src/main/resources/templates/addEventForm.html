@@ -36,52 +36,66 @@
         </div>
     </nav>
 
-    <div>
+    <div style="margin-left: 4%">
         <div name="title">
             <h2>Основаная информация о мероприятии</h2>
         </div>
         <form method="post">
-            <table class="table table-bordered">
-                <tr>
-                    <th scope="row">Event name</td>
-                    <td><input type="text" name="name" value="" maxlength="500"> </td>
-                </tr>
-                <tr>
-                    <th scope="row">Event Place</td>
-                    <td><input type="text" name="place" value="" maxlength="500"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Start date</td>
-                    <td><input type="datetime-local" name="dateStart" value=""></td>
-                </tr>
-                <tr>
-                    <th scope="row">End date</td>
-                    <th scope="row"><input type="datetime-local" name="dateFinish" value=""></td>
-                </tr>
-                <tr>
-                    <th scope="row">Event Description</td>
-                    <td><textarea type="text" name="description" value="" maxlength="2000" cols="90"></textarea></td>
-                </tr>
-                <tr>
-                    <th scope="row">Clothes Type</td>
-                    <td><input type="text" name="clothesType" value="" maxlength="500"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Accommodation</td>
-                    <td><input type="text" name="accommodation" value="" maxlength="500"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Food</td>
-                    <td><input type="text" name="food" value="" maxlength="500"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Special requirements</td>
-                    <td><input type="text" name="requirements" value="" maxlength="500"></td>
-                </tr>
-                <tr>
-                    <td><button type="submit" class="btn">Add event</button></td>
-                </tr>
-            </table>
+            <div class="form-group row">
+                    <label for="name" class="col-md-2 col-form-label">Название мероприятия</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="name" name="name" value="" maxlength="500">
+                    </div>
+                </div>
+            <div class="form-group row">
+                <label for="place" class="col-md-2 col-form-label">Место проведения</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="place" name="place" value="" maxlength="500">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="dateStart">Дата начала</label>
+                    <input type="datetime-local" name="dateStart" class="form-control" id="dateStart" value="" maxlength="500">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="dateFinish">Дата окончания</label>
+                    <input type="datetime-local" name="dateFinish" class="form-control" id="dateFinish" value="" maxlength="500">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="description" class="col-md-2 col-form-label">Описание</label>
+                <div class="col-md-6">
+                    <textarea class="form-control" name="description" id="description" maxlength="2000" cols="90"></textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="clothesType" class="col-md-2 col-form-label">Тип одежды</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="clothesType" name="clothesType" value="" maxlength="500">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="accommodation" class="col-md-2 col-form-label">Проживание волонтеров</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="accommodation" name="accommodation" value="" maxlength="500">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="food" class="col-md-2 col-form-label">Питание волонтеров</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="food" name="food" value="" maxlength="500">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="requirements" class="col-md-2 col-form-label">Особые требования</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" id="requirements" name="requirements" value="" maxlength="500">
+                </div>
+            </div>
+            <div class="col-md-8">
+                <button type="submit" class="btn btn-lg btn-primary btn-block ">Добавить мероприятие</button>
+            </div>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
