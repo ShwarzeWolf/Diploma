@@ -28,15 +28,9 @@
     </nav>
 
     <div id="container">
-        <div  id="container-headers" class="row" style="text-align: center">
-            <div class="col-md">Непроверенные</div>
-            <div class="col-md">Одобренные</div>
-            <div class="col-md">Координируются</div>
-            <div class="col-md">Завершенные</div>
-            <div class="col-md">Отклоненные</div>
-        </div>
         <div id="container-content" class="row">
             <div class="col-md">
+                <div style="text-align: center">Непроверенные</div>
                 <div th:each="event : ${uncheckedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
@@ -48,6 +42,7 @@
                 </div>
             </div>
             <div class="col-md">
+                <div style="text-align: center">Одобренные</div>
                 <div th:each="event : ${approvedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
@@ -59,6 +54,7 @@
                 </div>
             </div>
             <div class="col-md">
+                <div style="text-align: center">Координируются</div>
                 <div th:each="event : ${coordinatedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
@@ -70,6 +66,7 @@
                 </div>
             </div>
             <div class="col-md">
+                <div style="text-align: center">Завершенные</div>
                 <div th:each="event : ${endedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
@@ -81,6 +78,7 @@
                 </div>
             </div>
             <div class="col-md">
+                <div style="text-align: center">Отклоненные</div>
                 <div th:each="event : ${deniedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">

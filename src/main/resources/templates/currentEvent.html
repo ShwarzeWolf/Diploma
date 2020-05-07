@@ -166,7 +166,7 @@
         <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
             Optional message: <input type="text" maxlength="300" name="message" />
             <button type="submit" name="changeStatus" value="APPROVED" class="btn btn-outline-success">Approve</button>
-            <button type="submit" name="changeStatus" value="REJECTED" class="btn btn-outline-danger">Reject</button>
+            <button type="submit" name="changeStatus" value="DENIED" class="btn btn-outline-danger">Reject</button>
         </form>
     </div>
 

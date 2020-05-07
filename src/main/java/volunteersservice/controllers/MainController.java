@@ -44,7 +44,9 @@ public class MainController {
                 model.addAttribute("deniedEvents", eventService.getEventsByStatus(EventStatusEnum.DENIED));
 
                 return "poolEventsToManage";
-            default: return "403";
+
+            default:
+                return "403";
         }
     }
 }

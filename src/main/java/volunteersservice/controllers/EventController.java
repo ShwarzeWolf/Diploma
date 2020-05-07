@@ -193,7 +193,7 @@ public class EventController {
         return "redirect:/events/" + eventID;
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER')")
     @PostMapping("/events/{eventID}/setEventStatus")
     public String setEventStatus(@PathVariable int eventID,
                                  @RequestParam String changeStatus,
@@ -203,8 +203,8 @@ public class EventController {
         eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
         LOG.info(String.format("User \"%s\" changes event [%s] status: \"%s\" -> \"%s\"", Utils.getUserFromContext().getLogin(), event, event.getStatus().getName(), changeStatus));
 
-         //  if (changeStatus.equals("APPROVED") || changeStatus.equals("REJECTED"))
-        //    eventService.setMessage(event, message);
+         if (changeStatus.equals("APPROVED") || changeStatus.equals("DENIED"))
+             eventService.setMessage(event, message);
 
          return "redirect:/events/";
     }
