@@ -15,12 +15,12 @@
 sequence|table|16777|16779|1
 sequence|table|16790|16792|1
 sequence|table|16803|16805|1
-sequence|table|41393|41395|1
 sequence|table|49927|49929|1
 sequence|table|49935|49937|1
 sequence|table|49952|49954|1
 sequence|table|49960|49962|1
 sequence|table|49991|49993|1
+sequence|table|41393|41395|1
 </Relations>
     </database>
     <role id="3" parent="1" name="java">

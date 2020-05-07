@@ -29,9 +29,8 @@ public class EventController {
         User user = Utils.getUserFromContext();
 
         String name = user.getName().concat(" ").concat(user.getSurname());
-        String role = user.getUserRole().getName();
 
-        model.addAttribute("name_and_role", name.concat(":").concat(role));
+        model.addAttribute("name", name);
 
         return "addEventForm";
     }
