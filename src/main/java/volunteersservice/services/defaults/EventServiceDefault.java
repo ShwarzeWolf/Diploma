@@ -1,6 +1,5 @@
 package volunteersservice.services.defaults;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -124,8 +123,13 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
-    public List<Event> getEventsOfUserByStatus(User user, EventStatusEnum status){
-        return null;
+    public List<Event> getEventsByStatusOrganisedByUser(User user, EventStatusEnum status){
+        return eventRepository.getEventsByStatusOrganisedByUser(user, status);
+    }
+
+    @Override
+    public List<Event> getEventsByStatusCoordinatedByUser(User user, EventStatusEnum status){
+        return eventRepository.getEventsByStatusCoordinatedByUser(user, status);
     }
 
     @Override

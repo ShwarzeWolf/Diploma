@@ -64,7 +64,9 @@ public interface EventService {
 
 	public List<Event> getEventsByStatus(EventStatusEnum status);
 
-	public List<Event> getEventsOfUserByStatus(User user, EventStatusEnum status);
+	public List<Event> getEventsByStatusOrganisedByUser(User user, EventStatusEnum status);
+
+	public List<Event> getEventsByStatusCoordinatedByUser(User user, EventStatusEnum status);
 
 	public void updateEventInformation(Event event);
 

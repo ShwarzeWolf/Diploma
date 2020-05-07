@@ -29,8 +29,9 @@ public class MainController {
 
         switch (user.getUserRole().getName()) {
             case "ORGANISER":
-                //model.addAttribute("uncheckedEvents", eventService.getActiveEventsOfOrganiser(user));
-                //model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
+                model.addAttribute("uncheckedEvents", eventService.getEventsByStatusOrganisedByUser(user, EventStatusEnum.CREATED));
+                //model.addAttribute("inProcessEvents", eventService.getOrganiserActiveEvents(user));
+                //model.addAttribute("finishedEvents", eventService.getOrganiserExpiredEvents(user));
 
                 return "OrganisersEventPool";
 
@@ -38,15 +39,15 @@ public class MainController {
                 model.addAttribute("uncheckedEvents", eventService.getEventsByStatus(EventStatusEnum.UNCHECKED));
                 model.addAttribute("approvedEvents", eventService.getEventsByStatus(EventStatusEnum.APPROVED));
                 model.addAttribute("coordinatedEvents", eventService.getEventsByStatus(EventStatusEnum.ASSIGNED));
-                model.addAttribute("endedEvents", eventService.getEventsByStatus(EventStatusEnum.EXPIRED));
+                model.addAttribute("endedEvents", eventService.getEventsByStatus(EventStatusEnum.FINISHED));
                 model.addAttribute("deniedEvents", eventService.getEventsByStatus(EventStatusEnum.DENIED));
 
                 return "ManagersEventPool";
 
             case "COORDINATOR":
                 model.addAttribute("approvedEvents", eventService.getEventsByStatus(EventStatusEnum.APPROVED));
-                //model.addAttribute("coordinatedEvents", eventService.getActiveEventsCoordinatedBy(user));
-                //model.addAttribute("endedEvents", eventService.getExpiredEventsCoordinatedBy(user));
+                model.addAttribute("coordinatedEvents", eventService.getEventsByStatusCoordinatedByUser(user, EventStatusEnum.ASSIGNED ));
+                model.addAttribute("endedEvents", eventService.getEventsByStatusCoordinatedByUser(user, EventStatusEnum.FINISHED));
 
                 return "CoordinatorsEventPool";
 
