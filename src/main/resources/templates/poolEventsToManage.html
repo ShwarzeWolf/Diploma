@@ -27,35 +27,36 @@
         </div>
     </nav>
 
+    <div id="container">
+        <div  id="container-headers" class="row" style="text-align: center">
+            <div class="col-md">Непроверенные</div>
+            <div class="col-md">Одобренные</div>
+            <div class="col-md">Координируются</div>
+            <div class="col-md">Завершенные</div>
+            <div class="col-md">Отклоненные</div>
+        </div>
+        <div id="container-content" class="row">
+            <div class="col-md">
+                <div th:each="event : ${uncheckedEvents}">
+                    <div class="card" style="margin-bottom: 5%">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${event.getName()}"/>
+                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
 
-    <div th:if="${uncheckedEvents != null && uncheckedEvents.size() != 0}" class="eventsList">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Date start</th>
-                <th scope="col">Date finish</th>
-                <th scope="col">Status</th>
-                <th scope="col">Message</th>
-                <th scope="col">View</th>
-            </tr>
-            </thead>
-
-            <tbody>
-                <tr th:each="event : ${uncheckedEvents}">
-                    <td th:text="${event.getName()}" />
-                    <td th:text="${event.getDateStart()}" />
-                    <td th:text="${event.getDateFinish()}" />
-                    <td th:text="${event.getStatus().getName()}" />
-                    <td th:text="${event.getMessage()}" />
-                    <td><a th:href="@{'/main/' + ${(event.getEventID())}}">view event</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div th:if="${uncheckedEvents == null || uncheckedEvents.size() == 0}">
-        No events to manage at the moment
+            </div>
+            <div class="col-md">
+            </div>
+            <div class="col-md">
+            </div>
+            <div class="col-md">
+            </div>
+        </div>
     </div>
 
 
