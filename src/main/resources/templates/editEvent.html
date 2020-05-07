@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title th:text="'Edit ' + ${event.getName()} + ' event'"></title>
+    <title th:text="'Редактирование мероприятия ' + ${event.getName()}"></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
@@ -14,74 +14,89 @@
     <div class="collapse navbar-collapse">
         <div class="navbar-nav">
             <a class="nav-item">
-                <a class="nav-link" th:href="@{/events}">My events</a>
-            </a>
-            <a class="nav-item">
-                <a class="nav-link" th:href="@{'/events/' + ${(event.getEventID())}}">Back to event</a>
+                <a class="nav-link" th:href="@{/events}">Мои мероприятия</a>
             </a>
         </div>
     </div>
-
     <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
         <div class="nav-item">
-            <a class="nav-link" th:href="@{/personal_account}">My profile</a>
+            <span class="navbar-text" th:text="${name}"></span>
         </div>
+
+        <div class="nav-item">
+            <a class="nav-link" th:href="@{/personal_account}">Мой профиль</a>
+        </div>
+
         <div class="nav-item">
             <form class="nav-item" th:action="@{/logout}" method="post">
-                <input class="btn btn-secondary" type="submit" value="Sign Out" />
+                <input class="btn btn-secondary" type="submit" value="Выйти из аккаунта" />
             </form>
         </div>
     </div>
 </nav>
 
-
-<div>
+<div style="margin-left: 4%">
+    <div name="title">
+        <h2>Основаная информация о мероприятии</h2>
+    </div>
     <form method="post">
-        <table class="table table-bordered">
-            <tr>
-                <th scope="row">Event name</td>
-                <td><input type="text" name="name" th:value="${event.getName()}" maxlength="500"> </td>
-            </tr>
-            <tr>
-                <th scope="row">Event Description</td>
-                <td><textarea type="text" name="description" th:text="${event.getDescription()}" maxlength="2000" cols="90"></textarea></td>
-            </tr>
-            <tr>
-                <th scope="row">Event Place</td>
-                <td><input type="text" name="place" th:value="${event.getPlace()}" maxlength="500"></td>
-            </tr>
-            <tr>
-                <th scope="row">Start date</td>
-                <td><input type="datetime-local" name="dateStart"th:value="${event.getDateStart()}"></td>
-            </tr>
-            <tr>
-                <th scope="row">End date</td>
-                <th scope="row"><input type="datetime-local" name="dateFinish" th:value="${event.getDateFinish()}"></td>
-            </tr>
-
-            <tr>
-                <th scope="row">Special requirements</td>
-                <td><input type="text" name="requirements"  th:value="${event.getRequirements()}" maxlength="500"></td>
-            </tr>
-            <tr>
-                <th scope="row">Clothes Type</td>
-                <td><input type="text" name="clothesType" th:value="${event.getClothesType()}" maxlength="500"></td>
-            </tr>
-            <tr>
-                <th scope="row">Accommodation</td>
-                <td><input type="text" name="accommodation"  th:value="${event.getAccommodation()}" maxlength="500"></td>
-            </tr>
-            <tr>
-                <th scope="row">Food</td>
-                <td><input type="text" name="food"  th:value="${event.getFood()}" maxlength="500"></td>
-            </tr>
-            <tr>
-                <td><button type="submit" class="btn">Submit changes</button></td>
-            </tr>
-        </table>
+        <div class="form-group row">
+            <label for="name" class="col-md-2 col-form-label">Название мероприятия</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="name" name="name"  th:value="${event.getName()}" maxlength="500">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="place" class="col-md-2 col-form-label">Место проведения</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="place" name="place" th:value="${event.getPlace()}" maxlength="500">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="dateStart">Дата начала</label>
+                <input type="datetime-local" name="dateStart" class="form-control" id="dateStart" th:value="${event.getDateStart()}" maxlength="500">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="dateFinish">Дата окончания</label>
+                <input type="datetime-local" name="dateFinish" class="form-control" id="dateFinish" th:value="${event.getDateFinish()}" maxlength="500">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="description" class="col-md-2 col-form-label">Описание</label>
+            <div class="col-md-6">
+                <textarea class="form-control" name="description" id="description" maxlength="2000" cols="90" th:text="${event.getDescription()}"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="clothesType" class="col-md-2 col-form-label">Тип одежды</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="clothesType" name="clothesType" th:value="${event.getClothesType()}" maxlength="500">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="accommodation" class="col-md-2 col-form-label">Проживание волонтеров</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="accommodation" name="accommodation"  th:value="${event.getAccommodation()}"  maxlength="500">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="food" class="col-md-2 col-form-label">Питание волонтеров</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="food" name="food" th:value="${event.getFood()}" maxlength="500">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="requirements" class="col-md-2 col-form-label">Особые требования</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="requirements" name="requirements" th:value="${event.getRequirements()}" maxlength="500">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <button type="submit" class="btn btn-lg btn-primary btn-block ">Сохранить изменения</button>
+        </div>
     </form>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -92,5 +107,4 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
