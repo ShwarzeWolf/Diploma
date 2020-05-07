@@ -14,87 +14,59 @@ import volunteersservice.models.enums.EventStatusEnum;
 @Service
 public interface EventService {
 
+	public Event addEvent(String name,
+						  User organiser,
+						  String description,
+						  String place,
+						  LocalDateTime dateStart,
+						  LocalDateTime dateFinish,
+						  String requirements,
+						  String clothesType,
+						  String accommodation,
+						  String food,
+						  List<VolunteerFunction> volunteerFunctions);
+
+	public Event addEvent(String name,
+						  User organiser,
+						  String description,
+						  String place,
+						  LocalDateTime dateStart,
+						  LocalDateTime dateFinish,
+						  String requirements,
+						  String clothesType,
+						  String accommodation,
+						  String food);
+
+	public Event addEvent(String name,
+						  User organiser,
+						  String description,
+						  String place,
+						  String dateStart,
+						  String dateFinish,
+						  String requirements,
+						  String clothesType,
+						  String accommodation,
+						  String food,
+						  List<VolunteerFunction> volunteerFunctions);
+
+	public Event addEvent(String name,
+						  User organiser,
+						  String description,
+						  String place,
+						  String dateStart,
+						  String dateFinish,
+						  String requirements,
+						  String clothesType,
+						  String accommodation,
+						  String food);
+
 	public Event getEventByID(int eventID);
-
-	public void deleteEvent(Event event);
-
-	public void updateEventInformation(Event event);
-
-	public List<Event> getAllEvents();
-
-	public List<Event> getActiveEvents();
 
 	public List<Event> getEventsByStatus(EventStatusEnum status);
 
-	public List<Event> getActiveEventsByStatus(EventStatusEnum status);
-	
-	public List<Event> getEventsForManagers();
-	
-	public List<Event> getEventsForCoordinators();
+	public List<Event> getEventsOfUserByStatus(User user, EventStatusEnum status);
 
-	public List<Event> getEventsForVolunteers();
-	
-	public List<Event> getActiveEventsCoordinatedBy(User coordinator);
-	
-	public List<Event> getExpiredEventsCoordinatedBy(User coordinator);
-
-	public List<Event> getActiveEventsWithVolunteer(User volunteer);
-
-	public List<Event> getExpiredEventsWithVolunteer(User volunteer);
-	
-	public List<Event> getEventsWithVolunteer(User volunteer, LocalDate dateStart, LocalDate dateFinish);
-	
-	public List<Event> getEventsWithVolunteer(User volunteer, String dateStart, String dateFinish);
-	
-	public List<Event> getActiveEventsOfOrganiser(User organiser);
-	
-	public List<Event> getExpiredEventsOfOrganiser(User organiser);
-
-	public Event addEvent(String name,
-						  User organiser,
-						  String description,
-						  String place,
-						  LocalDateTime dateStart,
-						  LocalDateTime dateFinish,
-						  String requirements,
-						  String clothesType,
-						  String accommodation,
-						  String food,
-						  List<VolunteerFunction> volunteerFunctions);
-
-	public Event addEvent(String name,
-						  User organiser,
-						  String description,
-						  String place,
-						  LocalDateTime dateStart,
-						  LocalDateTime dateFinish,
-						  String requirements,
-						  String clothesType,
-						  String accommodation,
-						  String food);
-
-	public Event addEvent(String name,
-						  User organiser,
-						  String description,
-						  String place,
-						  String dateStart,
-						  String dateFinish,
-						  String requirements,
-						  String clothesType,
-						  String accommodation,
-						  String food,
-						  List<VolunteerFunction> volunteerFunctions);
-
-	public Event addEvent(String name,
-						  User organiser,
-						  String description,
-						  String place,
-						  String dateStart,
-						  String dateFinish,
-						  String requirements,
-						  String clothesType,
-						  String accommodation,
-						  String food);
+	public void updateEventInformation(Event event);
 
 	public void setStatus(Event event, EventStatusEnum status);
 
@@ -103,4 +75,6 @@ public interface EventService {
 	public void addToMessage(Event event, String messageAddition);
 
 	public void setCoordinator(Event event, User coordinator);
+
+	public void deleteEvent(Event event);
 }

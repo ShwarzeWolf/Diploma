@@ -29,8 +29,8 @@ public class MainController {
 
         switch (user.getUserRole().getName()) {
             case "ORGANISER":
-                model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
-                model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
+                //model.addAttribute("uncheckedEvents", eventService.getActiveEventsOfOrganiser(user));
+                //model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
 
                 return "OrganisersEventPool";
 
@@ -45,8 +45,8 @@ public class MainController {
 
             case "COORDINATOR":
                 model.addAttribute("approvedEvents", eventService.getEventsByStatus(EventStatusEnum.APPROVED));
-                model.addAttribute("coordinatedEvents", eventService.getActiveEventsCoordinatedBy(user));
-                model.addAttribute("endedEvents", eventService.getExpiredEventsCoordinatedBy(user));
+                //model.addAttribute("coordinatedEvents", eventService.getActiveEventsCoordinatedBy(user));
+                //model.addAttribute("endedEvents", eventService.getExpiredEventsCoordinatedBy(user));
 
                 return "CoordinatorsEventPool";
 
