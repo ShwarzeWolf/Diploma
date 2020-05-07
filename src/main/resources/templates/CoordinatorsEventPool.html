@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Мои мероприятия</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+    <div class="collapse navbar-collapse">
+        <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <div class="nav-item">
+                <a class="nav-link" th:href="@{/personal_account}">My profile</a>
+            </div>
+
+            <div class="nav-item">
+                <form class="nav-item" th:action="@{/logout}" method="post">
+                    <input class="btn btn-secondary" type="submit" value="Sign Out" />
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div id="container">
+    <div id="container-content" class="row">
+        <div class="col-md">
+            <div style="text-align: center">Доступные для курирования</div>
+            <div th:each="event : ${approvedEvents}">
+                <div class="card" style="margin-bottom: 5%">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${event.getName()}"/>
+                        <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                        <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <div style="text-align: center">Мои мероприятия</div>
+            <div th:each="event : ${coordinatedEvents}">
+                <div class="card" style="margin-bottom: 5%">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${event.getName()}"/>
+                        <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                        <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <div style="text-align: center">Завершенные</div>
+            <div th:each="event : ${endedEvents}">
+                <div class="card" style="margin-bottom: 5%">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${event.getName()}"/>
+                        <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                        <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+</html>

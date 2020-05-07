@@ -55,7 +55,7 @@ public class EventController {
         return "redirect:/events/" + ev.getEventID();
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR')")
     @GetMapping("/events/{eventID}")
     public String getEventByID(@PathVariable int eventID,
                                Model model) {
@@ -73,7 +73,7 @@ public class EventController {
         return "currentEvent";
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
     @GetMapping("/events/{eventID}/edit")
     public String editEventPage(@PathVariable int eventID,
                                 Model model){
@@ -93,7 +93,7 @@ public class EventController {
     };
 
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
     @PostMapping("/events/{eventID}/edit")
     public String editEvent(@PathVariable int eventID,
                             Model model,
@@ -125,7 +125,7 @@ public class EventController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
     @PostMapping("/events/{eventID}")
     public String addVolunteerFunction(@PathVariable int eventID,
                                        @RequestParam String name,
@@ -145,7 +145,7 @@ public class EventController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
     @GetMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
     public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
                                        @PathVariable int eventID,
@@ -153,7 +153,8 @@ public class EventController {
         Event currentEvent = eventService.getEventByID(eventID);
         User user = Utils.getUserFromContext();
 
-        if (currentEvent.getOrganiser().getName().equals(user.getName()) && currentEvent.getStatus().getName().equals("CREATED")) {
+        if (currentEvent.getOrganiser().getName().equals(user.getName()) && currentEvent.getStatus().getName().equals("CREATED") )
+        {
             VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
             VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
 
@@ -193,7 +194,7 @@ public class EventController {
         return "redirect:/events/" + eventID;
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR')")
     @PostMapping("/events/{eventID}/setEventStatus")
     public String setEventStatus(@PathVariable int eventID,
                                  @RequestParam String changeStatus,
@@ -246,6 +247,6 @@ public class EventController {
             model.addAttribute("events", eventService.getEventsForManagers());
         else if (user.getUserRole().getName().equals("ADMIN"))
             model.addAttribute("events", eventService.getAllEvents());
-        return "poolEventsToManage";
+        return "ManagersEventPool";
     }
 }

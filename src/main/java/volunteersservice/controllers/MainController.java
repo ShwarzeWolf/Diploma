@@ -22,7 +22,7 @@ public class MainController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR')")
     @GetMapping("/events")
     public String myEventPool(Model model) {
         User user = Utils.getUserFromContext();
@@ -34,7 +34,7 @@ public class MainController {
                 model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
                 model.addAttribute("advanced", true);
 
-                return "myEventPool";
+                return "OrganisersEventPool";
 
             case "MANAGER":
                 model.addAttribute("uncheckedEvents", eventService.getEventsByStatus(EventStatusEnum.UNCHECKED));
@@ -43,7 +43,14 @@ public class MainController {
                 model.addAttribute("endedEvents", eventService.getEventsByStatus(EventStatusEnum.EXPIRED));
                 model.addAttribute("deniedEvents", eventService.getEventsByStatus(EventStatusEnum.DENIED));
 
-                return "poolEventsToManage";
+                return "ManagersEventPool";
+
+            case "COORDINATOR":
+                model.addAttribute("approvedEvents", eventService.getEventsByStatus(EventStatusEnum.APPROVED));
+                model.addAttribute("coordinatedEvents", eventService.getActiveEventsCoordinatedBy(user));
+                model.addAttribute("endedEvents", eventService.getExpiredEventsCoordinatedBy(user));
+
+                return "CoordinatorsEventPool";
 
             default:
                 return "403";
