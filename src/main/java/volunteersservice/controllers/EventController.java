@@ -55,7 +55,7 @@ public class EventController {
         return "redirect:/events/" + ev.getEventID();
     }
 
-    @PreAuthorize("hasAuthority('ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER')")
     @GetMapping("/events/{eventID}")
     public String getEventByID(@PathVariable int eventID,
                                Model model) {
@@ -145,6 +145,7 @@ public class EventController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority('ORGANISER')")
     @GetMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
     public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
                                        @PathVariable int eventID,
@@ -165,6 +166,7 @@ public class EventController {
         return "403";
     }
 
+    @PreAuthorize("hasAnyAuthority('ORGANISER')")
     @PostMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
     public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
                                         @PathVariable int eventID,
@@ -206,6 +208,14 @@ public class EventController {
 
          return "redirect:/events/";
     }
+
+
+
+
+
+
+
+
 
     @PreAuthorize("hasAuthority('COORDINATOR')")
     @PostMapping("/events/{eventID}/coordinate")

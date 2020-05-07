@@ -21,18 +21,28 @@ public class MainController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER')")
     @GetMapping("/events")
     public String myEventPool(Model model) {
         User user = Utils.getUserFromContext();
-
         model.addAttribute("name", user.getName() + " " + user.getSurname());
 
-        model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
-        model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
-        model.addAttribute("advanced", true);
+        switch (user.getUserRole().getName()) {
+            case "ORGANISER":
+                model.addAttribute("currentEvents", eventService.getActiveEventsOfOrganiser(user));
+                model.addAttribute("expiredEvents", eventService.getExpiredEventsOfOrganiser(user));
+                model.addAttribute("advanced", true);
 
-        return "myEventPool";
+                return "myEventPool";
+
+            case "MANAGER":
+                model.addAttribute("uncheckedEvents", eventService.getEventsForManagers());
+                //approved events
+                //coordinated events
+                //ended events
+                //denied events
+                return "poolEventsToManage";
+            default: return "403";
+        }
     }
-
 }

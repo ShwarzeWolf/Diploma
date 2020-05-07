@@ -37,7 +37,7 @@
         <button id="editEventButton" class="btn"> <a th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}">Edit main event info</a></button>
     </div>
 
-    <table class="table table-bordered">
+    <table id="event-content" class="table table-bordered">
         <tr>
             <th scope="row">Description</th>
             <td th:utext="${event.getDescription().replace('&#13', '<br>')}" />
@@ -76,7 +76,7 @@
         </tr>
     </table>
 
-    <div th:if="${not #lists.isEmpty(volunteerFunctions)}">
+    <div id="volunteers-functions-content" th:if="${not #lists.isEmpty(volunteerFunctions)}">
         <h2>Volunteer functions</h2>
         <table class="table table-striped">
             <thead>
