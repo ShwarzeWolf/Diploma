@@ -48,13 +48,48 @@
                 </div>
             </div>
             <div class="col-md">
-
+                <div th:each="event : ${approvedEvents}">
+                    <div class="card" style="margin-bottom: 5%">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${event.getName()}"/>
+                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md">
+                <div th:each="event : ${coordinatedEvents}">
+                    <div class="card" style="margin-bottom: 5%">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${event.getName()}"/>
+                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md">
+                <div th:each="event : ${endedEvents}">
+                    <div class="card" style="margin-bottom: 5%">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${event.getName()}"/>
+                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-md">
+                <div th:each="event : ${deniedEvents}">
+                    <div class="card" style="margin-bottom: 5%">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${event.getName()}"/>
+                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

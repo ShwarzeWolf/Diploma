@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import volunteersservice.models.entities.User;
+import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.services.EventService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
@@ -36,11 +37,12 @@ public class MainController {
                 return "myEventPool";
 
             case "MANAGER":
-                model.addAttribute("uncheckedEvents", eventService.getEventsForManagers());
-                //approved events
-                //coordinated events
-                //ended events
-                //denied events
+                model.addAttribute("uncheckedEvents", eventService.getEventsByStatus(EventStatusEnum.UNCHECKED));
+                model.addAttribute("approvedEvents", eventService.getEventsByStatus(EventStatusEnum.APPROVED));
+                model.addAttribute("coordinatedEvents", eventService.getEventsByStatus(EventStatusEnum.COORDINATED));
+                model.addAttribute("endedEvents", eventService.getEventsByStatus(EventStatusEnum.EXPIRED));
+                model.addAttribute("deniedEvents", eventService.getEventsByStatus(EventStatusEnum.DENIED));
+
                 return "poolEventsToManage";
             default: return "403";
         }
