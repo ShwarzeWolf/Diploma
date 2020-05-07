@@ -225,18 +225,4 @@ public class EventController {
 
         return "redirect:/events/" + eventID;
     }
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MANAGER', 'ADMIN')")
-    @GetMapping("/listOfEventsToManage")
-    public String poolEventsToManage(Model model) {
-        User user = Utils.getUserFromContext();
-        model.addAttribute("advanced", true);
-        if (user.getUserRole().getName().equals("COORDINATOR"))
-            model.addAttribute("events", eventService.getEventsForCoordinators());
-        else if (user.getUserRole().getName().equals("MANAGER"))
-            model.addAttribute("events", eventService.getEventsForManagers());
-        else if (user.getUserRole().getName().equals("ADMIN"))
-            model.addAttribute("events", eventService.getAllEvents());
-        return "ManagersEventPool";
-    }
 }
