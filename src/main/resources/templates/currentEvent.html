@@ -33,8 +33,14 @@
 
     <h2 th:text="${event.getName()}"></h2>
 
-    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED')}">
-        <button id="editEventButton" class="btn"> <a th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}">Edit main event info</a></button>
+    <div th:if="${user.getUserRole().getName() == 'COORDINATOR' && event.getCoordinator() == null}">
+        <form th:action="${event.getEventID() + '/coordinate'}" method="post">
+            <button type="submit" class="btn">Курировать</button>
+        </form>
+    </div>
+
+    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
+        <button id="editEventButton" class="btn"> <a th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}">Редактировать мероприятие</a></button>
     </div>
 
     <table id="event-content" class="table table-bordered">
@@ -98,7 +104,7 @@
                 <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span
                         th:text="${volunteerFunction.getTimeFinish()}" /></td>
                 <td th:text="${volunteerFunction.getNumberNeeded()}" />
-                <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED')}">
+                <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED') || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin()}">
                 <td><a th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}">
                     Edit Volunteer Function</a></td>
                 </div>
@@ -106,7 +112,7 @@
         </table>
     </div>
 
-    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED')}">
+    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
         <script>
             function showAdd() {
                 document.getElementById("addVolunteerFunctionForm").style.display = "block"
@@ -153,51 +159,14 @@
     </div>
 
 
-
-
-
-
-
-    <-------- DANGEROUS MANAGING EVENT SECTION, NOT FOR NOW ------->
     <div
         th:if="${event.getStatus().getName() == 'UNCHECKED' && user != null && user.getUserRole().getName() == 'MANAGER'}">
-        You are manager. You can change status of this event:
-        <!-- Need some fix for look of link below and similar ones -->
         <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
             Optional message: <input type="text" maxlength="300" name="message" />
             <button type="submit" name="changeStatus" value="APPROVED" class="btn btn-outline-success">Approve</button>
             <button type="submit" name="changeStatus" value="DENIED" class="btn btn-outline-danger">Reject</button>
         </form>
     </div>
-
-    <div th:if="${user != null && user.getUserRole().getName() == 'COORDINATOR' && event.getCoordinator() == null}">
-        You are coordinator and this event is not coordinated yet.
-        <form th:action="${event.getEventID() + '/coordinate'}" method="post">
-            <button type="submit" class="btn">I will coordinate this</button>
-        </form>
-    </div>
-
-    <div
-        th:if="${user != null && event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin()}">
-        <div th:if="${event.getStatus().getName() == 'COORDINATED'}">
-            You coordinate this event, you can publish it for volunteers when it's ready.
-            <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
-                <button type="submit" name="changeStatus" value="PUBLISHED" class="btn">Publish event</button>
-            </form>
-        </div>
-        <div th:if="${event.getStatus().getName() == 'PUBLISHED'}">
-            You coordinate this event, you can re-edit it if you found something wrong.
-            <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
-                <button type="submit" name="changeStatus" value="COORDINATED" class="btn">Un-publish event</button>
-            </form>
-        </div>
-        <form th:action="${event.getEventID() + '/coordinate'}" method="post">
-            If you cannot longer coordinate this event, you can abandon it
-            <button type="submit" name="drop" value="true" class="btn">I can't coordinate this now</button>
-        </form>
-    </div>
-
-    <-------- END OF THIS SECTION ------->
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

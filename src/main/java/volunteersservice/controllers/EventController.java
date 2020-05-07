@@ -21,7 +21,6 @@ import volunteersservice.utils.Utils;
 @Controller
 public class EventController {
     private final static Logger LOG = Logger.getLogger(EventController.class);
-
     private final EventService eventService = ServiceFactory.getEventService();
 
     @PreAuthorize("hasAuthority('ORGANISER')")
@@ -81,7 +80,10 @@ public class EventController {
         Event currentEvent = eventService.getEventByID(eventID);
         User user = Utils.getUserFromContext();
 
-        if (currentEvent.getOrganiser().getName().equals(user.getName()) && currentEvent.getStatus().getName().equals("CREATED")) {
+        if (currentEvent.getOrganiser().getName().equals(user.getName())
+                && currentEvent.getStatus().getName().equals("CREATED")
+                || currentEvent.getCoordinator().equals(user)) {
+
             model.addAttribute("roleName", user.getUserRole().getName());
             model.addAttribute("event", currentEvent);
             model.addAttribute("user", Utils.getUserFromContext());
@@ -153,7 +155,8 @@ public class EventController {
         Event currentEvent = eventService.getEventByID(eventID);
         User user = Utils.getUserFromContext();
 
-        if (currentEvent.getOrganiser().getName().equals(user.getName()) && currentEvent.getStatus().getName().equals("CREATED") )
+        if (currentEvent.getOrganiser().getName().equals(user.getName()) && currentEvent.getStatus().getName().equals("CREATED")
+                || currentEvent.getCoordinator()!= null && currentEvent.getCoordinator().getLogin() == user.getLogin())
         {
             VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
             VolunteerFunction volunteerFunction = vfs.getVolunteerFunctionByID(volunteerFunctionID);
@@ -167,7 +170,7 @@ public class EventController {
         return "403";
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
     @PostMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
     public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
                                         @PathVariable int eventID,
@@ -227,7 +230,7 @@ public class EventController {
         if (!drop) {
             LOG.info(String.format("Setting a coordinator for event [%s]: %s", event, user.getLogin()));
             eventService.setCoordinator(event, user);
-            eventService.setStatus(event, EventStatusEnum.COORDINATED);
+            eventService.setStatus(event, EventStatusEnum.ASSIGNED);
         } else {
             LOG.info(String.format("Dropping a coordinator of event [%s], decided by %s", event, user.getLogin()));
             eventService.setCoordinator(event, null);

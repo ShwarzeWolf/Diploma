@@ -39,7 +39,7 @@ public class MainController {
             case "MANAGER":
                 model.addAttribute("uncheckedEvents", eventService.getEventsByStatus(EventStatusEnum.UNCHECKED));
                 model.addAttribute("approvedEvents", eventService.getEventsByStatus(EventStatusEnum.APPROVED));
-                model.addAttribute("coordinatedEvents", eventService.getEventsByStatus(EventStatusEnum.COORDINATED));
+                model.addAttribute("coordinatedEvents", eventService.getEventsByStatus(EventStatusEnum.ASSIGNED));
                 model.addAttribute("endedEvents", eventService.getEventsByStatus(EventStatusEnum.EXPIRED));
                 model.addAttribute("deniedEvents", eventService.getEventsByStatus(EventStatusEnum.DENIED));
 
