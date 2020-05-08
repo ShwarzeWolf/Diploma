@@ -36,7 +36,7 @@
     </div>
 </nav>
 
-<div id="container" style="padding-left: 2%; padding-right: 2%">
+<div th:if="${inProcessEvents.size()} + ${uncheckedEvents.size()} + ${finishedEvents.size()} + ${deniedEvents.size()} != 0" id="container" style="padding-left: 2%; padding-right: 2%">
     <div id="container-content" class="row">
         <div class="col-md">
             <div style="text-align: center"><h5>Созданные</h5></div>
@@ -60,7 +60,7 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
                         <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
-                        <p class="card-text" th:text="'Статус: ' + ${event.getStatus().getName()}"/>
+                        <p class="card-text" th:text="'Статус: ' + ${event.getStatus().getRussishName()}"/>
                         <div th:if="${event.getCoordinator() != null}">
                             <p class="card-text" th:text="'Назначен координатор ' + ${event.getCoordinator().getName()} + ': '+ ${event.getCoordinator().getEmail()}"/>
                         </div>
@@ -96,7 +96,14 @@
         </div>
     </div>
 </div>
-
+<div th:unless="${inProcessEvents.size()} + ${uncheckedEvents.size()} + ${finishedEvents.size()} + ${deniedEvents.size()} != 0" style="padding: 10%">
+    <div class="row justify-content-center align-items-center text-center">
+        <h2>Мероприятий пока нет</h2>
+    </div>
+    <div class="row justify-content-center align-items-center text-center">
+            <a class="btn btn-primary btn-lg" th:href="${'/addEvent'}"  role="button">Добавьте первое!</a>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
