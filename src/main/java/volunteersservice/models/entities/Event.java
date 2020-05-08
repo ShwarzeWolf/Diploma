@@ -160,10 +160,6 @@ public class Event {
         this.place = place;
     }
 
-    public LocalDateTime getDateStart() {
-        return dateStart;
-    }
-
     public void setDateStart(LocalDateTime dateStart) {
         this.dateStart = dateStart;
     }
@@ -172,8 +168,21 @@ public class Event {
         this.dateStart = LocalDateTime.parse(dateStart, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
     }
 
+    public LocalDateTime getDateStart() {
+        return dateStart;
+    }
+
     public LocalDateTime getDateFinish() {
         return dateFinish;
+    }
+
+    public String getPrettyDateStart() {
+        return dateStart.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
+
+    public String getPrettyDateFinish() {
+        return dateFinish.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
 
     public void setDateFinish(LocalDateTime dateFinish) {

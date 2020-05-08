@@ -44,7 +44,7 @@
                 <div class="card" style="margin-bottom: 5%">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
-                        <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                        <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
                         <form th:action="${'/events/' + event.getEventID() + '/setEventStatus'}" method="post">
                             <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                             <button type="submit" name="changeStatus" th:onclick="alert('Вы не сможете внести изменения в мероприятие')" value="UNCHECKED" class="btn btn-outline-success">Отправить заявку</button>
@@ -59,10 +59,10 @@
                 <div class="card" style="margin-bottom: 5%">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
-                        <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                        <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
                         <p class="card-text" th:text="'Статус: ' + ${event.getStatus().getName()}"/>
                         <div th:if="${event.getCoordinator() != null}">
-                            <p class="card-text" th:text="${event.getCoordinator().getName()} + ': '+ ${event.getCoordinator().getEmail()}"/>
+                            <p class="card-text" th:text="'Назначен координатор ' + ${event.getCoordinator().getName()} + ': '+ ${event.getCoordinator().getEmail()}"/>
                         </div>
                         <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                     </div>
@@ -75,7 +75,7 @@
                 <div class="card" style="margin-bottom: 5%">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
-                        <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                        <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
                         <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                     </div>
                 </div>
@@ -87,7 +87,8 @@
                 <div class="card" style="margin-bottom: 5%">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
-                        <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
+                        <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
+                        <p class="card-text" th:text="'Причина: ' + ${event.getMessage()}"/>
                         <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                     </div>
                 </div>
