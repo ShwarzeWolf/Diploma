@@ -29,10 +29,10 @@
     </div>
 </nav>
 
-<div id="container">
+<div id="container" style="padding-left: 2%; padding-right: 2%">
     <div id="container-content" class="row">
         <div class="col-md">
-            <div style="text-align: center">Созданные</div>
+            <div style="text-align: center"><h5>Созданные</h5></div>
             <div th:each="event : ${uncheckedEvents}">
                 <div class="card" style="margin-bottom: 5%">
                     <div class="card-body">
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="col-md">
-            <div style="text-align: center">В работе</div>
+            <div style="text-align: center"><h5>В работе</h5></div>
             <div th:each="event : ${inProcessEvents}">
                 <div class="card" style="margin-bottom: 5%">
                     <div class="card-body">
@@ -59,7 +59,7 @@
             </div>
         </div>
         <div class="col-md">
-            <div style="text-align: center">Прошедшие</div>
+            <div style="text-align: center"><h5>Прошедшие</h5></div>
             <div th:each="event : ${finishedEvents}">
                 <div class="card" style="margin-bottom: 5%">
                     <div class="card-body">
@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="col-md">
-            <div style="text-align: center">Отклоненные</div>
+            <div style="text-align: center"><h5>Отклоненные</h5></div>
             <div th:each="event : ${deniedEvents}">
                 <div class="card" style="margin-bottom: 5%">
                     <div class="card-body">
