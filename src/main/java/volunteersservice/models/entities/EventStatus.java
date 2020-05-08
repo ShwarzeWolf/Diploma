@@ -28,7 +28,15 @@ public class EventStatus {
     }
 
     public String getName() {
-        return name;
+        switch(this.name){
+            case "CREATED": return "Создана";
+            case "UNCHECKED": return "На рассмотрении";
+            case "APPROVED": return "Одобрена";
+            case "ASSIGNED":return "Назначена";
+            case "FINISHED": return "Завершена";
+            case "DENIED": return "Отклонена";
+            default: return name;
+        }
     }
 
     public int getStatusID() {

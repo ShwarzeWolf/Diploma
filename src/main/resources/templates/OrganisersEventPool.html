@@ -45,8 +45,8 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
                         <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                        <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
                         <form th:action="${'/events/' + event.getEventID() + '/setEventStatus'}" method="post">
+                            <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                             <button type="submit" name="changeStatus" th:onclick="alert('Вы не сможете внести изменения в мероприятие')" value="UNCHECKED" class="btn btn-outline-success">Отправить заявку</button>
                         </form>
                     </div>
@@ -60,7 +60,11 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
                         <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                        <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                        <p class="card-text" th:text="'Статус: ' + ${event.getStatus().getName()}"/>
+                        <div th:if="${event.getCoordinator() != null}">
+                            <p class="card-text" th:text="${event.getCoordinator().getName()} + ': '+ ${event.getCoordinator().getEmail()}"/>
+                        </div>
+                        <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +76,7 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
                         <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                        <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                        <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                     </div>
                 </div>
             </div>
@@ -84,7 +88,7 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
                         <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                        <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                        <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                     </div>
                 </div>
             </div>
