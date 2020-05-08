@@ -68,6 +68,10 @@ public interface EventService {
 
 	public List<Event> getEventsByStatusCoordinatedByUser(User user, EventStatusEnum status);
 
+	public List<Event> getOrganiserInProcessEvents(User user);
+
+	public List<Event> getOrganiserExpiredEvents(User user);
+
 	public void updateEventInformation(Event event);
 
 	public void setStatus(Event event, EventStatusEnum status);

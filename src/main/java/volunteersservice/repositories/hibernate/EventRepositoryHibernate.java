@@ -55,6 +55,15 @@ public class EventRepositoryHibernate implements EventRepository {
                 .list();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Event> getEventsOfOrganiser(User organiser, boolean active) {
+        return (List<Event>) HibernateUtil.getSession()
+                .createQuery("from Event as event where event.organiser.userID = :organiserID and (event.dateFinish "
+                        + (active ? ">" : "<") + ":dateNow and not event.status.name = 'DENIED'" + "and not event.status.name = 'CREATED'" + ") order by event.dateStart")
+                .setParameter("organiserID", organiser.getUserID()).setParameter("dateNow", LocalDateTime.now()).list();
+    }
+
     @Override
     public boolean save(Event event) {
         Session session = HibernateUtil.getSession();

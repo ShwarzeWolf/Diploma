@@ -30,9 +30,9 @@ public class MainController {
         switch (user.getUserRole().getName()) {
             case "ORGANISER":
                 model.addAttribute("uncheckedEvents", eventService.getEventsByStatusOrganisedByUser(user, EventStatusEnum.CREATED));
-                //model.addAttribute("inProcessEvents", eventService.getOrganiserActiveEvents(user));
-                //model.addAttribute("finishedEvents", eventService.getOrganiserExpiredEvents(user));
-
+                model.addAttribute("inProcessEvents", eventService.getOrganiserInProcessEvents(user));
+                model.addAttribute("finishedEvents", eventService.getOrganiserExpiredEvents(user));
+                model.addAttribute("deniedEvents", eventService.getEventsByStatusOrganisedByUser(user, EventStatusEnum.DENIED));
                 return "OrganisersEventPool";
 
             case "MANAGER":

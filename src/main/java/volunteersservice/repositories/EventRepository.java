@@ -19,6 +19,8 @@ public interface EventRepository {
 
     public List<Event> getEventsByStatusCoordinatedByUser(User user, EventStatusEnum status);
 
+    public List<Event> getEventsOfOrganiser(User organiser, boolean active);
+
     public boolean save(Event event);
 
     public boolean update(Event event);

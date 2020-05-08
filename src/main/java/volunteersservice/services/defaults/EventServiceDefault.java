@@ -133,6 +133,16 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
+    public List<Event> getOrganiserInProcessEvents(User user){
+       return eventRepository.getEventsOfOrganiser(user, true);
+    }
+
+    @Override
+    public List<Event> getOrganiserExpiredEvents(User user){
+        return eventRepository.getEventsOfOrganiser(user, false);
+    }
+
+    @Override
     public void updateEventInformation(Event event) {
         eventRepository.update(event);
     }

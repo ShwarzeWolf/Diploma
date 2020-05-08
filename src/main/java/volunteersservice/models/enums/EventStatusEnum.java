@@ -1,5 +1,5 @@
 package volunteersservice.models.enums;
 
 public enum EventStatusEnum {
-	CREATED, UNCHECKED, APPROVED, ASSIGNED, DENIED, FINISHED
+	CREATED, UNCHECKED, APPROVED, ASSIGNED, FINISHED, DENIED
 }
