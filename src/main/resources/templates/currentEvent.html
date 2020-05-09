@@ -25,7 +25,7 @@
             </div>
             <div class="nav-item">
                 <form class="nav-item" th:action="@{/logout}" method="post">
-                    <input class="btn btn-secondary" type="submit" value="Выйти из аккаунта" />
+                    <input class="btn btn-outline-secondary" type="submit" value="Выйти из аккаунта" />
                 </form>
             </div>
         </div>
@@ -40,12 +40,12 @@
                     </form>
                 </div>
                 <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
-                    <a class="btn btn-primary" th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}" role="button">Редактировать информацию</a>
+                    <a class="btn btn-outline-primary" th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}" role="button">Редактировать информацию</a>
                 </div>
                 <div th:if="${event.getStatus().getName() == 'UNCHECKED' && user.getUserRole().getName() == 'MANAGER'}">
                     <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
-                        <button type="submit" name="changeStatus" value="APPROVED" class="btn btn-success">Одобрить</button>
-                        <button type="submit" name="changeStatus" value="DENIED" class="btn btn-danger">Отклонить</button>
+                        <button type="submit" name="changeStatus" value="APPROVED" class="btn btn-outline-success">Одобрить</button>
+                        <button type="submit" name="changeStatus" value="DENIED" class="btn btn-outline-danger">Отклонить</button>
                         Причина отказа: <input type="text" maxlength="300" name="message" />
                     </form>
                 </div>
@@ -95,7 +95,7 @@
                         document.getElementById("addVolunteerFunctionButton").style.display = "block"
                     }
                 </script>
-                <button id="addVolunteerFunctionButton" onclick="showAdd()" class="btn btn-success">Добавить функцию</button>
+                <button id="addVolunteerFunctionButton" onclick="showAdd()" class="btn btn-outline-success">Добавить функцию</button>
                 <form method="post" id="addVolunteerFunctionForm" style="display: none;">
                     <table class="table table-bordered">
                         <tr>
@@ -153,8 +153,8 @@
                 <td th:text="${volunteerFunction.getNumberNeeded()}" />
                 <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED') || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin()}">
                     <td>
-                        <a class="btn btn-primary" th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}" role="button">Редактировать</a>
-                        <a class="btn btn-danger" th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}" role="button">Удалить</a>
+                        <a class="btn btn-outline-primary" th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}" role="button">Редактировать</a>
+                        <a class="btn btn-outline-danger" th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}" role="button">Удалить</a>
                     </td>
                 </div>
             </tr>
