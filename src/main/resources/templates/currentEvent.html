@@ -14,86 +14,134 @@
         <div class="collapse navbar-collapse">
             <div class="navbar-nav">
                 <a class="nav-item">
-                    <a class="nav-link" th:href="@{/events}">My events</a>
+                    <a class="nav-link" th:href="@{/events}">Мои мероприятия</a>
                 </a>
             </div>
         </div>
 
         <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
             <div class="nav-item">
-                <a class="nav-link" th:href="@{/personal_account}">My profile</a>
+                <a class="nav-link" th:href="@{/personal_account}">Мой профиль</a>
             </div>
             <div class="nav-item">
                 <form class="nav-item" th:action="@{/logout}" method="post">
-                    <input class="btn btn-secondary" type="submit" value="Sign Out" />
+                    <input class="btn btn-secondary" type="submit" value="Выйти из аккаунта" />
                 </form>
             </div>
         </div>
     </nav>
 
-    <h2 th:text="${event.getName()}"></h2>
-
-    <div th:if="${user.getUserRole().getName() == 'COORDINATOR' && event.getCoordinator() == null}">
-        <form th:action="${event.getEventID() + '/coordinate'}" method="post">
-            <button type="submit" class="btn">Курировать</button>
-        </form>
+    <div class="container" style="margin-left: 2%">
+        <div class ="row" style="padding: 1%">
+                <h2 style="padding-right: 1%" th:text="${event.getName()}"></h2>
+                <div th:if="${user.getUserRole().getName() == 'COORDINATOR' && event.getCoordinator() == null}">
+                    <form th:action="${event.getEventID() + '/coordinate'}" method="post">
+                        <button type="submit" class="btn-primary">Курировать</button>
+                    </form>
+                </div>
+                <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
+                    <a class="btn btn-primary" th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}" role="button">Редактировать информацию</a>
+                </div>
+                <div th:if="${event.getStatus().getName() == 'UNCHECKED' && user.getUserRole().getName() == 'MANAGER'}">
+                    <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
+                        <button type="submit" name="changeStatus" value="APPROVED" class="btn btn-success">Одобрить</button>
+                        <button type="submit" name="changeStatus" value="DENIED" class="btn btn-danger">Отклонить</button>
+                        Причина отказа: <input type="text" maxlength="300" name="message" />
+                    </form>
+                </div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Даты</h6></div>
+            <div class="col-md-6" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Место проведения</h6></div>
+            <div class="col-md-6" th:text="${event.getPlace()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Описание</h6></div>
+                <div class="col-md-6" th:text="${event.getDescription()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Тип одежды</h6></div>
+            <div class="col-md-6" th:text="${event.getClothesType()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Проживание волонтеров</h6></div>
+            <div class="col-md-6" th:text="${event.getAccommodation()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Питание волонтеров</h6></div>
+            <div class="col-md-6" th:text="${event.getFood()}" ></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Особые требования</h6></div>
+            <div class="col-md-6" th:value="${event.getRequirements()}"></div>
+        </div>
     </div>
 
-    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
-        <button id="editEventButton" class="btn"> <a th:href="@{'/events/' + ${(event.getEventID())} +'/edit'}">Редактировать мероприятие</a></button>
-    </div>
+    <div id="volunteers-functions-content" style="margin-left: 4%; margin-right: 4%">
+        <div class="row">
+            <h2  style="padding-right: 2%">Функции волонтёров</h2>
+            <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
+                <script>
+                    function showAdd() {
+                        document.getElementById("addVolunteerFunctionForm").style.display = "block"
+                        document.getElementById("addVolunteerFunctionButton").style.display = "none"
+                    }
 
-    <table id="event-content" class="table table-bordered">
-        <tr>
-            <th scope="row">Description</th>
-            <td th:utext="${event.getDescription().replace('&#13', '<br>')}" />
-        </tr>
-        <tr>
-            <th scope="row">Place</th>
-            <td th:text="${event.getPlace()}" />
-        </tr>
-        <tr>
-            <th scope="row">Time</th>
-            <td><span th:text="${event.getDateStart()}" /> - <span th:text="${event.getDateFinish()}" /></td>
-        </tr>
-        <tr>
-            <th scope="row">Requirements</th>
-            <td th:text="${event.getRequirements()}" />
-        </tr>
-        <tr>
-            <th scope="row">Clothes</th>
-            <td th:text="${event.getClothesType()}" />
-        </tr>
-        <tr>
-            <th scope="row">Accommodation</th>
-            <td th:text="${event.getAccommodation()}" />
-        </tr>
-        <tr>
-            <th scope="row">Food</th>
-            <td th:text="${event.getFood()}" />
-        </tr>
-        <tr>
-            <th scope="row">Organised by</th>
-            <td th:text="${event.getOrganiser().getName()}" />
-        </tr>
-        <tr th:if="${event.getCoordinator() != null}">
-            <th scope="row">Coordinated by</th>
-            <td th:text="${event.getCoordinator().getName()}" />
-        </tr>
-    </table>
-
-    <div id="volunteers-functions-content" th:if="${not #lists.isEmpty(volunteerFunctions)}">
-        <h2>Volunteer functions</h2>
+                    function  hideAdd() {
+                        document.getElementById("addVolunteerFunctionForm").style.display = "none"
+                        document.getElementById("addVolunteerFunctionButton").style.display = "block"
+                    }
+                </script>
+                <button id="addVolunteerFunctionButton" onclick="showAdd()" class="btn btn-success">Добавить функцию</button>
+                <form method="post" id="addVolunteerFunctionForm" style="display: none;">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th scope="row">Название функции</th>
+                            <td><input type="text" name="name" maxlength="100"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Описание функции</th>
+                            <td><textarea name="description" maxlength="500" cols="90"></textarea></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Требования к функции</th>
+                            <td><textarea name="requirements" maxlength="200" cols="90"></textarea></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Время начала</th>
+                            <td><input type="datetime-local" name="timeStart" th:value="${event.getDateStart()}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Время окончания</th>
+                            <td><input type="datetime-local" name="timeFinish" th:value="${event.getDateFinish()}"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Количество волонтёров</th>
+                            <td>
+                                <input type="number" name="numberNeeded">
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="btn-success">Добавить</button>
+                    <button type="button" class="btn-primary" onclick="hideAdd()">Скрыть</button>
+                </form>
+                <br>
+            </div>
+        </div>
+        <div th:if="${not #lists.isEmpty(volunteerFunctions)}">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Requirements</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">NumberOfVolunteers</th>
-                    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED')}">
-                    <th scope="col">Link</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Описание</th>
+                    <th scope="col">Требования</th>
+                    <th scope="col">Время</th>
+                    <th scope="col">Количество волонтеров</th>
+                    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
+                        <th scope="col">Доступные действия</th>
                     </div>
                 </tr>
             </thead>
@@ -101,71 +149,17 @@
                 <td th:text="${volunteerFunction.getName()}" />
                 <td th:utext="${volunteerFunction.getDescription().replace('&#13', '<br>')}" />
                 <td th:utext="${volunteerFunction.getRequirements().replace('&#13', '<br>')}" />
-                <td><span th:text="${volunteerFunction.getTimeStart()}" /> - <span
-                        th:text="${volunteerFunction.getTimeFinish()}" /></td>
+                <td><span th:text="${volunteerFunction.getPrettyTime()}" /></td>
                 <td th:text="${volunteerFunction.getNumberNeeded()}" />
                 <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED') || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin()}">
-                <td><a th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}">
-                    Edit Volunteer Function</a></td>
+                    <td>
+                        <a class="btn btn-primary" th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}" role="button">Редактировать</a>
+                        <a class="btn btn-danger" th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}" role="button">Удалить</a>
+                    </td>
                 </div>
             </tr>
         </table>
-    </div>
-
-    <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
-        <script>
-            function showAdd() {
-                document.getElementById("addVolunteerFunctionForm").style.display = "block"
-                document.getElementById("addVolunteerFunctionButton").style.display = "none"
-            }
-        </script>
-        <button id="addVolunteerFunctionButton" onclick="showAdd()" class="btn">Add volunteer function</button>
-        <form method="post" id="addVolunteerFunctionForm" style="display: none;">
-            <table class="table table-bordered">
-                <tr>
-                    <th scope="row">Function name</td>
-                    <td><input type="text" name="name" maxlength="100"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Function description</td>
-                    <td><textarea name="description" maxlength="500" cols="90"></textarea></td>
-                </tr>
-                <tr>
-                    <th scope="row">Function requirements</td>
-                    <td><textarea name="requirements" maxlength="200" cols="90"></textarea></td>
-                </tr>
-                <tr>
-                    <th scope="row">Start time</td>
-                    <td><input type="datetime-local" name="timeStart" th:value="${event.getDateStart()}"></td>
-                </tr>
-                <tr>
-                    <th scope="row">End time</td>
-                    <td><input type="datetime-local" name="timeFinish" th:value="${event.getDateFinish()}"></td>
-                </tr>
-                <tr>
-                    <th scope="row">Number of volunteers needed</td>
-                    <td>
-                        <input type="number" name="numberNeeded">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button type="submit" class="btn-primary">Add Volunteer function</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
-        <br>
-    </div>
-
-
-    <div
-        th:if="${event.getStatus().getName() == 'UNCHECKED' && user != null && user.getUserRole().getName() == 'MANAGER'}">
-        <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
-            Optional message: <input type="text" maxlength="300" name="message" />
-            <button type="submit" name="changeStatus" value="APPROVED" class="btn btn-outline-success">Approve</button>
-            <button type="submit" name="changeStatus" value="DENIED" class="btn btn-outline-danger">Reject</button>
-        </form>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

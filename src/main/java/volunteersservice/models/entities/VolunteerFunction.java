@@ -167,6 +167,12 @@ public class VolunteerFunction {
         this.timeFinish = LocalDateTime.parse(timeFinish, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
     }
 
+    public String getPrettyTime(){
+        String start = timeStart.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"));
+        String finish = timeFinish.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm"));
+        return start.concat("—").concat(finish);
+    }
+
     public int getNumberNeeded() {
         return numberNeeded;
     }

@@ -2,89 +2,95 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Pool of events to manage</title>
+    <title>Мероприятия клуба</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
-        <div class="collapse navbar-collapse">
-            <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-                <div class="nav-item">
-                    <a class="nav-link" th:href="@{/personal_account}">My profile</a>
-                </div>
 
-                <div class="nav-item">
-                    <form class="nav-item" th:action="@{/logout}" method="post">
-                        <input class="btn btn-secondary" type="submit" value="Sign Out" />
-                    </form>
-                </div>
-            </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+    <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        <div class="nav-item">
+            <span class="navbar-text" th:text="${name}"></span>
         </div>
-    </nav>
 
-    <div id="container" style="padding-left: 2%; padding-right: 2%">
+        <div class="nav-item">
+            <a class="nav-link" th:href="@{/personal_account}">Мой профиль</a>
+        </div>
+
+        <div class="nav-item">
+            <form class="nav-item" th:action="@{/logout}" method="post">
+                <input class="btn btn-secondary" type="submit" value="Выйти из аккаунта" />
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+<div id="container" style="padding-left: 2%; padding-right: 2%">
         <div id="container-content" class="row">
             <div class="col-md">
-                <div style="text-align: center">Непроверенные</div>
+                <div style="text-align: center"><h5>Непроверенные</h5></div>
                 <div th:each="event : ${uncheckedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${event.getName()}"/>
-                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                            <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
+                            <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md">
-                <div style="text-align: center">Одобренные</div>
+                <div style="text-align: center"><h5>Одобренные</h5></div>
                 <div th:each="event : ${approvedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${event.getName()}"/>
-                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                            <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
+                            <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md">
-                <div style="text-align: center">Координируются</div>
+                <div style="text-align: center"><h5>Координируются</h5></div>
                 <div th:each="event : ${coordinatedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${event.getName()}"/>
-                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                            <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
+                            <p class="card-text" th:text="'Координатор: ' + ${event.getCoordinator().getName()}"/>
+                            <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md">
-                <div style="text-align: center">Завершенные</div>
+                <div style="text-align: center"><h5>Завершенные</h5></div>
                 <div th:each="event : ${endedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${event.getName()}"/>
-                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                            <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
+                            <p class="card-text" th:text="'Координатор: ' + ${event.getCoordinator().getName()}"/>
+                            <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md">
-                <div style="text-align: center">Отклоненные</div>
+                <div style="text-align: center"><h5>Отклоненные</h5></div>
                 <div th:each="event : ${deniedEvents}">
                     <div class="card" style="margin-bottom: 5%">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${event.getName()}"/>
-                            <p class="card-text" th:text="${event.getDateStart()} + ${event.getDateFinish()}"/>
-                            <a th:href="@{'/events/' + ${(event.getEventID())}}">Просмотреть</a>
+                            <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
+                            <p class="card-text" th:text="'Причина: ' + ${event.getMessage()}"/>
+                            <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                         </div>
                     </div>
                 </div>
