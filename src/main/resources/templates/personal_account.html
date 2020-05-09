@@ -21,15 +21,18 @@
         <div class="collapse navbar-collapse">
             <div class="navbar-nav">
                 <a class="nav-item">
-                    <a class="nav-link" th:href="@{/events}">Main page</a>
+                    <a class="nav-link" th:href="@{/events}">Мои мероприятия</a>
                 </a>
             </div>
         </div>
-
         <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
             <div class="nav-item">
+                <span class="navbar-text" th:text="${name}"></span>
+            </div>
+
+            <div class="nav-item">
                 <form class="nav-item" th:action="@{/logout}" method="post">
-                    <input class="btn btn-secondary" type="submit" value="Sign Out" />
+                    <input class="btn btn-secondary" type="submit" value="Выйти из аккаунта" />
                 </form>
             </div>
         </div>
