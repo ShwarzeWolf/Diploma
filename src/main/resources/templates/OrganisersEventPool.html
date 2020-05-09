@@ -49,6 +49,9 @@
                             <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
                             <button type="submit" name="changeStatus" th:onclick="alert('Вы не сможете внести изменения в мероприятие')" value="UNCHECKED" class="btn btn-outline-success">Отправить заявку</button>
                         </form>
+                        <form th:action="${'/events/' + event.getEventID() + '/delete'}" method="post">
+                           <button type="submit" name="deleteEvent" class="btn btn-outline-danger">Удалить черновик мероприятия</button>
+                        </form>
                     </div>
                 </div>
             </div>

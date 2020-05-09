@@ -141,13 +141,13 @@
                     <th scope="col">Время</th>
                     <th scope="col">Количество волонтеров</th>
                     <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
-                        <th scope="col">Доступные действия</th>
+                        <th scope="col">Доступные действия             </th>
                     </div>
                 </tr>
             </thead>
             <tr th:each="volunteerFunction : ${volunteerFunctions}">
                 <td th:text="${volunteerFunction.getName()}" />
-                <td th:utext="${volunteerFunction.getDescription().replace('&#13', '<br>')}" />
+                <td style="max-width: 20%" th:utext="${volunteerFunction.getDescription().replace('&#13', '<br>')}" />
                 <td th:utext="${volunteerFunction.getRequirements().replace('&#13', '<br>')}" />
                 <td><span th:text="${volunteerFunction.getPrettyTime()}" /></td>
                 <td th:text="${volunteerFunction.getNumberNeeded()}" />

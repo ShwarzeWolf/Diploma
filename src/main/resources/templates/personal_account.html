@@ -2,10 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Pool of my events</title>
+    <title>Информация о пользователе</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
@@ -38,26 +37,30 @@
         </div>
     </nav>
 
-    <h4>Personal data</h4>
-
-    <table class="table table-bordered">
-        <tr>
-            <th scope="row">Login</th>
-            <td th:text="${person.getLogin()}" />
-        </tr>
-        <tr>
-            <th scope="row">Name</th>
-            <td th:text="${person.getName()}" />
-        </tr>
-        <tr>
-            <th scope="row">Email</th>
-            <td th:text="${person.getEmail()}" />
-        </tr>
-        <tr>
-            <th scope="row">Role</th>
-            <td th:text="${person.getUserRole().getName()}" />
-        </tr>
-    </table>
+    <div class="container" style="margin-left: 2%">
+    <div class="row" >
+        <h4>Информация о пользователе</h4>
+    </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Логин</h6></div>
+            <div class="col-md-6" th:text="${person.getLogin()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Имя</h6></div>
+            <div class="col-md-6" th:text="${person.getName()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Фамилия</h6></div>
+            <div class="col-md-6" th:text="${person.getSurname()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>E-mail</h6></div>
+            <div class="col-md-6" th:text="${person.getEmail()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Роль</h6></div>
+            <div class="col-md-6" th:text="${person.getUserRole().getRussishName()}" ></div>
+        </div>
 
     <script>
         function showChangePassword() {
@@ -65,28 +68,28 @@
             document.getElementById("changePasswordButton").style.display = "none"
         }
     </script>
-    <button id="changePasswordButton" onclick="showChangePassword()" class="btn">Change password</button>
+    <button id="changePasswordButton" onclick="showChangePassword()" class="btn">Изменить пароль</button>
     <div id="changePasswordForm" style="display: none;">
-        <h4>Change password</h4>
+        <h4>Изменение пароля</h4>
         <form th:action="@{/changePassword}" method="post" name="contact_form" onsubmit="return validate_form();">
             <table>
                 <tr>
-                    <td>Old password: </td>
+                    <td>Старый пароль: </td>
                     <td><input type="password" name="oldPassword" maxlength="50" required/></td>
                     <td id="output1"></td>
                 </tr>
                 <tr>
-                    <td>New password: </td>
+                    <td>Новый пароль: </td>
                     <td><input type="password" id="pass1" name="newPassword1" maxlength="50" required /></td>
                     <td id="output2"></td>
                 </tr>
                 <tr>
-                    <td>New password: </td>
+                    <td>Новый пароль: </td>
                     <td><input type="password" id="pass2" name="newPassword2" maxlength="50" required /></td>
                     <td id="output3"></td>
                 </tr>
             </table>
-            <button type="submit" class="btn btn-primary" >Change password</button>
+            <button type="submit" class="btn btn-primary" >Изменить пароль</button>
         </form>
     </div>
 
@@ -94,11 +97,11 @@
         <p th:text="${password_change_status}"></p>
     </div>
 
-
+    </div>
     <script>
         function validate_form() {
             if (document.getElementById("pass1").value != document.getElementById("pass2").value) {
-                document.getElementById("output3").innerHTML = "новые пароли не совпадают";
+                document.getElementById("output3").innerHTML = "Новые пароли не совпадают";
                 return false;
             }
             else {

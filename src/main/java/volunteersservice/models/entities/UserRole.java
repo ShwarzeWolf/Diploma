@@ -37,6 +37,15 @@ public class UserRole {
         return this.name;
     }
 
+    public String getRussishName() {
+        switch(this.name){
+            case "ORGANISER": return "Организатор";
+            case "MANAGER": return "Менеджер";
+            case "COORDINATOR": return "Координатор";
+            default: return this.name;
+        }
+    }
+
     public UserRoleEnum getEnum() {
         return UserRoleEnum.valueOf(this.name.toUpperCase());
     }

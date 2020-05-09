@@ -225,4 +225,24 @@ public class EventController {
 
         return "redirect:/events/" + eventID;
     }
+
+    @PreAuthorize("hasAuthority('ORGANISER')")
+    @PostMapping("/events/{eventID}/delete")
+    public String deleteEvent(@PathVariable int eventID){
+        User user = Utils.getUserFromContext();
+        Event eventToDelete = eventService.getEventByID(eventID);
+
+        if (eventToDelete.getStatus().getName().equals("CREATED")) {
+            eventService.deleteEvent(eventToDelete);
+        }
+
+        return "redirect:/events/";
+    }
+
+   /* @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
+    @PostMapping("/events/{eventID}/")
+    public void deleteVolunteerFunction(@PathVariable int eventID){
+        User user = Utils.getUserFromContext();
+
+    }*/
 }
