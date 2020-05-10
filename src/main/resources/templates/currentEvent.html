@@ -154,7 +154,9 @@
                 <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED') || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin()}">
                     <td>
                         <a class="btn btn-outline-primary" th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}" role="button">Редактировать</a>
-                        <a class="btn btn-outline-danger" th:href="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/edit'}" role="button">Удалить</a>
+                        <form th:action="@{'/events/' + ${(event.getEventID())} + '/volunteerFunctions/' + ${(volunteerFunction.getVolunteerFunctionID())} +'/delete'}" method="post">
+                            <button type="submit" name="deleteVolunteerFunction" class="btn btn-outline-danger">Удалить</button>
+                        </form>
                     </td>
                 </div>
             </tr>

@@ -38,7 +38,10 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${event.getName()}"/>
                         <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
-                        <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
+                         <form th:action="${'/events/' + event.getEventID() + '/coordinate'}" method="post">
+                             <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
+                             <button type="submit" name="coordinate" class="btn btn-outline-success">Координировать</button>
+                        </form>
                     </div>
                 </div>
             </div>

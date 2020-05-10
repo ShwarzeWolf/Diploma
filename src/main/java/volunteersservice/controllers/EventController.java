@@ -232,17 +232,30 @@ public class EventController {
         User user = Utils.getUserFromContext();
         Event eventToDelete = eventService.getEventByID(eventID);
 
-        if (eventToDelete.getStatus().getName().equals("CREATED")) {
+        if (eventToDelete.getStatus().getName().equals("CREATED") && user.getLogin().equals(eventToDelete.getOrganiser().getLogin())) {
             eventService.deleteEvent(eventToDelete);
         }
 
         return "redirect:/events/";
     }
 
-   /* @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
-    @PostMapping("/events/{eventID}/")
-    public void deleteVolunteerFunction(@PathVariable int eventID){
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
+    @PostMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/delete")
+    public String deleteVolunteerFunction(@PathVariable int eventID,
+                                        @PathVariable int volunteerFunctionID){
         User user = Utils.getUserFromContext();
 
-    }*/
+        Event event = eventService.getEventByID(eventID);
+        VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
+        VolunteerFunction volunteerFunctionToDelete = vfs.getVolunteerFunctionByID(volunteerFunctionID);
+
+        if (event.getStatus().getName().equals("CREATED")
+                && user.getLogin().equals(event.getOrganiser().getLogin())
+                ||  event.getCoordinator() != null
+                && event.getCoordinator().getLogin().equals(user.getLogin())) {
+            vfs.deleteVolunteerFunction(volunteerFunctionToDelete);
+        }
+
+        return "redirect:/events/" + eventID;
+    }
 }

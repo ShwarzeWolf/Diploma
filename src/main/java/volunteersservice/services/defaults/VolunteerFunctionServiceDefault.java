@@ -67,4 +67,9 @@ public class VolunteerFunctionServiceDefault implements VolunteerFunctionService
     public void updateVolunteerFunctionInformation(VolunteerFunction volunteerFunction) {
         volunteerFunctionRepository.update(volunteerFunction);
     }
+
+    @Override
+    public void deleteVolunteerFunction(VolunteerFunction volunteerFunction){
+        volunteerFunctionRepository.delete(volunteerFunction);
+    }
 }

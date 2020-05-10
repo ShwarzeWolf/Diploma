@@ -40,6 +40,11 @@
                             <h5 class="card-title" th:text="${event.getName()}"/>
                             <p class="card-text" th:text="${event.getPrettyDateStart()} + '—' + ${event.getPrettyDateFinish()}"/>
                             <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID()}"  role="button">Просмотреть</a>
+                            <form th:action="${'/events/' + event.getEventID() + '/setEventStatus'}" method="post">
+                                <button type="submit" name="changeStatus" value="APPROVED" class="btn btn-outline-success">Одобрить</button>
+                                <button type="submit" name="changeStatus" value="DENIED" class="btn btn-outline-danger">Отклонить</button>
+                                Причина отказа: <input type="text" maxlength="300" name="message" />
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -16,4 +16,6 @@ public interface VolunteerFunctionRepository {
     public VolunteerFunction getVolunteerFunction(int volunteerFunctionID);
 
     public List<VolunteerFunction> getVolunteerFunctions(Event event);
+
+    public boolean delete(VolunteerFunction volunteerFunction);
 }

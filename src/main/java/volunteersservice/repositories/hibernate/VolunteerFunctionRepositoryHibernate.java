@@ -54,4 +54,18 @@ public class VolunteerFunctionRepositoryHibernate implements VolunteerFunctionRe
                 "select volunteerFunction From VolunteerFunction as volunteerFunction inner join Event as event on event.eventID = volunteerFunction.event.eventID where event.eventID = :eventID")
                 .setParameter("eventID", event.getEventID()).list();
     }
+
+    @Override
+    public boolean delete(VolunteerFunction volunteerFunction) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.beginTransaction();
+
+        try {
+            session.delete(volunteerFunction);
+            tx.commit();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
 }

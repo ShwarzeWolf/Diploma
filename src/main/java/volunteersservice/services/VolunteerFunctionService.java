@@ -24,4 +24,6 @@ public interface VolunteerFunctionService {
 	public List<VolunteerFunction> getVolunteerFunctions(Event event);
 
 	public void updateVolunteerFunctionInformation(VolunteerFunction volunteerFunction);
+
+	public void deleteVolunteerFunction(VolunteerFunction volunteerFunction);
 }
