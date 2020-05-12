@@ -82,7 +82,7 @@
                     <div><input type="submit" class="btn btn-lg btn-primary btn-block" value="Зарегистрироваться!" /></div>
                 </form>
 
-                <div th:if="${roleName == null}" class="login-here" style="padding: 5%">
+                <div class="login-here" style="padding: 5%">
                     Уже есть аккаунт? <a th:href="@{/login}">Войдите в систему</a>
                 </div>
             </div>
@@ -100,5 +100,4 @@
         crossorigin="anonymous"></script>
 
 </body>
-
 </html>

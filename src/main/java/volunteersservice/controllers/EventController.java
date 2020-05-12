@@ -53,7 +53,7 @@ public class EventController {
         return "redirect:/events/" + ev.getEventID();
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @GetMapping("/events/{eventID}")
     public String getEventByID(@PathVariable int eventID,
                                Model model) {
@@ -71,7 +71,7 @@ public class EventController {
         return "currentEvent";
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @GetMapping("/events/{eventID}/edit")
     public String editEventPage(@PathVariable int eventID,
                                 Model model){
@@ -81,7 +81,7 @@ public class EventController {
 
         if (currentEvent.getOrganiser().getName().equals(user.getName())
                 && currentEvent.getStatus().getName().equals("CREATED")
-                || currentEvent.getCoordinator().equals(user)) {
+                || currentEvent.getCoordinator() != null && currentEvent.getCoordinator().equals(user)) {
 
             model.addAttribute("roleName", user.getUserRole().getName());
             model.addAttribute("event", currentEvent);
@@ -94,7 +94,7 @@ public class EventController {
     };
 
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @PostMapping("/events/{eventID}/edit")
     public String editEvent(@PathVariable int eventID,
                             Model model,
@@ -126,7 +126,7 @@ public class EventController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @PostMapping("/events/{eventID}")
     public String addVolunteerFunction(@PathVariable int eventID,
                                        @RequestParam String name,
@@ -146,7 +146,7 @@ public class EventController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @GetMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
     public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
                                        @PathVariable int eventID,
@@ -169,7 +169,7 @@ public class EventController {
         return "403";
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @PostMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/edit")
     public String editVolunteerFunction(@PathVariable int volunteerFunctionID,
                                         @PathVariable int eventID,
@@ -196,7 +196,7 @@ public class EventController {
         return "redirect:/events/" + eventID;
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @PostMapping("/events/{eventID}/setEventStatus")
     public String setEventStatus(@PathVariable int eventID,
                                  @RequestParam String changeStatus,
@@ -212,7 +212,7 @@ public class EventController {
          return "redirect:/events/";
     }
 
-    @PreAuthorize("hasAuthority('COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
     @PostMapping("/events/{eventID}/coordinate")
     public String coordinateEvent(@PathVariable int eventID) {
         User user = Utils.getUserFromContext();
@@ -239,7 +239,7 @@ public class EventController {
         return "redirect:/events/";
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @PostMapping("/events/{eventID}/volunteerFunctions/{volunteerFunctionID}/delete")
     public String deleteVolunteerFunction(@PathVariable int eventID,
                                         @PathVariable int volunteerFunctionID){

@@ -21,7 +21,7 @@ public class MainController {
         return "main";
     }
 
-    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR')")
+    @PreAuthorize("hasAnyAuthority('ORGANISER', 'MANAGER', 'COORDINATOR', 'MOVEMENTLEADER')")
     @GetMapping("/events")
     public String myEventPool(Model model) {
         User user = Utils.getUserFromContext();
@@ -44,6 +44,13 @@ public class MainController {
 
                 return "ManagersEventPool";
 
+            case "MOVEMENTLEADER":
+                model.addAttribute("approvedEvents", eventService.getEventsByStatus(EventStatusEnum.APPROVED));
+                model.addAttribute("coordinatedEvents", eventService.getEventsByStatus(EventStatusEnum.ASSIGNED));
+                model.addAttribute("endedEvents", eventService.getEventsByStatus(EventStatusEnum.FINISHED));
+                model.addAttribute("deniedEvents", eventService.getEventsByStatus(EventStatusEnum.DENIED));
+
+                return "MovementLeaderEventPool";
             case "COORDINATOR":
                 model.addAttribute("approvedEvents", eventService.getEventsByStatus(EventStatusEnum.APPROVED));
                 model.addAttribute("coordinatedEvents", eventService.getEventsByStatusCoordinatedByUser(user, EventStatusEnum.ASSIGNED ));
