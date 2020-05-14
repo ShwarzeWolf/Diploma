@@ -29,16 +29,16 @@ public class StatusServiceDefault implements StatusService {
 
     @Override
     public CategoryStatus getStatusByEnum(CategoryStatusEnum statusEnum) {
-        return null;
+        return statusRepository.getStatusByEnum(statusEnum);
     }
 
     @Override
     public LevelStatus getStatusByEnum(LevelStatusEnum statusEnum) {
-        return null;
+        return statusRepository.getStatusByEnum(statusEnum);
     }
 
     @Override
     public PublicityStatus getStatusByEnum(PublicityStatusEnum statusEnum) {
-        return null;
+        return statusRepository.getStatusByEnum(statusEnum);
     }
 }
