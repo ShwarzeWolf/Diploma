@@ -202,12 +202,15 @@ public class EventController {
                                  @RequestParam String changeStatus,
                                  @RequestParam(required = false) String message) {
         Event event = eventService.getEventByID(eventID);
+        User user = Utils.getUserFromContext();
 
         eventService.setStatus(event, EventStatusEnum.valueOf(changeStatus));
         LOG.info(String.format("User \"%s\" changes event [%s] status: \"%s\" -> \"%s\"", Utils.getUserFromContext().getLogin(), event, event.getStatus().getName(), changeStatus));
 
-         if (changeStatus.equals("APPROVED") || changeStatus.equals("DENIED"))
+         if (changeStatus.equals("APPROVED") || changeStatus.equals("DENIED")) {
              eventService.setMessage(event, message);
+             eventService.setManager(event, user);
+         }
 
          return "redirect:/events/";
     }
@@ -257,5 +260,11 @@ public class EventController {
         }
 
         return "redirect:/events/" + eventID;
+    }
+
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
+    @GetMapping("/events/{eventID}/createReport")
+    public String deleteVolunteerFunction(@PathVariable int eventID) {
+    return "reportAdditionalInfo";
     }
 }

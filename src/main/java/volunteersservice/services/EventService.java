@@ -82,5 +82,7 @@ public interface EventService {
 
 	public void setCoordinator(Event event, User coordinator);
 
+	public void setManager(Event event, User manager);
+
 	public void deleteEvent(Event event);
 }

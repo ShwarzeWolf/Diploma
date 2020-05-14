@@ -28,6 +28,10 @@ public class Event {
     @JoinColumn(name = "CoordinatorID", referencedColumnName = "UserID", nullable = true)
     User coordinator;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ManagerID", referencedColumnName = "UserID")
+    User manager;
+
     @Column(name = "Name", nullable = false)
     @NotNull
     @NotEmpty(message = "Name of Event cannot be empty")
@@ -82,6 +86,7 @@ public class Event {
         this.name = other.name;
         this.organiser = other.organiser;
         this.coordinator = other.coordinator;
+        this.manager = other.manager;
         this.description = other.description;
         this.place = other.place;
         this.dateStart = other.dateStart;
@@ -134,6 +139,14 @@ public class Event {
 
     public void setCoordinator(User coordinator) {
         this.coordinator = coordinator;
+    }
+
+    public User getManager() {
+        return manager;
+    }
+
+    public void setManager(User manager) {
+        this.manager = manager;
     }
 
     public String getName() {

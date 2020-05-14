@@ -33,6 +33,7 @@ CREATE TABLE VolunteersService.Events (
     EventID       SERIAL    PRIMARY KEY  NOT NULL,
     OrganiserID   INTEGER                NOT NULL REFERENCES VolunteersService.Users(UserID),
     CoordinatorID INTEGER                         REFERENCES VolunteersService.Users(UserID),
+    ManagerID     INTEGER                         REFERENCES VolunteersService.Users(UserID),
     Name          VARCHAR(150)           NOT NULL,
     Description   TEXT                   NOT NULL,
     Place         VARCHAR(300)           NOT NULL,

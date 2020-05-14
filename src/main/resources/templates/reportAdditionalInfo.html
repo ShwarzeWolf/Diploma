@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Создание отчета</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+    <div class="collapse navbar-collapse">
+        <div class="navbar-nav">
+            <a class="nav-item">
+                <a class="nav-link" th:href="@{/events}">Мои мероприятия</a>
+            </a>
+        </div>
+    </div>
+    <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        <div class="nav-item">
+            <span class="navbar-text" th:text="${name}"></span>
+        </div>
+
+        <div class="nav-item">
+            <a class="nav-link" th:href="@{/personal_account}">Мой профиль</a>
+        </div>
+
+        <div class="nav-item">
+            <form class="nav-item" th:action="@{/logout}" method="post">
+                <input class="btn btn-secondary" type="submit" value="Выйти из аккаунта" />
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div style="margin-left: 4%">
+    <div name="title">
+        <h2>Укажите необходимую информацию</h2>
+        <p>Остальная часть отчета будет получена из мероприятия</p>
+    </div>
+    <form method="post">
+        <div class="form-group row">
+            <label for="name" class="col-md-2 col-form-label">Краткое название мероприятия</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="name" name="shortName" value="" maxlength="500">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-2 col-form-label">Категория</div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="category" id="categoryInner" value="categoryInner" checked>
+                <label class="form-check-label" for="categoryInner">Внутреннее</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="category" id="categoryOuter" value="categoryOuter">
+                <label class="form-check-label" for="categoryOuter">Внешнее</label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-2 col-form-label">Публичность</div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="publicity" id="publicityOpen" value="publicityOpen" checked>
+                <label class="form-check-label" for="publicityOpen">Открытое</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="publicity" id="publicityClosed" value="publicityClosed">
+                <label class="form-check-label" for="publicityClosed">Закрытое</label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-2 col-form-label">Уровень</div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="levelFaculty" value="levelFaculty" checked>
+                <label class="form-check-label" for="levelFaculty">Факультетский</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="levelUniversity" value="levelUniversity">
+                <label class="form-check-label" for="levelUniversity">Университетский</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="levelCity" value="levelCity">
+                <label class="form-check-label" for="levelCity">Городской</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="levelRegion" value="levelRegion">
+                <label class="form-check-label" for="levelRegion">Региональный</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="levelCountry" value="levelCountry">
+                <label class="form-check-label" for="levelCountry">Федеральный</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="level" id="levelInternational" value="levelInternational">
+                <label class="form-check-label" for="levelInternational">Международный</label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="shortDescription" class="col-md-2 col-form-label">Анонс</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="shortDescription" name="shortDescription" value="" maxlength="500">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="participants" class="col-md-2 col-form-label">Участники</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="participants" name="participants" value="" maxlength="500">
+            </div>
+        </div>
+        <div class="col-md-10">
+            <button type="submit" class="btn btn-lg btn-primary btn-block ">Создать отчет</button>
+        </div>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

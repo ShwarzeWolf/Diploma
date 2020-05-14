@@ -16,7 +16,7 @@ public class CategoryStatus {
 
     public CategoryStatus() {}
 
-    public CategoryStatus(LevelStatus other) {
+    public CategoryStatus(CategoryStatus other) {
         this.statusID = other.statusID;
         this.name = other.name;
     }

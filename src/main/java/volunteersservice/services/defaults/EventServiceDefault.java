@@ -172,6 +172,12 @@ public class EventServiceDefault implements EventService {
     }
 
     @Override
+    public void setManager(Event event, User manager){
+        event.setManager(manager);
+        eventRepository.update(event);
+    }
+
+    @Override
     public void deleteEvent(Event event) {
         eventRepository.delete(event);
     }
