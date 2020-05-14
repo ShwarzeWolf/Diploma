@@ -1,14 +1,12 @@
 package volunteersservice.models.entities;
 
-import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.repositories.EventStatusRepository;
-import volunteersservice.utils.RepositoryFactory;
+import volunteersservice.models.enums.CategoryStatusEnum;
+import volunteersservice.models.enums.LevelStatusEnum;
+import volunteersservice.models.enums.PublicityStatusEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "VolunteersService.FirstPartReports")
@@ -49,18 +47,19 @@ public class FirstPartOfReport {
 
     public FirstPartOfReport(Event event,
                              String shortName,
-                             CategoryStatus categoryStatus,
-                             PublicityStatus publicityStatus,
-                             LevelStatus level,
+                             CategoryStatusEnum categoryStatus,
+                             PublicityStatusEnum publicityStatus,
+                             LevelStatusEnum level,
                              String shortDescription,
                              String participants) {
         this.event = event;
         this.shortName = shortName;
-        this.categoryStatus = categoryStatus;
-        this.publicityStatus = publicityStatus;
-        this.level = level;
         this.shortDescription = shortDescription;
         this.participants = participants;
+
+        //this.categoryStatus = categoryStatus;
+        //this.publicityStatus = publicityStatus;
+        //this.level = level;
     }
 
 

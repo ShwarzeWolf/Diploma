@@ -6,10 +6,10 @@ import volunteersservice.utils.HibernateUtil;
 
 import org.springframework.stereotype.Repository;
 
-import volunteersservice.repositories.EventStatusRepository;
+import volunteersservice.repositories.StatusRepository;
 
 @Repository
-public class EventStatusRepositoryHibernate implements EventStatusRepository {
+public class StatusRepositoryHibernate implements StatusRepository {
 
     @Deprecated
     @Override

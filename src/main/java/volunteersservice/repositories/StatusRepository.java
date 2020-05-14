@@ -6,7 +6,7 @@ import volunteersservice.models.entities.EventStatus;
 import volunteersservice.models.enums.EventStatusEnum;
 
 @Repository
-public interface EventStatusRepository {
+public interface StatusRepository {
     @Deprecated
     public EventStatus getStatusByName(String typeName);
 

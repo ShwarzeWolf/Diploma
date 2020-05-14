@@ -6,7 +6,7 @@ import volunteersservice.services.defaults.*;
 public class ServiceFactory {
 
 	private static final EventService EVENT_SERVICE = new EventServiceDefault();
-	private static final EventStatusService EVENT_STATUS_SERVICE = new EventStatusServiceDefault();
+	private static final StatusService EVENT_STATUS_SERVICE = new StatusServiceDefault();
 	private static final VolunteerFunctionService VOLUNTEER_FUNCTION_SERVICE = new VolunteerFunctionServiceDefault();
 	private static final UserService USER_SERVICE = new UserServiceDefault();
 	private static final UserRoleService USER_ROLE_SERVICE = new UserRoleServiceDefault();
@@ -15,7 +15,7 @@ public class ServiceFactory {
 		return EVENT_SERVICE;
 	}
 
-	public static EventStatusService getEventStatusService() {
+	public static StatusService getEventStatusService() {
 		return EVENT_STATUS_SERVICE;
 	}
 

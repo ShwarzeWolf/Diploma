@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import volunteersservice.models.entities.Event;
+import volunteersservice.models.entities.PublicityStatus;
 import volunteersservice.models.entities.User;
 import volunteersservice.models.entities.VolunteerFunction;
+import volunteersservice.models.enums.CategoryStatusEnum;
 import volunteersservice.models.enums.EventStatusEnum;
+import volunteersservice.models.enums.LevelStatusEnum;
+import volunteersservice.models.enums.PublicityStatusEnum;
 import volunteersservice.services.EventService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
@@ -262,9 +266,33 @@ public class EventController {
         return "redirect:/events/" + eventID;
     }
 
+
+
+
+
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
     @GetMapping("/events/{eventID}/createReport")
-    public String deleteVolunteerFunction(@PathVariable int eventID) {
-    return "reportAdditionalInfo";
+    public String addReportPage(@PathVariable int eventID) {
+        return "reportAdditionalInfo";
     }
+
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
+    @PostMapping("/events/{eventID}/createReport")
+    public String addReport(@PathVariable int eventID,
+                            @RequestParam String shortName,
+                            @RequestParam String category,
+                            @RequestParam String publicity,
+                            @RequestParam String level,
+                            @RequestParam String shortDescription,
+                            @RequestParam String participants)
+    {
+        CategoryStatusEnum categoryStatus = category.equals("categoryInner") ? CategoryStatusEnum.INNER : CategoryStatusEnum.OUTER;
+        PublicityStatusEnum publicityStatus = publicity.equals("publicityOpen") ? PublicityStatusEnum.OPEN : PublicityStatusEnum.CLOSED;
+
+        //System.out.println(shortName + category + publicity +level + shortDescription + participants);
+        //logic of creating report which return report id
+
+        return "redirect:/events/" + eventID;// + "/reports/firstPart/"+ reportId;
+    }
+
 }

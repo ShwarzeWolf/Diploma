@@ -1,7 +1,7 @@
 package volunteersservice.models.entities;
 
 import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.repositories.EventStatusRepository;
+import volunteersservice.repositories.StatusRepository;
 import volunteersservice.utils.RepositoryFactory;
 
 import javax.persistence.*;
@@ -120,7 +120,7 @@ public class Event {
         this.food = food;
         this.message = "";
 
-        EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
+        StatusRepository eventStatusRepository = RepositoryFactory.getStatusRepository();
         this.status = eventStatusRepository.getStatusByEnum(EventStatusEnum.CREATED);
 
     }
@@ -243,7 +243,7 @@ public class Event {
     }
 
     public void setStatus(EventStatusEnum statusEnum) {
-        EventStatusRepository eventStatusRepository = RepositoryFactory.getEventStatusRepository();
+        StatusRepository eventStatusRepository = RepositoryFactory.getStatusRepository();
         this.status = eventStatusRepository.getStatusByEnum(statusEnum);
     }
 

@@ -8,7 +8,7 @@ public class RepositoryFactory {
     private final static UserRepository USER_REPOSITORY = new UserRepositoryHibernate();
     private final static UserRoleRepository USER_ROLE_REPOSITORY = new UserRoleRepositoryHibernate();
     private final static EventRepository EVENT_REPOSITORY = new EventRepositoryHibernate();
-    private final static EventStatusRepository EVENT_STATUS_REPOSITORY = new EventStatusRepositoryHibernate();
+    private final static StatusRepository STATUS_REPOSITORY = new StatusRepositoryHibernate();
     private final static VolunteerFunctionRepository VOLUNTEER_FUNCTION_REPOSITORY = new VolunteerFunctionRepositoryHibernate();
 
     public static UserRepository getUserRepository() {
@@ -23,8 +23,8 @@ public class RepositoryFactory {
         return EVENT_REPOSITORY;
     }
 
-    public static EventStatusRepository getEventStatusRepository() {
-        return EVENT_STATUS_REPOSITORY;
+    public static StatusRepository getStatusRepository() {
+        return STATUS_REPOSITORY;
     }
 
     public static VolunteerFunctionRepository getVolunteerFunctionRepository() {

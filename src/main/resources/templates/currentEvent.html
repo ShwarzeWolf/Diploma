@@ -54,6 +54,9 @@
                         <button type="submit" name="changeStatus" value="FINISHED" class="btn btn-outline-success">Завершить</button>
                     </form>
                 </div>
+                <div  id="reports" th:if="${event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin()}">
+                    <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/createReport'}"  role="button">Создать первую часть отчета</a>
+                </div>
         </div>
         <div class="row" style="padding: 1%">
             <div class="col-md-2"><h6>Даты</h6></div>
@@ -167,10 +170,6 @@
             </tr>
         </table>
         </div>
-    </div>
-
-    <div  id="reports" th:if="${event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin()}">
-            <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/createReport'}"  role="button">Создать первую часть отчета</a>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
