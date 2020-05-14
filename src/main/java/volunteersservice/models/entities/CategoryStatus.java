@@ -25,6 +25,13 @@ public class CategoryStatus {
         return name;
     }
 
+    public String getRussishName(){
+        switch (this.name){
+            case "INNER": return "Внутреннее";
+            case "OUTER": return "Внешнее";
+            default: return this.name;
+        }
+    }
     public int getStatusID() {
         return statusID;
     }

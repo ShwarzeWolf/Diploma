@@ -3,6 +3,8 @@ package volunteersservice.models.entities;
 import volunteersservice.models.enums.CategoryStatusEnum;
 import volunteersservice.models.enums.LevelStatusEnum;
 import volunteersservice.models.enums.PublicityStatusEnum;
+import volunteersservice.services.StatusService;
+import volunteersservice.utils.ServiceFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -57,9 +59,11 @@ public class FirstPartOfReport {
         this.shortDescription = shortDescription;
         this.participants = participants;
 
-        //this.categoryStatus = categoryStatus;
-        //this.publicityStatus = publicityStatus;
-        //this.level = level;
+        StatusService service = ServiceFactory.getStatusService();
+
+        this.categoryStatus = service.getStatusByEnum(categoryStatus);
+        this.publicityStatus = service.getStatusByEnum(publicityStatus);
+        this.level = service.getStatusByEnum(level);
     }
 
 

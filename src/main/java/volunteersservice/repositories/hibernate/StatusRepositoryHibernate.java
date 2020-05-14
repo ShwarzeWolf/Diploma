@@ -11,7 +11,6 @@ import volunteersservice.models.enums.PublicityStatusEnum;
 import volunteersservice.utils.HibernateUtil;
 
 import org.springframework.stereotype.Repository;
-
 import volunteersservice.repositories.StatusRepository;
 
 @Repository
@@ -21,8 +20,7 @@ public class StatusRepositoryHibernate implements StatusRepository {
     @Override
     public EventStatus getStatusByName(String statusName) {
         EventStatus res = (EventStatus) HibernateUtil.getSession().createQuery(
-                "from EventStatus as eventStatus where eventStatus.name = :name")
-                .setParameter("name", statusName).uniqueResult();
+                "from EventStatus as eventStatus where eventStatus.name = :name").setParameter("name", statusName).uniqueResult();
         return res;
     }
 

@@ -19,8 +19,7 @@ public class EventStatus {
     @Column(name = "Name", nullable = false)
     private String name;
 
-    public EventStatus() {
-    }
+    public EventStatus() {}
 
     public EventStatus(EventStatus other) {
         this.statusID = other.statusID;

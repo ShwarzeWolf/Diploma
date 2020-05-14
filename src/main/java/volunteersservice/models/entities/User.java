@@ -124,6 +124,9 @@ public class User {
         this.hash2 = Utils.calcMD5(password);
     }
 
+    public String getContacts(){
+        return surname.concat(" ").concat(name).concat(", ").concat(email);
+    }
     @Override
     public String toString() {
         return String.format("(User %d): %s; %s; %s; %s; %s + %s; %s %s", userID, email, login, name, surname,  hash1, hash2,

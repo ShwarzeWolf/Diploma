@@ -25,6 +25,14 @@ public class PublicityStatus {
         return name;
     }
 
+    public String getRussishName(){
+        switch (this.name){
+            case "OPEN": return "Открытое";
+            case "CLOSED": return "Закрытое";
+            default: return this.name;
+        }
+    }
+
     public int getStatusID() {
         return statusID;
     }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Report</title>
+</head>
+<style type="text/css">
+    table {
+        width: 600px;
+        border-collapse: collapse;
+    }
+    td, th {
+        padding: 3px;
+        border: 1px solid black;
+    }
+</style>
+<script src="report.js"></script>
+<body>
+<p>Отчет по мероприятию.</p>
+<h4>I. Необходимо заполнить до начала мероприятия.</h4>
+<table id="report">
+    <tr><td>Официальное, полное название мероприятия.</td></tr>
+    <tr><td th:text="${event.getName()}"> </td></tr>
+    <tr><td>Краткое наименования мероприятия.</td></tr>
+    <tr><td th:text="${reportInfo.getShortName()}"> </td></tr>
+    <tr><td>Категория</td></tr>
+    <tr><td th:text="${reportInfo.getCategoryStatus().getRussishName()}"></td></tr>
+    <tr><td>Публичность</td></tr>
+    <tr><td th:text="${reportInfo.getPublicityStatus().getRussishName()}"></td></tr>
+    <tr><td>Уровень мероприятия</td></tr>
+    <tr><td th:text="${reportInfo.getLevel().getRussishName()}"></td></tr>
+    <tr><td>Дата начала и дата окончания мероприятия</td></tr>
+    <tr><td th:text="${event.getPrettyDateStart()} + '-' + ${event.getPrettyDateFinish()}"></td></tr>
+    <tr><td><b>Пресс-релиз:</b></td></tr>
+    <tr><td>Анонс мероприятия</td></tr>
+    <tr><td th:text="${reportInfo.getShortDescription()}"></td></tr>
+    <tr><td> Описание мероприятия:</td></tr>
+    <tr><td th:text="${event.getDescription()}"></td></tr>
+    <tr><td>Участники</td></tr>
+    <tr><td th:text="${reportInfo.getParticipants()}"></td></tr>
+    <tr><td>Куратор студента при участии в реализации мероприятия</td></tr>
+    <tr><td th:text="${event.getManager().getContacts()}"></td></tr>
+    <tr><td>Структурные подразделения Университета ИТМО</td></tr>
+    <tr><td>Управление по развитию студенческих инициатив <br> Клуб "ты нужен людям!"</td></tr>
+    <tr><td> Место проведения</td></tr>
+    <tr><td th:text="${event.getPlace()}"></td></tr>
+    <tr><td>Контактное лицо</td></tr>
+    <tr><td th:text="${event.getCoordinator().getContacts()}"></td></tr>
+</table>
+</body>
+</html>

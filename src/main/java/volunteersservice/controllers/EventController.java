@@ -9,15 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import volunteersservice.models.entities.Event;
-import volunteersservice.models.entities.PublicityStatus;
-import volunteersservice.models.entities.User;
-import volunteersservice.models.entities.VolunteerFunction;
+import volunteersservice.models.entities.*;
 import volunteersservice.models.enums.CategoryStatusEnum;
 import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.models.enums.LevelStatusEnum;
 import volunteersservice.models.enums.PublicityStatusEnum;
 import volunteersservice.services.EventService;
+import volunteersservice.services.FirstPartReportService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
@@ -26,6 +24,7 @@ import volunteersservice.utils.Utils;
 public class EventController {
     private final static Logger LOG = Logger.getLogger(EventController.class);
     private final EventService eventService = ServiceFactory.getEventService();
+    private final FirstPartReportService reportService = ServiceFactory.getFirstPartReportService();
 
     @PreAuthorize("hasAuthority('ORGANISER')")
     @GetMapping("/addEvent")
@@ -289,10 +288,37 @@ public class EventController {
         CategoryStatusEnum categoryStatus = category.equals("categoryInner") ? CategoryStatusEnum.INNER : CategoryStatusEnum.OUTER;
         PublicityStatusEnum publicityStatus = publicity.equals("publicityOpen") ? PublicityStatusEnum.OPEN : PublicityStatusEnum.CLOSED;
 
-        //System.out.println(shortName + category + publicity +level + shortDescription + participants);
-        //logic of creating report which return report id
+        LevelStatusEnum levelStatus;
+        switch (level){
+            case "levelFaculty": levelStatus = LevelStatusEnum.FACULTY; break;
+            case "levelUniversity": levelStatus = LevelStatusEnum.UNIVERSITY; break;
+            case "levelCity": levelStatus = LevelStatusEnum.CITY; break;
+            case "levelRegion": levelStatus = LevelStatusEnum.REGION; break;
+            case "levelCountry": levelStatus = LevelStatusEnum.FEDERAL; break;
+            case "levelInternational": levelStatus = LevelStatusEnum.INTERNATIONAL; break;
+            default: levelStatus = LevelStatusEnum.FACULTY;
+        }
 
-        return "redirect:/events/" + eventID;// + "/reports/firstPart/"+ reportId;
+        Event event = eventService.getEventByID(eventID);
+
+        FirstPartOfReport report = reportService.addFirstPartOfAReport(event, shortName, categoryStatus, publicityStatus, levelStatus, shortDescription, participants);
+
+
+        return "redirect:/events/" + eventID ; //+ "/reports/firstPart/"+ report.getReportID();
+    }
+
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
+    @GetMapping("/events/{eventID}/reports")
+    public String getReport(@PathVariable int eventID,
+                            Model model) {
+
+        Event event = eventService.getEventByID(eventID);
+        FirstPartOfReport report = reportService.getFirstPartOfAReportByEvent(event);
+
+        model.addAttribute("event", event);
+        model.addAttribute("reportInfo", report);
+
+        return "report";
     }
 
 }

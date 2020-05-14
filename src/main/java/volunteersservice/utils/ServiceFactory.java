@@ -6,17 +6,18 @@ import volunteersservice.services.defaults.*;
 public class ServiceFactory {
 
 	private static final EventService EVENT_SERVICE = new EventServiceDefault();
-	private static final StatusService EVENT_STATUS_SERVICE = new StatusServiceDefault();
+	private static final StatusService STATUS_SERVICE = new StatusServiceDefault();
 	private static final VolunteerFunctionService VOLUNTEER_FUNCTION_SERVICE = new VolunteerFunctionServiceDefault();
 	private static final UserService USER_SERVICE = new UserServiceDefault();
 	private static final UserRoleService USER_ROLE_SERVICE = new UserRoleServiceDefault();
+	private static final FirstPartReportService FIRST_PART_REPORT_SERVICE = new FirstPartReportServiceDefault();
 
 	public static EventService getEventService() {
 		return EVENT_SERVICE;
 	}
 
-	public static StatusService getEventStatusService() {
-		return EVENT_STATUS_SERVICE;
+	public static StatusService getStatusService() {
+		return STATUS_SERVICE;
 	}
 
 	public static VolunteerFunctionService getVolunteerFunctionService() {
@@ -30,4 +31,6 @@ public class ServiceFactory {
 	public static UserRoleService getUserRoleService() {
 		return USER_ROLE_SERVICE;
 	}
+
+	public static FirstPartReportService getFirstPartReportService() {return FIRST_PART_REPORT_SERVICE; }
 }

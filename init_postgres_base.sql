@@ -95,8 +95,6 @@ ALTER TABLE VolunteersService.Events             OWNER TO java;
 ALTER TABLE VolunteersService.VolunteerFunctions OWNER TO java;
 ALTER TABLE VolunteersService.FirstPartReports   OWNER TO java;
 
-\! echo "Inserting base data"
-
 INSERT INTO VolunteersService.UserRole    (Name) values ('ORGANISER'), ('MANAGER') , ('COORDINATOR'), ('ADMIN'), ('MOVEMENTLEADER');
 INSERT INTO VolunteersService.EventStatus (Name) values ('CREATED'), ('UNCHECKED'), ('APPROVED'), ('DENIED'), ('ASSIGNED'), ('FINISHED');
 INSERT INTO VolunteersService.LevelStatus (Name) values ('FACULTY'), ('UNIVERSITY'), ('CITY'), ('REGION'), ('FEDERAL'), ('INTERNATIONAL');

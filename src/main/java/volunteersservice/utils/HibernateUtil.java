@@ -6,11 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-import volunteersservice.models.entities.Event;
-import volunteersservice.models.entities.EventStatus;
-import volunteersservice.models.entities.User;
-import volunteersservice.models.entities.UserRole;
-import volunteersservice.models.entities.VolunteerFunction;
+import volunteersservice.models.entities.*;
 
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
@@ -29,6 +25,10 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Event.class);
                 configuration.addAnnotatedClass(VolunteerFunction.class);
+                configuration.addAnnotatedClass(FirstPartOfReport.class);
+                configuration.addAnnotatedClass(CategoryStatus.class);
+                configuration.addAnnotatedClass(LevelStatus.class);
+                configuration.addAnnotatedClass(PublicityStatus.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());

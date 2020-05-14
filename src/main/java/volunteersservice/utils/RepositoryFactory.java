@@ -10,6 +10,7 @@ public class RepositoryFactory {
     private final static EventRepository EVENT_REPOSITORY = new EventRepositoryHibernate();
     private final static StatusRepository STATUS_REPOSITORY = new StatusRepositoryHibernate();
     private final static VolunteerFunctionRepository VOLUNTEER_FUNCTION_REPOSITORY = new VolunteerFunctionRepositoryHibernate();
+    private final static ReportRepository REPORT_REPOSITORY = new ReportRepositoryHibernate();
 
     public static UserRepository getUserRepository() {
         return USER_REPOSITORY;
@@ -30,4 +31,6 @@ public class RepositoryFactory {
     public static VolunteerFunctionRepository getVolunteerFunctionRepository() {
         return VOLUNTEER_FUNCTION_REPOSITORY;
     }
+
+    public static ReportRepository getReportRepository() { return REPORT_REPOSITORY;}
 }

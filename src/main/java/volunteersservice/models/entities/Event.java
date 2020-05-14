@@ -120,8 +120,8 @@ public class Event {
         this.food = food;
         this.message = "";
 
-        StatusRepository eventStatusRepository = RepositoryFactory.getStatusRepository();
-        this.status = eventStatusRepository.getStatusByEnum(EventStatusEnum.CREATED);
+        StatusRepository statusRepository = RepositoryFactory.getStatusRepository();
+        this.status = statusRepository.getStatusByEnum(EventStatusEnum.CREATED);
 
     }
 
