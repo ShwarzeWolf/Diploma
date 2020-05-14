@@ -58,7 +58,36 @@ CREATE TABLE VolunteersService.VolunteerFunctions (
     NumberNeeded INTEGER                NOT NULL
 );
 
+CREATE TABLE VolunteersService.CategoryStatus (
+                                               StatusID     SERIAL    PRIMARY KEY  NOT NULL,
+                                               Name         VARCHAR(30)            NOT NULL
+);
+
+CREATE TABLE VolunteersService.PublicityStatus (
+                                                  StatusID     SERIAL    PRIMARY KEY  NOT NULL,
+                                                  Name         VARCHAR(30)            NOT NULL
+);
+
+CREATE TABLE VolunteersService.LevelStatus (
+                                                  StatusID     SERIAL    PRIMARY KEY  NOT NULL,
+                                                  Name         VARCHAR(30)            NOT NULL
+);
+
+CREATE TABLE VolunteersService.FirstPartReports(
+    ReportID            SERIAL PRIMARY KEY  NOT NULL,
+    EventID             INTEGER             NOT NULL REFERENCES VolunteersService.Events(EventID),
+    ShortName           VARCHAR(50)         NOT NULL,
+    CategoryID          INTEGER             NOT NULL REFERENCES VolunteersService.CategoryStatus(StatusID),
+    PublicityID         INTEGER             NOT NULL REFERENCES VolunteersService.PublicityStatus(StatusID),
+    LevelID             INTEGER             NOT NULL REFERENCES VolunteersService.LevelStatus(StatusID),
+    ShortDescription    VARCHAR(1000),
+    Participants        VARCHAR(300)
+);
+
 ALTER TABLE VolunteersService.EventStatus        OWNER TO java;
+ALTER TABLE VolunteersService.LevelStatus        OWNER TO java;
+ALTER TABLE VolunteersService.CategoryStatus     OWNER TO java;
+ALTER TABLE VolunteersService.PublicityStatus    OWNER TO java;
 ALTER TABLE VolunteersService.UserRole           OWNER TO java;
 ALTER TABLE VolunteersService.Users              OWNER TO java;
 ALTER TABLE VolunteersService.Events             OWNER TO java;
@@ -68,5 +97,8 @@ ALTER TABLE VolunteersService.VolunteerFunctions OWNER TO java;
 
 INSERT INTO VolunteersService.UserRole    (Name) values ('ORGANISER'), ('MANAGER') , ('COORDINATOR'), ('ADMIN'), ('MOVEMENTLEADER');
 INSERT INTO VolunteersService.EventStatus (Name) values ('CREATED'), ('UNCHECKED'), ('APPROVED'), ('DENIED'), ('ASSIGNED'), ('FINISHED');
+INSERT INTO VolunteersService.LevelStatus (Name) values ('FACULTY'), ('UNIVERSITY'), ('CITY'), ('REGION'), ('FEDERAL'), ('INTERNATIONAL');
+INSERT INTO VolunteersService.CategoryStatus(Name) values ('INNER'), ('OUTER');
+INSERT INTO VolunteersService.PublicityStatus (Name) values ('OPEN'), ('CLOSED');
 
 END TRANSACTION;
