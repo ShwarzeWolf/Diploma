@@ -92,6 +92,7 @@ ALTER TABLE VolunteersService.UserRole           OWNER TO java;
 ALTER TABLE VolunteersService.Users              OWNER TO java;
 ALTER TABLE VolunteersService.Events             OWNER TO java;
 ALTER TABLE VolunteersService.VolunteerFunctions OWNER TO java;
+ALTER TABLE VolunteersService.FirstPartReports   OWNER TO java;
 
 \! echo "Inserting base data"
 
