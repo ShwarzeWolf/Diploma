@@ -71,6 +71,11 @@ public class EventController {
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
         model.addAttribute("volunteerFunctions", vfs.getVolunteerFunctions(currentEvent));
 
+        FirstPartReportService rs = ServiceFactory.getFirstPartReportService();
+        FirstPartOfReport report = rs.getFirstPartOfAReportByEvent(currentEvent);
+
+        model.addAttribute("report", report);
+
         return "currentEvent";
     }
 
@@ -304,7 +309,7 @@ public class EventController {
         FirstPartOfReport report = reportService.addFirstPartOfAReport(event, shortName, categoryStatus, publicityStatus, levelStatus, shortDescription, participants);
 
 
-        return "redirect:/events/" + eventID ; //+ "/reports/firstPart/"+ report.getReportID();
+        return "redirect:/events/" + eventID + "/reports";
     }
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
