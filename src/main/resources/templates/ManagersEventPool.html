@@ -21,6 +21,11 @@
             <a class="nav-link" th:href="@{/personal_account}">Мой профиль</a>
         </div>
 
+
+        <div class="nav-item" style="padding-right: 1%">
+            <a class="btn btn-outline-primary" th:href="${'/registration/'}"  role="button">Управленеи командой</a>
+        </div>
+
         <div class="nav-item">
             <form class="nav-item" th:action="@{/logout}" method="post">
                 <input class="btn btn-secondary" type="submit" value="Выйти из аккаунта" />

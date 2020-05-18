@@ -91,6 +91,10 @@ public class FirstPartOfReport {
         this.categoryStatus = categoryStatus;
     }
 
+    public void setCategoryStatus(CategoryStatusEnum categoryStatusEnum) {
+        this.categoryStatus = ServiceFactory.getStatusService().getStatusByEnum(categoryStatusEnum);
+    }
+
     public PublicityStatus getPublicityStatus() {
         return publicityStatus;
     }
@@ -99,12 +103,20 @@ public class FirstPartOfReport {
         this.publicityStatus = publicityStatus;
     }
 
+    public void setPublicityStatus(PublicityStatusEnum publicityStatusEnum) {
+        this.publicityStatus = ServiceFactory.getStatusService().getStatusByEnum(publicityStatusEnum);
+    }
+
     public LevelStatus getLevel() {
         return level;
     }
 
     public void setLevel(LevelStatus level) {
         this.level = level;
+    }
+
+    public void setLevel(LevelStatusEnum levelStatusEnum) {
+        this.level = ServiceFactory.getStatusService().getStatusByEnum(levelStatusEnum);
     }
 
     public String getShortDescription() {

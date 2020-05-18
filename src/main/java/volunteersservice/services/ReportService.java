@@ -9,7 +9,7 @@ import volunteersservice.models.enums.PublicityStatusEnum;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface FirstPartReportService {
+public interface ReportService {
 
     public FirstPartOfReport addFirstPartOfAReport(Event event,
                                                    String shortName,

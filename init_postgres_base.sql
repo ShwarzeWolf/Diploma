@@ -18,6 +18,7 @@ CREATE TABLE VolunteersService.Users (
     Email        VARCHAR(40)  UNIQUE    NOT NULL,
     Name         VARCHAR(30)            NOT NULL,
     Surname      VARCHAR(30)            NOT NULL,
+    ContactPhone VARCHAR(30)            NOT NULL,
     RegisterDate TIMESTAMPTZ            NOT NULL,
     PasswdHash1  VARCHAR(128)           NOT NULL,
     PasswdHash2  VARCHAR(128)           NOT NULL,

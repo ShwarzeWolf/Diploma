@@ -5,15 +5,14 @@ import volunteersservice.models.entities.FirstPartOfReport;
 import volunteersservice.models.enums.CategoryStatusEnum;
 import volunteersservice.models.enums.LevelStatusEnum;
 import volunteersservice.models.enums.PublicityStatusEnum;
-import volunteersservice.repositories.EventRepository;
 import volunteersservice.repositories.ReportRepository;
-import volunteersservice.services.FirstPartReportService;
+import volunteersservice.services.ReportService;
 import volunteersservice.utils.RepositoryFactory;
 
-public class FirstPartReportServiceDefault implements FirstPartReportService {
+public class ReportServiceDefault implements ReportService {
     private final ReportRepository reportRepository;
 
-    public FirstPartReportServiceDefault() {
+    public ReportServiceDefault() {
         reportRepository = RepositoryFactory.getReportRepository();
     }
 

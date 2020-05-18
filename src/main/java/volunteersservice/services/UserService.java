@@ -19,7 +19,7 @@ public interface UserService {
 	List<User> getUsers();
 
 	public boolean addUser(String email, String login, String userName, String surname, String password,
-			UserRoleEnum roleEnum);
+			UserRoleEnum roleEnum, String contactPhone);
 
 	public boolean emailPasswordOkay(String email, String password);
 

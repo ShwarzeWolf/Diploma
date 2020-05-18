@@ -38,6 +38,11 @@ public class User {
     @Email(message = "Email must be valid")
     private String email;
 
+    @Column(name = "ContactPhone", nullable = false)
+    @NotNull
+    @NotEmpty(message = "Contact phone cannot be empty")
+    private String contactPhone;
+
     @Column(name = "RegisterDate", nullable = false)
     @NotNull
     private LocalDateTime registerDate;
@@ -68,10 +73,11 @@ public class User {
         this.hash1 = other.hash1;
         this.hash2 = other.hash2;
         this.userRole = other.userRole;
+        this.contactPhone = other.contactPhone;
     }
 
     public User(String email, String login, String userName, String surname, LocalDateTime registerDate, String password,
-            UserRole userRole) {
+            UserRole userRole, String contactPhone) {
         this.email = email;
         this.login = login;
         this.name = userName;
@@ -80,6 +86,7 @@ public class User {
         this.hash1 = Utils.calcSHA256(password);
         this.hash2 = Utils.calcMD5(password);
         this.userRole = userRole;
+        this.contactPhone = contactPhone;
     }
 
     public int getUserID() {
@@ -122,6 +129,14 @@ public class User {
 
     public void setHash2(String password) {
         this.hash2 = Utils.calcMD5(password);
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     public String getContacts(){

@@ -15,7 +15,7 @@ import volunteersservice.models.enums.EventStatusEnum;
 import volunteersservice.models.enums.LevelStatusEnum;
 import volunteersservice.models.enums.PublicityStatusEnum;
 import volunteersservice.services.EventService;
-import volunteersservice.services.FirstPartReportService;
+import volunteersservice.services.ReportService;
 import volunteersservice.services.VolunteerFunctionService;
 import volunteersservice.utils.ServiceFactory;
 import volunteersservice.utils.Utils;
@@ -24,7 +24,6 @@ import volunteersservice.utils.Utils;
 public class EventController {
     private final static Logger LOG = Logger.getLogger(EventController.class);
     private final EventService eventService = ServiceFactory.getEventService();
-    private final FirstPartReportService reportService = ServiceFactory.getFirstPartReportService();
 
     @PreAuthorize("hasAuthority('ORGANISER')")
     @GetMapping("/addEvent")
@@ -71,7 +70,7 @@ public class EventController {
         VolunteerFunctionService vfs = ServiceFactory.getVolunteerFunctionService();
         model.addAttribute("volunteerFunctions", vfs.getVolunteerFunctions(currentEvent));
 
-        FirstPartReportService rs = ServiceFactory.getFirstPartReportService();
+        ReportService rs = ServiceFactory.getFirstPartReportService();
         FirstPartOfReport report = rs.getFirstPartOfAReportByEvent(currentEvent);
 
         model.addAttribute("report", report);
@@ -269,61 +268,4 @@ public class EventController {
 
         return "redirect:/events/" + eventID;
     }
-
-
-
-
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
-    @GetMapping("/events/{eventID}/createReport")
-    public String addReportPage(@PathVariable int eventID) {
-        return "reportAdditionalInfo";
-    }
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
-    @PostMapping("/events/{eventID}/createReport")
-    public String addReport(@PathVariable int eventID,
-                            @RequestParam String shortName,
-                            @RequestParam String category,
-                            @RequestParam String publicity,
-                            @RequestParam String level,
-                            @RequestParam String shortDescription,
-                            @RequestParam String participants)
-    {
-        CategoryStatusEnum categoryStatus = category.equals("categoryInner") ? CategoryStatusEnum.INNER : CategoryStatusEnum.OUTER;
-        PublicityStatusEnum publicityStatus = publicity.equals("publicityOpen") ? PublicityStatusEnum.OPEN : PublicityStatusEnum.CLOSED;
-
-        LevelStatusEnum levelStatus;
-        switch (level){
-            case "levelFaculty": levelStatus = LevelStatusEnum.FACULTY; break;
-            case "levelUniversity": levelStatus = LevelStatusEnum.UNIVERSITY; break;
-            case "levelCity": levelStatus = LevelStatusEnum.CITY; break;
-            case "levelRegion": levelStatus = LevelStatusEnum.REGION; break;
-            case "levelCountry": levelStatus = LevelStatusEnum.FEDERAL; break;
-            case "levelInternational": levelStatus = LevelStatusEnum.INTERNATIONAL; break;
-            default: levelStatus = LevelStatusEnum.FACULTY;
-        }
-
-        Event event = eventService.getEventByID(eventID);
-
-        FirstPartOfReport report = reportService.addFirstPartOfAReport(event, shortName, categoryStatus, publicityStatus, levelStatus, shortDescription, participants);
-
-
-        return "redirect:/events/" + eventID + "/reports";
-    }
-
-    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
-    @GetMapping("/events/{eventID}/reports")
-    public String getReport(@PathVariable int eventID,
-                            Model model) {
-
-        Event event = eventService.getEventByID(eventID);
-        FirstPartOfReport report = reportService.getFirstPartOfAReportByEvent(event);
-
-        model.addAttribute("event", event);
-        model.addAttribute("reportInfo", report);
-
-        return "report";
-    }
-
 }

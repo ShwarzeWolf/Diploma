@@ -48,5 +48,8 @@
     <tr><td>Контактное лицо</td></tr>
     <tr><td th:text="${event.getCoordinator().getContacts()}"></td></tr>
 </table>
+<a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/edit'}"  role="button">Изменить описание меропиятия</a>
+<a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/reports/edit'}"  role="button">Изменить добавочную информацию</a>
+
 </body>
 </html>
