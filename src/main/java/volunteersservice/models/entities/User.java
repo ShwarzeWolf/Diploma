@@ -60,8 +60,7 @@ public class User {
     @NotNull
     UserRole userRole;
 
-    public User() {
-    }
+    public User() {}
 
     public User(User other) {
         this.userID = other.userID;
@@ -140,7 +139,7 @@ public class User {
     }
 
     public String getContacts(){
-        return surname.concat(" ").concat(name).concat(", ").concat(email);
+        return surname.concat(" ").concat(name).concat(", ").concat(contactPhone).concat(", ").concat(email);
     }
     @Override
     public String toString() {
