@@ -52,7 +52,14 @@
 </table>
 <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/edit'}"  role="button">Изменить описание меропиятия</a>
 <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/reports/edit'}"  role="button">Изменить добавочную информацию</a>
-<a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/reports/addVolunteers'}"  role="button">Добавить волонтеров</a>
+
+<form method="POST" enctype="multipart/form-data" action="/upload">
+    Выберете файл с волонтерами:<input type="file" name="file">
+    <input type="submit" value="Добавить файл" class="btn btn-outline-primary" role="submit"></input>
+</form>
+
+</body>
+</html>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
