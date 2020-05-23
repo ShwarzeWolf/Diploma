@@ -1,12 +1,10 @@
 package volunteersservice.services;
 
-import volunteersservice.models.entities.Event;
-import volunteersservice.models.entities.FirstPartOfReport;
+import volunteersservice.models.entities.*;
 import volunteersservice.models.enums.CategoryStatusEnum;
 import volunteersservice.models.enums.LevelStatusEnum;
 import volunteersservice.models.enums.PublicityStatusEnum;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReportService {
@@ -22,4 +20,14 @@ public interface ReportService {
     public FirstPartOfReport getFirstPartOfAReportByEvent(Event event);
 
     public void updateFirstPartOfAReportReport(FirstPartOfReport report);
+
+    public SecondPartOfReport addSecondPart(Event event,
+                                            int numberOfParticipants,
+                                            String links,
+                                            List<Volunteers> volunteers);
+
+    public SecondPartOfReport getSecondPartOfAReportByEvent(Event event);
+
+    public void updateSecondPartOfAReportReport(SecondPartOfReport report);
+
 }

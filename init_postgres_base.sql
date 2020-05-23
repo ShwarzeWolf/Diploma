@@ -86,6 +86,21 @@ CREATE TABLE VolunteersService.FirstPartReports(
     Participants        VARCHAR(300)
 );
 
+CREATE TABLE VolunteersService.SecondPartReports(
+    ReportID            SERIAL PRIMARY KEY  NOT NULL,
+    EventID             INTEGER             NOT NULL REFERENCES VolunteersService.Events(EventID),
+    NumberOfPeople      INTEGER             NOT NULL,
+    ResultsLinks        VARCHAR(1000)
+);
+
+CREATE TABLE VolunteersService.Volunteers (
+    VolunteerID      SERIAL         PRIMARY KEY  NOT NULL,
+    ReportID         INTEGER        NOT NULL REFERENCES VolunteersService.SecondPartReports(ReportID) ON DELETE CASCADE,
+    FIO              VARCHAR(100)   NOT NULL,
+    WhatWasDone      VARChAR(500)   NOT NULL,
+    Role             VARCHAR(100)   NOT NULL
+);
+
 ALTER TABLE VolunteersService.EventStatus        OWNER TO java;
 ALTER TABLE VolunteersService.LevelStatus        OWNER TO java;
 ALTER TABLE VolunteersService.CategoryStatus     OWNER TO java;
@@ -95,6 +110,8 @@ ALTER TABLE VolunteersService.Users              OWNER TO java;
 ALTER TABLE VolunteersService.Events             OWNER TO java;
 ALTER TABLE VolunteersService.VolunteerFunctions OWNER TO java;
 ALTER TABLE VolunteersService.FirstPartReports   OWNER TO java;
+ALTER TABLE VolunteersService.SecondPartReports  OWNER TO java;
+ALTER TABLE VolunteersService.Volunteers         OWNER TO java;
 
 INSERT INTO VolunteersService.UserRole    (Name) values ('ORGANISER'), ('MANAGER') , ('COORDINATOR'), ('ADMIN'), ('MOVEMENTLEADER');
 INSERT INTO VolunteersService.EventStatus (Name) values ('CREATED'), ('UNCHECKED'), ('APPROVED'), ('DENIED'), ('ASSIGNED'), ('FINISHED');

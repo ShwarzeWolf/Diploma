@@ -29,6 +29,8 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(CategoryStatus.class);
                 configuration.addAnnotatedClass(LevelStatus.class);
                 configuration.addAnnotatedClass(PublicityStatus.class);
+                configuration.addAnnotatedClass(SecondPartOfReport.class);
+                configuration.addAnnotatedClass(Volunteers.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());

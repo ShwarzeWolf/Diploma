@@ -1,5 +1,12 @@
 package volunteersservice.controllers;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,17 +14,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.FirstPartOfReport;
+import volunteersservice.models.entities.SecondPartOfReport;
 import volunteersservice.models.enums.CategoryStatusEnum;
 import volunteersservice.models.enums.LevelStatusEnum;
 import volunteersservice.models.enums.PublicityStatusEnum;
 import volunteersservice.services.EventService;
 import volunteersservice.services.ReportService;
-import volunteersservice.services.UserService;
 import volunteersservice.utils.ServiceFactory;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.util.Iterator;
 
 @Controller
 public class ReportController {
@@ -69,9 +75,11 @@ public class ReportController {
 
         Event event = eventService.getEventByID(eventID);
         FirstPartOfReport report = reportService.getFirstPartOfAReportByEvent(event);
-
+        SecondPartOfReport secondPart = reportService.getSecondPartOfAReportByEvent(event);
+        //volunteersBySecondPart
         model.addAttribute("event", event);
         model.addAttribute("reportInfo", report);
+        model.addAttribute("secondPart", secondPart);
 
         return "report";
     }
@@ -127,22 +135,51 @@ public class ReportController {
     }
 
 
-    @PostMapping("/upload")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file){
-        if (!file.isEmpty()) {
-            try {
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File( "uploaded")));
-                stream.write(bytes);
-                stream.close();
-                System.out.println("Вы удачно загрузили " +  " в " +  "-uploaded !");
-            } catch (Exception e) {
-                return "Вам не удалось загрузить " + " => " + e.getMessage();
+
+
+
+
+
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
+    @GetMapping("/events/{eventID}/addSecondPart")
+    public String addSecondPart(@PathVariable int eventID) {
+        return "addSecondPart";
+    }
+
+    @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
+    @PostMapping("/events/{eventID}/addSecondPart")
+    public String addReport(@PathVariable int eventID,
+                            @RequestParam String links,
+                            @RequestParam int numberOfParticipants,
+                            @RequestParam("file") MultipartFile file) throws IOException, InvalidFormatException {
+
+        Event event = eventService.getEventByID(eventID);
+        SecondPartOfReport secondPart = reportService.addSecondPart(event, numberOfParticipants, links, null);
+
+        /*
+        File fileWithInfoAboutVolunteers = new File(file.getOriginalFilename());
+        FileUtils.writeByteArrayToFile(fileWithInfoAboutVolunteers, file.getBytes());
+
+        Workbook workbook = new XSSFWorkbook(fileWithInfoAboutVolunteers);
+        Sheet sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> ri = sheet.rowIterator();
+        while(ri.hasNext()) {
+            XSSFRow row = (XSSFRow) ri.next();
+            String status = row.getCell(2).getStringCellValue();
+
+            if (status.equals("подтверждена")){
+                String name = row.getCell(3).getStringCellValue();
+                String surname = row.getCell(4).getStringCellValue();
+                String patronymic = row.getCell(5).getStringCellValue();
+
+                String FIO = name.concat(" ").concat(surname).concat(" ").concat(patronymic);
+
+                String role = "Волонтер";
+                String thatWasDone = row.getCell(21).getStringCellValue();
             }
-        } else {
-            System.out.println("Вам не удалось загрузить " + " потому что файл пустой.");
         }
-        return "main";
+*/
+        return "redirect:/events/" + eventID + "/reports";
     }
 }

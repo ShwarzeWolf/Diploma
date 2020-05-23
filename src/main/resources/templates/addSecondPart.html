@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Создание отчета</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+    <div class="collapse navbar-collapse">
+        <div class="navbar-nav">
+            <a class="nav-item">
+                <a class="nav-link" th:href="@{/events}">Мои мероприятия</a>
+            </a>
+        </div>
+    </div>
+    <div class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        <div class="nav-item">
+            <span class="navbar-text" th:text="${name}"></span>
+        </div>
+
+        <div class="nav-item">
+            <a class="nav-link" th:href="@{/personal_account}">Мой профиль</a>
+        </div>
+
+        <div class="nav-item">
+            <form class="nav-item" th:action="@{/logout}" method="post">
+                <input class="btn btn-secondary" type="submit" value="Выйти из аккаунта" />
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div style="margin-left: 4%">
+    <div name="title">
+        <h2>Укажите необходимую информацию</h2>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group row">
+            <label for="numberOfParticipants" class="col-md-2 col-form-label">Количество участников</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="numberOfParticipants" name="numberOfParticipants" value="" maxlength="500">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="links" class="col-md-2 col-form-label">Ссылки на источники</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="links" name="links" value="" maxlength="500">
+            </div>
+        </div>
+        <div class="form-group row">
+            Загрузите файл с волонтерами:<input type="file" name="file">
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-lg btn-primary btn-block ">Создать вторую часть отчета</button>
+        </div>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -19,8 +19,10 @@
     }
 </style>
 <body>
-<p>Отчет по мероприятию.</p>
+<h3>Отчет по мероприятию.</h3>
 <h4>I. Необходимо заполнить до начала мероприятия.</h4>
+<a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/edit'}"  role="button">Изменить описание меропиятия</a>
+<a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/reports/edit'}"  role="button">Изменить добавочную информацию</a>
 <table id="report" style="padding: 1%; margin:1%">
     <tr><td>Официальное, полное название мероприятия.</td></tr>
     <tr><td th:text="${event.getName()}"> </td></tr>
@@ -50,13 +52,15 @@
     <tr><td>Контактное лицо</td></tr>
     <tr><td th:text="${event.getCoordinator().getContacts()}"></td></tr>
 </table>
-<a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/edit'}"  role="button">Изменить описание меропиятия</a>
-<a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/reports/edit'}"  role="button">Изменить добавочную информацию</a>
 
-<form method="POST" enctype="multipart/form-data" action="/upload">
-    Выберете файл с волонтерами:<input type="file" name="file">
-    <input type="submit" value="Добавить файл" class="btn btn-outline-primary" role="submit"></input>
-</form>
+<div th:if="${secondPart != null}">
+    <table id="secondPart" style="padding: 1%; margin:1%">
+        <tr><td>Фактическое количество участников, чел.</td></tr>
+        <tr><td th:text="${secondPart.getNumberOfPeople()}"> </td></tr>
+        <tr><td>Ссылки на информационные материалы, размещенные по итогам мероприятия (указать ссылки как из соц.сетей, так и с сайтов)</td></tr>
+        <tr><td th:text="${secondPart.getResultsLinks()}"> </td></tr>
+    </table>
+</div>
 
 </body>
 </html>
