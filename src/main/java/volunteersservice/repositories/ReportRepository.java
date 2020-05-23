@@ -1,8 +1,8 @@
 package volunteersservice.repositories;
 
-import volunteersservice.models.entities.Event;
-import volunteersservice.models.entities.FirstPartOfReport;
-import volunteersservice.models.entities.SecondPartOfReport;
+import volunteersservice.models.entities.*;
+
+import java.util.List;
 
 public interface ReportRepository {
     public FirstPartOfReport getFirstPartByID(int reportID);
@@ -20,4 +20,8 @@ public interface ReportRepository {
     public boolean save(SecondPartOfReport report);
 
     public boolean update(SecondPartOfReport report);
+
+    public boolean save(Volunteers volunteer);
+
+    public List<Volunteers> getVolunteersByReport(SecondPartOfReport report);
 }

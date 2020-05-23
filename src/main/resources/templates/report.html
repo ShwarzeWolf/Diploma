@@ -53,13 +53,28 @@
     <tr><td th:text="${event.getCoordinator().getContacts()}"></td></tr>
 </table>
 
+<h4>II. Результаты мероприятия</h4>
 <div th:if="${secondPart != null}">
     <table id="secondPart" style="padding: 1%; margin:1%">
+        <tr><td>Количество обучающихся, задействованных в реализации мероприятия в качестве организатора (факт), чел.</td></tr>
+        <tr><td th:text="1"> </td></tr>
         <tr><td>Фактическое количество участников, чел.</td></tr>
         <tr><td th:text="${secondPart.getNumberOfPeople()}"> </td></tr>
+        <tr><td>Количество обучающихся, задействованных в реализации мероприятия в качестве волонтера от ИТМО (факт), чел.</td></tr>
+        <tr><td th:text="0"> </td></tr>
         <tr><td>Ссылки на информационные материалы, размещенные по итогам мероприятия (указать ссылки как из соц.сетей, так и с сайтов)</td></tr>
         <tr><td th:text="${secondPart.getResultsLinks()}"> </td></tr>
     </table>
+    <h4>Роли участников</h4>
+    <div th:if="${volunteers != null}">
+        <table>
+            <tr th:each="volunteer : ${volunteers}">
+                <td th:text="${volunteer.getFIO()}" />
+                <td th:text="${volunteer.getRole()}" />
+                <td th:text="${volunteer.getWhatWasDone()}" />
+            </tr>
+        </table>
+    </div>
 </div>
 
 </body>

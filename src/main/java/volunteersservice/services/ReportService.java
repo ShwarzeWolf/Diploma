@@ -30,4 +30,6 @@ public interface ReportService {
 
     public void updateSecondPartOfAReportReport(SecondPartOfReport report);
 
+    public List<Volunteers> getVolunteersByReport(SecondPartOfReport report);
+
 }

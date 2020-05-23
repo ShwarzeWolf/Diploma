@@ -15,15 +15,19 @@ import org.springframework.web.multipart.MultipartFile;
 import volunteersservice.models.entities.Event;
 import volunteersservice.models.entities.FirstPartOfReport;
 import volunteersservice.models.entities.SecondPartOfReport;
+import volunteersservice.models.entities.Volunteers;
 import volunteersservice.models.enums.CategoryStatusEnum;
 import volunteersservice.models.enums.LevelStatusEnum;
 import volunteersservice.models.enums.PublicityStatusEnum;
 import volunteersservice.services.EventService;
 import volunteersservice.services.ReportService;
+import volunteersservice.utils.FileParser;
 import volunteersservice.utils.ServiceFactory;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Controller
 public class ReportController {
@@ -75,11 +79,17 @@ public class ReportController {
 
         Event event = eventService.getEventByID(eventID);
         FirstPartOfReport report = reportService.getFirstPartOfAReportByEvent(event);
+
         SecondPartOfReport secondPart = reportService.getSecondPartOfAReportByEvent(event);
-        //volunteersBySecondPart
+        if (secondPart != null) {
+            List<Volunteers> volunteers = reportService.getVolunteersByReport(secondPart);
+            model.addAttribute("volunteers", volunteers);
+        }
+
         model.addAttribute("event", event);
         model.addAttribute("reportInfo", report);
         model.addAttribute("secondPart", secondPart);
+
 
         return "report";
     }
@@ -154,32 +164,11 @@ public class ReportController {
                             @RequestParam("file") MultipartFile file) throws IOException, InvalidFormatException {
 
         Event event = eventService.getEventByID(eventID);
-        SecondPartOfReport secondPart = reportService.addSecondPart(event, numberOfParticipants, links, null);
 
-        /*
-        File fileWithInfoAboutVolunteers = new File(file.getOriginalFilename());
-        FileUtils.writeByteArrayToFile(fileWithInfoAboutVolunteers, file.getBytes());
+        List<Volunteers> volunteers = FileParser.parseFile(file);
 
-        Workbook workbook = new XSSFWorkbook(fileWithInfoAboutVolunteers);
-        Sheet sheet = workbook.getSheetAt(0);
+        SecondPartOfReport secondPart = reportService.addSecondPart(event, numberOfParticipants, links, volunteers);
 
-        Iterator<Row> ri = sheet.rowIterator();
-        while(ri.hasNext()) {
-            XSSFRow row = (XSSFRow) ri.next();
-            String status = row.getCell(2).getStringCellValue();
-
-            if (status.equals("подтверждена")){
-                String name = row.getCell(3).getStringCellValue();
-                String surname = row.getCell(4).getStringCellValue();
-                String patronymic = row.getCell(5).getStringCellValue();
-
-                String FIO = name.concat(" ").concat(surname).concat(" ").concat(patronymic);
-
-                String role = "Волонтер";
-                String thatWasDone = row.getCell(21).getStringCellValue();
-            }
-        }
-*/
         return "redirect:/events/" + eventID + "/reports";
     }
 }

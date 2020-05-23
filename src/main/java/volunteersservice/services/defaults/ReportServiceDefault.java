@@ -47,15 +47,14 @@ public class ReportServiceDefault implements ReportService {
         SecondPartOfReport report = new SecondPartOfReport(event, links, numberOfParticipants);
         reportRepository.save(report);
 
-        return report;
-/*
         if (volunteers != null) {
-            VolunteerFunctionService volunteerFunctionService = ServiceFactory.getVolunteerFunctionService();
-            for (VolunteerFunction currentFunction : volunteers) {
-                currentFunction.setEvent(event);
-                volunteerFunctionService.addVolunteerFunction(currentFunction);
+            for (Volunteers currentVolunteer : volunteers) {
+                currentVolunteer.setReport(report);
+                addVolunteer(currentVolunteer);
             }
-        }*/
+        }
+
+        return report;
     }
 
     @Override
@@ -65,5 +64,14 @@ public class ReportServiceDefault implements ReportService {
 
     @Override
     public void updateSecondPartOfAReportReport(SecondPartOfReport report) {
+    }
+
+    public void addVolunteer(Volunteers vol){
+        reportRepository.save(vol);
+    }
+
+    @Override
+    public List<Volunteers> getVolunteersByReport(SecondPartOfReport report) {
+        return reportRepository.getVolunteersByReport(report);
     }
 }

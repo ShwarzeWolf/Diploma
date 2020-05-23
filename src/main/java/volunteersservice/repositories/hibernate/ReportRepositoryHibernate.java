@@ -3,11 +3,11 @@ package volunteersservice.repositories.hibernate;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import volunteersservice.models.entities.Event;
-import volunteersservice.models.entities.FirstPartOfReport;
-import volunteersservice.models.entities.SecondPartOfReport;
+import volunteersservice.models.entities.*;
 import volunteersservice.repositories.ReportRepository;
 import volunteersservice.utils.HibernateUtil;
+
+import java.util.List;
 
 public class ReportRepositoryHibernate implements ReportRepository {
     private final static Logger LOG = Logger.getLogger(EventRepositoryHibernate.class);
@@ -96,4 +96,30 @@ public class ReportRepositoryHibernate implements ReportRepository {
             return false;
         }
     }
+
+    @Override
+    public boolean save(Volunteers vol) {
+        Session session = HibernateUtil.getSession();
+        Transaction tx = session.beginTransaction();
+
+        try {
+            session.save(vol);
+            tx.commit();
+            return true;
+        } catch (Exception ex) {
+            LOG.error(ex);
+            return false;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Volunteers> getVolunteersByReport(SecondPartOfReport report) {
+        return (List<Volunteers>) HibernateUtil.getSession().createQuery(
+                "select volunteers From Volunteers as volunteers inner join SecondPartOfReport as report on report.reportID = volunteers.report.reportID where report.reportID = :reportID")
+                .setParameter("reportID", report.getReportID()).list();
+    }
+
+
+
 }

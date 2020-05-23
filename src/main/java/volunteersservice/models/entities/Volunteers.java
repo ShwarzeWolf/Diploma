@@ -25,8 +25,9 @@ public class Volunteers {
     @Column(name = "Role")
     private String role;
 
-    public Volunteers(SecondPartOfReport report, @NotNull String FIO, String whatWasDone, String role) {
-        this.report = report;
+    public Volunteers(){};
+
+    public Volunteers(String FIO, String whatWasDone, String role) {
         this.FIO = FIO;
         this.whatWasDone = whatWasDone;
         this.role = role;
