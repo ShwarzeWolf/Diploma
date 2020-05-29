@@ -1,13 +1,7 @@
 package volunteersservice.repositories.hibernate;
 
-import volunteersservice.models.entities.CategoryStatus;
-import volunteersservice.models.entities.EventStatus;
-import volunteersservice.models.entities.LevelStatus;
-import volunteersservice.models.entities.PublicityStatus;
-import volunteersservice.models.enums.CategoryStatusEnum;
-import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.models.enums.LevelStatusEnum;
-import volunteersservice.models.enums.PublicityStatusEnum;
+import volunteersservice.models.entities.*;
+import volunteersservice.models.enums.*;
 import volunteersservice.utils.HibernateUtil;
 
 import org.springframework.stereotype.Repository;
@@ -54,5 +48,20 @@ public class StatusRepositoryHibernate implements StatusRepository {
                 "from LevelStatus as levelStatus where levelStatus.name = :name")
                 .setParameter("name", statusEnum.name()).uniqueResult();
         return res;
+    }
+
+    @Deprecated
+    @Override
+    public UserRole getRoleByName(String typeName) {
+        return (UserRole) HibernateUtil.getSession()
+                .createQuery("from UserRole as userRole where userRole.name = :name")
+                .setParameter("name", typeName).uniqueResult();
+    }
+
+    @Override
+    public UserRole getRoleByEnum(UserRoleEnum roleEnum) {
+        return (UserRole) HibernateUtil.getSession()
+                .createQuery("from UserRole as userRole where userRole.name = :name")
+                .setParameter("name", roleEnum.name()).uniqueResult();
     }
 }

@@ -86,6 +86,11 @@ CREATE TABLE VolunteersService.FirstPartReports(
     Participants        VARCHAR(300)
 );
 
+CREATE TABLE VolunteersService.PeriodicityStatus (
+    StatusID     SERIAL    PRIMARY KEY  NOT NULL,
+    Name         VARCHAR(30)            NOT NULL
+);
+
 CREATE TABLE VolunteersService.SecondPartReports(
     ReportID            SERIAL PRIMARY KEY  NOT NULL,
     EventID             INTEGER             NOT NULL REFERENCES VolunteersService.Events(EventID),
@@ -112,11 +117,12 @@ ALTER TABLE VolunteersService.VolunteerFunctions OWNER TO java;
 ALTER TABLE VolunteersService.FirstPartReports   OWNER TO java;
 ALTER TABLE VolunteersService.SecondPartReports  OWNER TO java;
 ALTER TABLE VolunteersService.Volunteers         OWNER TO java;
+ALTER TABLE VolunteersService.PeriodicityStatus  OWNER TO java;
 
 INSERT INTO VolunteersService.UserRole    (Name) values ('ORGANISER'), ('MANAGER') , ('COORDINATOR'), ('ADMIN'), ('MOVEMENTLEADER');
 INSERT INTO VolunteersService.EventStatus (Name) values ('CREATED'), ('UNCHECKED'), ('APPROVED'), ('DENIED'), ('ASSIGNED'), ('FINISHED');
 INSERT INTO VolunteersService.LevelStatus (Name) values ('FACULTY'), ('UNIVERSITY'), ('CITY'), ('REGION'), ('FEDERAL'), ('INTERNATIONAL');
 INSERT INTO VolunteersService.CategoryStatus(Name) values ('INNER'), ('OUTER');
 INSERT INTO VolunteersService.PublicityStatus (Name) values ('OPEN'), ('CLOSED');
-
+INSERT INTO VolunteersService.PeriodicityStatus (Name) values ('ONCEONLY'), ('ONCEASEMESTER'), ('ONCEAMONTH');
 END TRANSACTION;

@@ -9,7 +9,6 @@ public class ServiceFactory {
 	private static final StatusService STATUS_SERVICE = new StatusServiceDefault();
 	private static final VolunteerFunctionService VOLUNTEER_FUNCTION_SERVICE = new VolunteerFunctionServiceDefault();
 	private static final UserService USER_SERVICE = new UserServiceDefault();
-	private static final UserRoleService USER_ROLE_SERVICE = new UserRoleServiceDefault();
 	private static final ReportService FIRST_PART_REPORT_SERVICE = new ReportServiceDefault();
 
 	public static EventService getEventService() {
@@ -26,10 +25,6 @@ public class ServiceFactory {
 
 	public static UserService getUserService() {
 		return USER_SERVICE;
-	}
-
-	public static UserRoleService getUserRoleService() {
-		return USER_ROLE_SERVICE;
 	}
 
 	public static ReportService getFirstPartReportService() {return FIRST_PART_REPORT_SERVICE; }

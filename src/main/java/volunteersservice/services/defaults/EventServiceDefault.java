@@ -37,13 +37,13 @@ public class EventServiceDefault implements EventService {
                           String accommodation,
                           String food,
                           List<VolunteerFunction> volunteerFunctions) {
-
+        /*
         if (dateStart.isAfter(dateFinish))
             throw new EventCreationException("Start date-time is after finish date-time");
 
         if (dateStart.isBefore(LocalDateTime.now().plusHours(24)))
             throw new EventCreationException("You cannot create event which starts in less than 24 hours");
-
+        */
         Event event = new Event(name, organiser, description, place, dateStart, dateFinish, requirements, clothesType, accommodation, food);
         eventRepository.save(event);
 

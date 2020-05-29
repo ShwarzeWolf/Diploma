@@ -1,12 +1,6 @@
 package volunteersservice.controllers;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +19,6 @@ import volunteersservice.utils.FileParser;
 import volunteersservice.utils.ServiceFactory;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Controller
@@ -36,7 +28,7 @@ public class ReportController {
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
     @GetMapping("/events/{eventID}/createReport")
-    public String addReportPage(@PathVariable int eventID) {
+    public String getAddReportPage(@PathVariable int eventID) {
         return "reportAdditionalInfo";
     }
 
@@ -48,8 +40,7 @@ public class ReportController {
                             @RequestParam String publicity,
                             @RequestParam String level,
                             @RequestParam String shortDescription,
-                            @RequestParam String participants)
-    {
+                            @RequestParam String participants) {
         CategoryStatusEnum categoryStatus = category.equals("categoryInner") ? CategoryStatusEnum.INNER : CategoryStatusEnum.OUTER;
         PublicityStatusEnum publicityStatus = publicity.equals("publicityOpen") ? PublicityStatusEnum.OPEN : PublicityStatusEnum.CLOSED;
 
@@ -65,9 +56,7 @@ public class ReportController {
         }
 
         Event event = eventService.getEventByID(eventID);
-
-        FirstPartOfReport report = reportService.addFirstPartOfAReport(event, shortName, categoryStatus, publicityStatus, levelStatus, shortDescription, participants);
-
+        reportService.addFirstPartOfAReport(event, shortName, categoryStatus, publicityStatus, levelStatus, shortDescription, participants);
 
         return "redirect:/events/" + eventID + "/reports";
     }
@@ -78,18 +67,18 @@ public class ReportController {
                             Model model) {
 
         Event event = eventService.getEventByID(eventID);
-        FirstPartOfReport report = reportService.getFirstPartOfAReportByEvent(event);
+        FirstPartOfReport report = reportService.getFirstPartByEvent(event);
 
         SecondPartOfReport secondPart = reportService.getSecondPartOfAReportByEvent(event);
-        if (secondPart != null) {
-            List<Volunteers> volunteers = reportService.getVolunteersByReport(secondPart);
-            model.addAttribute("volunteers", volunteers);
-        }
 
         model.addAttribute("event", event);
         model.addAttribute("reportInfo", report);
         model.addAttribute("secondPart", secondPart);
 
+        if (secondPart != null) {
+            List<Volunteers> volunteers = reportService.getVolunteersByReport(secondPart);
+            model.addAttribute("volunteers", volunteers);
+        }
 
         return "report";
     }
@@ -99,8 +88,8 @@ public class ReportController {
     public String editReportAdditionalInfoPage(@PathVariable int eventID,
                                                Model model){
         Event event = eventService.getEventByID(eventID);
+        FirstPartOfReport report = reportService.getFirstPartByEvent(event);
 
-        FirstPartOfReport report = reportService.getFirstPartOfAReportByEvent(event);
         model.addAttribute("report", report);
 
         return "editReport";
@@ -116,7 +105,7 @@ public class ReportController {
                                            @RequestParam String shortDescription,
                                            @RequestParam String participants) {
         Event event = eventService.getEventByID(eventID);
-        FirstPartOfReport report = reportService.getFirstPartOfAReportByEvent(event);
+        FirstPartOfReport report = reportService.getFirstPartByEvent(event);
 
         CategoryStatusEnum categoryStatus = category.equals("categoryInner") ? CategoryStatusEnum.INNER : CategoryStatusEnum.OUTER;
         PublicityStatusEnum publicityStatus = publicity.equals("publicityOpen") ? PublicityStatusEnum.OPEN : PublicityStatusEnum.CLOSED;
@@ -144,20 +133,14 @@ public class ReportController {
         return "redirect:/events/" + eventID + "/reports";
     }
 
-
-
-
-
-
-
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
-    @GetMapping("/events/{eventID}/addSecondPart")
+    @GetMapping("/events/{eventID}/reports/addSecondPart")
     public String addSecondPart(@PathVariable int eventID) {
         return "addSecondPart";
     }
 
     @PreAuthorize("hasAnyAuthority('COORDINATOR', 'MOVEMENTLEADER')")
-    @PostMapping("/events/{eventID}/addSecondPart")
+    @PostMapping("/events/{eventID}/reports/addSecondPart")
     public String addReport(@PathVariable int eventID,
                             @RequestParam String links,
                             @RequestParam int numberOfParticipants,
@@ -166,8 +149,7 @@ public class ReportController {
         Event event = eventService.getEventByID(eventID);
 
         List<Volunteers> volunteers = FileParser.parseFile(file);
-
-        SecondPartOfReport secondPart = reportService.addSecondPart(event, numberOfParticipants, links, volunteers);
+        reportService.addSecondPart(event, numberOfParticipants, links, volunteers);
 
         return "redirect:/events/" + eventID + "/reports";
     }

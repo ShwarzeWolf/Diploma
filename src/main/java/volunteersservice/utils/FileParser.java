@@ -47,9 +47,6 @@ public class FileParser {
                     String role = "Волонтер";
                     String whatWasDone = row.getCell(21).getStringCellValue();
 
-                    System.out.println(FIO);
-                    System.out.println(whatWasDone);
-                    System.out.println(role);
                     Volunteers volunteer = new Volunteers(FIO, whatWasDone, role);
                     volunteers.add(volunteer);
                 }

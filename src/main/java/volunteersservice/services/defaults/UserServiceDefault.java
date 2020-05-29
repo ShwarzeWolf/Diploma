@@ -52,7 +52,7 @@ public class UserServiceDefault implements UserService {
 						   UserRoleEnum roleEnum,
 						   String contactPhone) {
 
-		UserRole userRole = ServiceFactory.getUserRoleService().getRoleByEnum(roleEnum);
+		UserRole userRole = ServiceFactory.getStatusService().getRoleByEnum(roleEnum);
 		return userRepository.save(new User(email, login, userName, surname, LocalDateTime.now(), password, userRole, contactPhone));
 	}
 

@@ -22,15 +22,17 @@ public class UserController {
 
     @PostMapping("/registration")
     public String addUser(@RequestParam String email,
-                                  @RequestParam String name,
-                                  @RequestParam String surname,
-                                  @RequestParam String login,
-                                  @RequestParam String password,
-                                  @RequestParam String contactPhone,
-                                  @RequestParam (required = false) String userRole) {
+                          @RequestParam String name,
+                          @RequestParam String surname,
+                          @RequestParam String login,
+                          @RequestParam String password,
+                          @RequestParam String contactPhone,
+                          @RequestParam (required = false) String userRole) {
         User currentUser = Utils.getUserFromContext();
 
-        if (currentUser != null && currentUser.getUserRole().getName().equals("MANAGER")){
+        boolean userIsManager = currentUser != null && currentUser.getUserRole().getName().equals("MANAGER");
+
+        if (userIsManager){
             return users.addUser(email, login, name, surname, password, UserRoleEnum.valueOf(userRole), contactPhone) ? "login" : "registration";
         } else {
             return users.addUser(email, login, name, surname, password, UserRoleEnum.ORGANISER, contactPhone) ? "login" : "registration";

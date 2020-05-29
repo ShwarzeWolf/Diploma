@@ -33,7 +33,7 @@ public class ReportServiceDefault implements ReportService {
     }
 
     @Override
-    public FirstPartOfReport getFirstPartOfAReportByEvent(Event event) {
+    public FirstPartOfReport getFirstPartByEvent(Event event) {
         return reportRepository.getFirstPartByEvent(event);
     }
 

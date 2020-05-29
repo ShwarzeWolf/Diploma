@@ -2,14 +2,8 @@ package volunteersservice.services;
 
 import org.springframework.stereotype.Service;
 
-import volunteersservice.models.entities.CategoryStatus;
-import volunteersservice.models.entities.EventStatus;
-import volunteersservice.models.entities.LevelStatus;
-import volunteersservice.models.entities.PublicityStatus;
-import volunteersservice.models.enums.CategoryStatusEnum;
-import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.models.enums.LevelStatusEnum;
-import volunteersservice.models.enums.PublicityStatusEnum;
+import volunteersservice.models.entities.*;
+import volunteersservice.models.enums.*;
 
 @Service
 public interface StatusService {
@@ -20,4 +14,6 @@ public interface StatusService {
 	public LevelStatus getStatusByEnum(LevelStatusEnum statusEnum);
 
 	public PublicityStatus getStatusByEnum(PublicityStatusEnum statusEnum);
+
+	public UserRole getRoleByEnum(UserRoleEnum roleEnum);
 }

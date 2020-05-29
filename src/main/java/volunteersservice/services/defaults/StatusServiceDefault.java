@@ -2,14 +2,8 @@ package volunteersservice.services.defaults;
 
 import org.springframework.stereotype.Service;
 
-import volunteersservice.models.entities.CategoryStatus;
-import volunteersservice.models.entities.EventStatus;
-import volunteersservice.models.entities.LevelStatus;
-import volunteersservice.models.entities.PublicityStatus;
-import volunteersservice.models.enums.CategoryStatusEnum;
-import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.models.enums.LevelStatusEnum;
-import volunteersservice.models.enums.PublicityStatusEnum;
+import volunteersservice.models.entities.*;
+import volunteersservice.models.enums.*;
 import volunteersservice.repositories.StatusRepository;
 import volunteersservice.services.StatusService;
 import volunteersservice.utils.RepositoryFactory;;
@@ -41,4 +35,10 @@ public class StatusServiceDefault implements StatusService {
     public PublicityStatus getStatusByEnum(PublicityStatusEnum statusEnum) {
         return statusRepository.getStatusByEnum(statusEnum);
     }
+
+    @Override
+    public UserRole getRoleByEnum(UserRoleEnum typeEnum) {
+        return statusRepository.getRoleByEnum(typeEnum);
+    }
+
 }

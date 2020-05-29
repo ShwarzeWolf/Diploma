@@ -54,6 +54,9 @@
 </table>
 
 <h4>II. Результаты мероприятия</h4>
+<div th:if="${secondPart == null}">
+    <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/reports/addSecondPart'}"  role="button">Создать вторую часть отчета</a>
+</div>
 <div th:if="${secondPart != null}">
     <table id="secondPart" style="padding: 1%; margin:1%">
         <tr><td>Количество обучающихся, задействованных в реализации мероприятия в качестве организатора (факт), чел.</td></tr>
@@ -61,13 +64,18 @@
         <tr><td>Фактическое количество участников, чел.</td></tr>
         <tr><td th:text="${secondPart.getNumberOfPeople()}"> </td></tr>
         <tr><td>Количество обучающихся, задействованных в реализации мероприятия в качестве волонтера от ИТМО (факт), чел.</td></tr>
-        <tr><td th:text="0"> </td></tr>
+        <tr><td th:text="${volunteers.size()}"> </td></tr>
         <tr><td>Ссылки на информационные материалы, размещенные по итогам мероприятия (указать ссылки как из соц.сетей, так и с сайтов)</td></tr>
         <tr><td th:text="${secondPart.getResultsLinks()}"> </td></tr>
     </table>
     <h4>Роли участников</h4>
     <div th:if="${volunteers != null}">
-        <table>
+        <table style="margin: 1%; width: 70%">
+            <tr>
+                <td>ФИО</td>
+                <td>Роль</td>
+                <td>Что сделано?</td>
+            </tr>
             <tr th:each="volunteer : ${volunteers}">
                 <td th:text="${volunteer.getFIO()}" />
                 <td th:text="${volunteer.getRole()}" />

@@ -35,8 +35,8 @@
         <div class ="row" style="padding: 1%">
                 <h2 style="padding-right: 1%" th:text="${event.getName()}"></h2>
                 <div th:if="${(user.getUserRole().getName() == 'COORDINATOR' || user.getUserRole().getName() == 'MOVEMENTLEADER' ) && event.getCoordinator() == null}">
-                    <form th:action="${event.getEventID() + '/coordinate'}" method="post">
-                        <button type="submit" class="btn-primary">Курировать</button>
+                    <form th:action="${event.getEventID() + '/setEventStatus'}" method="post">
+                        <button type="submit" class="btn-primary" name="changeStatus" value="ASSIGNED">Курировать</button>
                     </form>
                 </div>
                 <div th:if="${(event.getOrganiser().getLogin() == user.getLogin() && event.getStatus().getName() == 'CREATED' || event.getCoordinator()!= null && event.getCoordinator().getLogin() == user.getLogin())}">
@@ -56,10 +56,10 @@
                 </div>
                 <div  id="reports" th:if="${event.getCoordinator() != null && event.getCoordinator().getLogin() == user.getLogin()}">
                     <div th:if="${report == null}">
-                        <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/createReport'}"  role="button">Создать первую часть отчета</a>
+                        <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/createReport'}"  role="button">Создать отчет</a>
                     </div>
                     <div th:unless="${report == null}">
-                        <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/reports'}"  role="button">Просмотреть первую часть отчета</a>
+                        <a class="btn btn-outline-primary" th:href="${'/events/' + event.getEventID() + '/reports'}"  role="button">Просмотреть отчет</a>
                     </div>
                 </div>
         </div>
@@ -89,7 +89,11 @@
         </div>
         <div class="row" style="padding: 1%">
             <div class="col-md-2"><h6>Особые требования</h6></div>
-            <div class="col-md-6" th:value="${event.getRequirements()}"></div>
+            <div class="col-md-6" th:text="${event.getRequirements()}"></div>
+        </div>
+        <div class="row" style="padding: 1%">
+            <div class="col-md-2"><h6>Организатор</h6></div>
+            <div class="col-md-6" th:text="${event.getOrganiser().getContacts()}"></div>
         </div>
     </div>
 

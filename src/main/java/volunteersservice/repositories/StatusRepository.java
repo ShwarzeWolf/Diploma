@@ -2,14 +2,8 @@ package volunteersservice.repositories;
 
 import org.springframework.stereotype.Repository;
 
-import volunteersservice.models.entities.CategoryStatus;
-import volunteersservice.models.entities.EventStatus;
-import volunteersservice.models.entities.LevelStatus;
-import volunteersservice.models.entities.PublicityStatus;
-import volunteersservice.models.enums.CategoryStatusEnum;
-import volunteersservice.models.enums.EventStatusEnum;
-import volunteersservice.models.enums.LevelStatusEnum;
-import volunteersservice.models.enums.PublicityStatusEnum;
+import volunteersservice.models.entities.*;
+import volunteersservice.models.enums.*;
 
 @Repository
 public interface StatusRepository {
@@ -23,4 +17,9 @@ public interface StatusRepository {
     public PublicityStatus getStatusByEnum(PublicityStatusEnum statusEnum);
 
     public LevelStatus getStatusByEnum(LevelStatusEnum statusEnum);
+
+    @Deprecated
+    public UserRole getRoleByName(String typeName);
+
+    public UserRole getRoleByEnum(UserRoleEnum roleEnum);
 }

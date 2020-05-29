@@ -21,9 +21,9 @@ public interface VolunteerFunctionService {
 	public VolunteerFunction addVolunteerFunction(Event event, String name, String description, String requirements,
 			String timeStart, String timeFinish, int numberNeeded);
 
-	public List<VolunteerFunction> getVolunteerFunctions(Event event);
+	public List<VolunteerFunction> getVolunteerFunctionsByEvent(Event event);
 
 	public void updateVolunteerFunctionInformation(VolunteerFunction volunteerFunction);
 
-	public void deleteVolunteerFunction(VolunteerFunction volunteerFunction);
+	public void deleteVolunteerFunctionByID(int volunteerFunctionID);
 }

@@ -17,7 +17,7 @@ public interface ReportService {
                                                    String shortDescription,
                                                    String participants);
 
-    public FirstPartOfReport getFirstPartOfAReportByEvent(Event event);
+    public FirstPartOfReport getFirstPartByEvent(Event event);
 
     public void updateFirstPartOfAReportReport(FirstPartOfReport report);
 

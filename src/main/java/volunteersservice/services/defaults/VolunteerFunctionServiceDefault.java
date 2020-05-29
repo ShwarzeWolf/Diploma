@@ -59,7 +59,7 @@ public class VolunteerFunctionServiceDefault implements VolunteerFunctionService
     }
 
     @Override
-    public List<VolunteerFunction> getVolunteerFunctions(Event event) {
+    public List<VolunteerFunction> getVolunteerFunctionsByEvent(Event event) {
         return volunteerFunctionRepository.getVolunteerFunctions(event);
     }
 
@@ -69,7 +69,8 @@ public class VolunteerFunctionServiceDefault implements VolunteerFunctionService
     }
 
     @Override
-    public void deleteVolunteerFunction(VolunteerFunction volunteerFunction){
-        volunteerFunctionRepository.delete(volunteerFunction);
+    public void deleteVolunteerFunctionByID(int volunteerFunctionID){
+        VolunteerFunction vf = getVolunteerFunctionByID(volunteerFunctionID);
+        volunteerFunctionRepository.delete(vf);
     }
 }
